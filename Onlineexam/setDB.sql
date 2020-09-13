@@ -1,5 +1,5 @@
 CREATE TABLE multiq (
-	id			INT,
+	multiq_id	INT,
 	question 	VARCHAR(100),
 	ans1		VARCHAR(50),
 	ans2		VARCHAR(50),
@@ -10,7 +10,7 @@ CREATE TABLE multiq (
 	PRIMARY KEY(id));
 
 CREATE TABLE shortq(
-	id			INT,
+	shortq_id	INT,
 	question	VARCHAR(200),
 	ans			VARCHAR(500),
 	marks		VARCHAR(2),
