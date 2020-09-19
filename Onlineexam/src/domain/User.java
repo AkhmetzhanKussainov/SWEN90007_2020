@@ -1,10 +1,22 @@
 package domain;
 
+
+
 abstract class User {
 	
-	private String userId;
-	private String username;
-	private String password;
+	enum houses {
+		
+		
+		Slytherin,
+		Hufflepuff,
+		Gryffindor,
+		Ravenclaw
+		
+	}
+	
+	protected String userId;
+	protected String username;
+	protected String password;
 	
 	public String getUsername() {
 		

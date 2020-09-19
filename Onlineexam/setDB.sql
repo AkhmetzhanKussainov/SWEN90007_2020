@@ -22,3 +22,26 @@ INSERT INTO multiq
 VALUES (002, 'What is your favourite animal?', 'Cat', 'Dog', 'Pig', 'None of Above', 'B', '0');
 INSERT INTO shortq
 VALUES (001, 'Why you love the animal you chosen above?', 'Because I have a pet dog.', '15');
+
+
+DROP TABLE users;
+
+CREATE TABLE users(
+   userId  SERIAL PRIMARY KEY,
+   userName           VARCHAR(10)      NOT NULL,
+   userPassword            VARCHAR(10)       NOT NULL,
+   userType        VARCHAR(1),
+   userNumber         VARCHAR(10)
+);
+
+INSERT INTO users (userName, userPassword, userType, userNumber)
+VALUES ('HarryP', 'Abra', 'S', '12345');
+
+INSERT INTO users (userName, userPassword, userType, userNumber)
+VALUES ('HerG', 'Dobb', 'S', '12346');
+
+INSERT INTO users (userName, userPassword, userType, userNumber)
+VALUES ('RonW', 'Broken', 'S', '12347');
+
+--SELECT * FROM users ORDER BY userId
+--SELECT * FROM users WHERE userId=2

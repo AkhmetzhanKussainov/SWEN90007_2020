@@ -75,18 +75,17 @@ public class MultipleQuestion {
 	
 	public static List<MultipleQuestion> getAllMultiple() {
 		
-		System.out.println("start");
+		
 		
 	    List<MultipleQuestion> multiplequestions = new ArrayList<>();
 	    try {
-	    	System.out.println("try");
+	    	
 	    	PreparedStatement stmt = DBConnection.prepare(findAllMultipleStatement);
 	    	System.out.println(stmt);
-	    	//multiplequestions.add(new MultipleQuestion("1","1","1","1","1","1","1","1"));
 	    	ResultSet rs = stmt.executeQuery();
 	    	
 			while (rs.next()) {
-				System.out.println("hey");
+				
 				String id = rs.getString(1);
 				String question = rs.getString(2);
 				String ans1 = rs.getString(3);
@@ -96,7 +95,6 @@ public class MultipleQuestion {
 				String chosen_ans = rs.getString(7);
 				String mark = rs.getString(8);
 				
-				System.out.println(id+ question+ ans1+ ans2);
 				
 				multiplequestions.add(new MultipleQuestion(id, question, ans1, ans2, ans3, ans4, chosen_ans, mark));
 			}
