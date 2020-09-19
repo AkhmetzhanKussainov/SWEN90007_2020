@@ -13,7 +13,8 @@ public class ShortQuestion {
     private String mark;
     
     private static final String findAllShortStatement =
-			"SELECT * from shortq ORDER BY shortq_id";
+			"SELECT * from shortq ORDER BY id";
+    		//"SELECT * from shortq";
     private static final String changeShortMark =
 			"UPDATE shortq SET marks = ? where shortq_id = ? ";
     
@@ -49,6 +50,8 @@ public class ShortQuestion {
 	    try {
 	    	PreparedStatement stmt = DBConnection.prepare(findAllShortStatement);
 	
+	    	//shortquestions.add(new ShortQuestion("1", "2", "3", "4"));
+	    	
 	    	ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				

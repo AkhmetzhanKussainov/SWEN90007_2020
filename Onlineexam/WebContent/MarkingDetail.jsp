@@ -28,11 +28,12 @@ tr:nth-child(odd) {
 </head>
 <body>
 <h3 align="center">Multiple Choice Questions</h3>
+
 <div align="center">
 <%
            		 for (MultipleQuestion multipleq : MultipleQuestion.getAllMultiple()) {
        		 %>
-       		 
+       		 <h3 align="center">Question</h3>
        		 <form name="MultiUpdateForm" action="/Onlineexam/" method="post">
         <table  style="width:90%">
 
@@ -68,7 +69,8 @@ tr:nth-child(odd) {
 		
 <%
            		 for (ShortQuestion shortq : ShortQuestion.getAllShort()) {
-       		 %>		
+       		 %>
+       		 <h3 align="center">Question</h3>		
 		<form name="ShortUpdateForm" action="/Onlineexam/" method="post">
 		
 		<table style="width:90%">
