@@ -2,10 +2,9 @@ package domain;
 
 
 
-abstract class User {
+public abstract class User {
 	
-	enum houses {
-		
+	public enum houses {
 		
 		Slytherin,
 		Hufflepuff,

@@ -16,7 +16,7 @@ import domain.ShortQuestion;
 /**
  * Servlet implementation class detailPageController
  */
-@WebServlet("/")
+@WebServlet("/questions/")
 public class detailPageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

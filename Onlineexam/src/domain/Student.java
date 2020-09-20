@@ -2,27 +2,65 @@ package domain;
 
 import datasource.UserDataMapper;
 
-//import domain.User.houses;
+import domain.User.houses;
 
 public class Student extends User {
 
 	private String studentId;
 	private houses house;
 	
-	public Student() {
+	private String firstName;
+	private String lastName;
+	
+	public void setHouse(houses house) {
 		
+		this.house = house;
+	}
+	
+	public void setFirstName(String firstName) {
+			
+		this.firstName = firstName;
+	}
+
+	public void setLastName(String lastName) {
+		
+		this.lastName = lastName;
 		
 	}
 	
-	public Student(String userId, String username, String password) {
+	public void setStudentId(String studentId) {
+		
+		this.studentId = studentId;
+	
+	}
+	
+	public String getUserName() {
+		return username;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public String getStudentId() {
+		return studentId;
+	}
+	
+	public String getUserId() {
+		return userId;
+	}
+	
+	
+	public Student(String userId, String username, String password, String studentId) {
 		
 		//Lazy initialization
-		studentId = null;
+		//studentId = null;
 		house = null;
 		
 		this.password = password;
 		this.userId = userId;
 		this.username = username;
+		this.studentId = studentId;
 		
 	}
 	
@@ -31,8 +69,11 @@ public class Student extends User {
 		
 		UserDataMapper dataMapper = new UserDataMapper();
 		
-		studentId = dataMapper.getStudentStudentId(userId);
-		house = dataMapper.getStudentHouse(userId);
+		Student tempStudent = dataMapper.loadFullStudent(userId);
+		
+		house = tempStudent.getHouse();
+		firstName = tempStudent.getFirstName();
+		lastName = tempStudent.getLastName();
 		
 	}
 	
@@ -48,7 +89,41 @@ public class Student extends User {
 		
 	}
 	
-	public getStudentId() {
+	
+	public String getFirstName() {
+		
+		if (firstName == null) {
+				
+			getInfo();
+			
+		}
+		
+		return firstName;
+		
+	}
+	
+	public String getLastName() {
+		
+		if (lastName == null) {
+				
+			getInfo();
+			
+		}
+		
+		return lastName;
+		
+	}
+	
+	public String getHouseAsString() {
+		
+		String houseAsString = getHouse().name();
+		
+		return houseAsString;
+		
+	}
+	
+	/*
+	public String getStudentId() {
 		
 		if (studentId == null) {
 			
@@ -58,6 +133,6 @@ public class Student extends User {
 		
 		return studentId;
 		
-	}
+	}*/
 	
 }

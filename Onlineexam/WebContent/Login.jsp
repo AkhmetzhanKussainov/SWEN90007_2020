@@ -1,4 +1,5 @@
 <%@ page import="domain.*" %>
+<%@ page import="datasource.*" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -27,40 +28,73 @@ tr:nth-child(odd) {
 
 </head>
 <body>
-<h3 align="center">Multiple Choice Questions</h3>
+<h3 align="center">User Information</h3>
 
 <div align="center">
 <%
-           		 for (Student student : Student.getAllMultiple()) {
+           		 for (Student student : UserDataMapper.getAllStudents()) {
        		 %>
-       		 <h3 align="center">Question</h3>
-       		 <form name="MultiUpdateForm" action="/Onlineexam/" method="post">
-        <table  style="width:90%">
-
-        	<tr>        	
-        	<td colspan="8"><%= multipleq.getQuestion() %> <input type="hidden" name="type" value="multiple" /></td>
-        	</tr>
-            <tr>
+       		 <h3 align="center">User info:</h3>
+       		 
+       		 
+       		  <table>
+  <tr>
+    <th>User Name</th>
+    <th>Password</th>
+    <th>StudentId</th>
+  </tr>
+  <tr>
+    <td><%= student.getUserName() %></td>
+    <td><%= student.getPassword() %></td>
+    <td><%= student.getStudentId() %></td>
+  </tr>
+  
+</table> 
+       		 
             
-                <th>A. <%= multipleq.getAns1() %></th>
-                <th>B. <%= multipleq.getAns2() %></th>
-                <th>C. <%= multipleq.getAns3() %></th>
-                <th>D. <%= multipleq.getAns4() %></th>
-                <th>Ans:<%= multipleq.getChos() %></th>
-                <th>Mark: <%= multipleq.getMark() %></th>
-                <th style="WIDTH: 60px"><input type="text" style="WIDTH: 40px" name="mark"/></th>
-                <th style="WIDTH: 60px"><input type = "submit" value = "Save" /></th>
-                 
-            </tr>       
-        </table>
-        <input type="hidden" name="id" value="<%= multipleq.getId() %>" />
-        
-        
-        <input type="hidden" name="qtype" value="multi"/>    
-        </form>
+                
+                
+             
+          
         <%
           		  } // for loop for multiple choise question
         	%>
+</div>>
+
+
+<div align="center">
+<%
+           		 for (Student student : UserDataMapper.getAllStudents()) {
+       		 %>
+       		 <h3 align="center">Lazy info:</h3>
+       		 
+       		 
+       		  <table>
+  <tr>
+    <th>User Name</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>House</th>
+  </tr>
+  <tr>
+    <td><%= student.getUserName() %></td>
+    <td><%= student.getFirstName() %></td>
+    <td><%= student.getLastName() %></td>
+    <td><%= student.getHouseAsString() %></td>
+  </tr>
+  
+</table> 
+       		 
+            
+                
+                
+             
+          
+        <%
+          		  } // for loop for multiple choise question
+        	%>
+</div>>
+
 
 </body>
 </html>
