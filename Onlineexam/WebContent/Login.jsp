@@ -32,7 +32,9 @@ tr:nth-child(odd) {
 
 <div align="center">
 <%
-           		 for (Student student : UserDataMapper.getAllStudents()) {
+UserDataMapper um = new UserDataMapper();
+  um.loadAllUsers();
+           		 for (Student student : um.getAllStudents()) {
        		 %>
        		 <h3 align="center">User info:</h3>
        		 
@@ -59,12 +61,46 @@ tr:nth-child(odd) {
         <%
           		  } // for loop for multiple choise question
         	%>
-</div>>
+</div>
 
 
 <div align="center">
 <%
-           		 for (Student student : UserDataMapper.getAllStudents()) {
+
+           		 for (Teacher teacher : um.getAllTeachers()) {
+       		 %>
+       		 <h3 align="center">Teacher info:</h3>
+       		 
+       		 
+       		  <table>
+  <tr>
+    <th>User Name</th>
+    <th>Password</th>
+    <th>TeacherId</th>
+  </tr>
+  <tr>
+    <td><%= teacher.getUserName() %></td>
+    <td><%= teacher.getPassword() %></td>
+    <td><%= teacher.getTeacherId() %></td>
+  </tr>
+  
+</table> 
+       		 
+            
+                
+                
+             
+          
+        <%
+          		  } // for loop for multiple choise question
+        	%>
+</div>
+
+
+<div align="center">
+<%
+
+           		 for (Student student : um.getAllStudents()) {
        		 %>
        		 <h3 align="center">Lazy info:</h3>
        		 
@@ -93,7 +129,7 @@ tr:nth-child(odd) {
         <%
           		  } // for loop for multiple choise question
         	%>
-</div>>
+</div>
 
 
 </body>

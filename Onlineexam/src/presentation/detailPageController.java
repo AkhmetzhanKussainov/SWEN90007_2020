@@ -1,7 +1,6 @@
-package controller;
+	package presentation;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -11,41 +10,57 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import domain.MultipleQuestion;
+import domain.ShortQuestion;
+
 /**
- * Servlet implementation class loginController
+ * Servlet implementation class detailPageController
  */
-@WebServlet("/")
-public class loginController extends HttpServlet {
+@WebServlet("/questions/")
+public class detailPageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public loginController() {
+    public detailPageController() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		
-		String view = "/Login.jsp";
-		
+		String view = "/MarkingDetail.jsp";
+	     
 		ServletContext servletContext = getServletContext();
 	    RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(view);
 	    requestDispatcher.forward(request, response);
-		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		// get data according to name tag in submitted form.
+		String qtype = request.getParameter("qtype");
+		String id = request.getParameter("id");
+		String mark = request.getParameter("mark");
+
+		// check the form type
+		/*if(qtype.equals("multi")) {
+			
+			MultipleQuestion.changeMark(id, mark);
+			
+			
+		} else if(qtype.equals("short")) {
+			ShortQuestion.changeMark(id, mark);
+		}*/
+		
+		doGet(request,response);
+		
+		
 	}
 
 }

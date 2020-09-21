@@ -1,4 +1,6 @@
 <%@ page import="domain.*" %>
+<%@ page import="domain.Question.choice" %>
+<%@ page import="service.*" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -31,23 +33,26 @@ tr:nth-child(odd) {
 
 <div align="center">
 <%
-           		 for (MultipleQuestion multipleq : MultipleQuestion.getAllMultiple()) {
+
+QuestionService qm = new QuestionService();
+
+           		 for (MultipleQuestion multipleq : qm.getAllMultipleQuestions()) {
        		 %>
        		 <h3 align="center">Question</h3>
        		 <form name="MultiUpdateForm" action="/Onlineexam/" method="post">
         <table  style="width:90%">
 
         	<tr>        	
-        	<td colspan="8"><%= multipleq.getQuestion() %> <input type="hidden" name="type" value="multiple" /></td>
+        	<td colspan="8"><%= multipleq.getQuestionText() %> <input type="hidden" name="type" value="multiple" /></td>
         	</tr>
             <tr>
             
-                <th>A. <%= multipleq.getAns1() %></th>
-                <th>B. <%= multipleq.getAns2() %></th>
-                <th>C. <%= multipleq.getAns3() %></th>
-                <th>D. <%= multipleq.getAns4() %></th>
-                <th>Ans:<%= multipleq.getChos() %></th>
-                <th>Mark: <%= multipleq.getMark() %></th>
+                <th>A. <%= multipleq.getAnswer(choice.A) %></th>
+                <th>B. <%= multipleq.getAnswer(choice.B) %></th>
+                <th>C. <%= multipleq.getAnswer(choice.C) %></th>
+                <th>D. <%= multipleq.getAnswer(choice.D) %></th>
+                <th>Answer:<%= multipleq.getCorrectAnswer() %></th>
+                <th>Mark: <%= multipleq.getPossibleMark() %></th>
                 <th style="WIDTH: 60px"><input type="text" style="WIDTH: 40px" name="mark"/></th>
                 <th style="WIDTH: 60px"><input type = "submit" value = "Save" /></th>
                  
@@ -68,19 +73,19 @@ tr:nth-child(odd) {
 		
 		
 <%
-           		 for (ShortQuestion shortq : ShortQuestion.getAllShort()) {
+           		 for (ShortQuestion shortq : qm.getAllShortQuestions()) {
        		 %>
        		 <h3 align="center">Question</h3>		
 		<form name="ShortUpdateForm" action="/Onlineexam/" method="post">
 		
 		<table style="width:90%">
-		<tr><td><%= shortq.getQuestion() %></td>
-		<td rowspan="6"><%= shortq.getMark() %></td>
+		<tr><td><%= shortq.getQuestionText() %></td>
+		<td rowspan="6"><%= shortq.getPossibleMark() %></td>
 		<td rowspan="6" style="WIDTH: 60px"><input type="text" style="WIDTH: 40px" name="mark"/></td>
 		<td rowspan="6" style="WIDTH: 60px"><input type = "submit" value = "Save" /></td>
 		
 		</tr>
-		<tr><td rowspan="5"><%= shortq.getAns() %></td></tr>
+		<tr><td rowspan="5"><%= shortq.getPossibleMark() %></td></tr>
 		
 		
 		</table>

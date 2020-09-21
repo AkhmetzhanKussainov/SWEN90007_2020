@@ -14,36 +14,25 @@ import domain.User.houses;
 
 public class UserDataMapper {
 	
-	
-	
-	//For Identity map types
-	//private Student studentClass;
-	//private Teacher teacherClass;
-	//private Admin adminClass;
-	
 	private static final String findUser = "SELECT * FROM users WHERE userId=";
 	private static final String findUserFull = "SELECT * FROM students JOIN users ON usernumber=studentnumber WHERE userid=";
 	private static final String findAllUsers = "SELECT * FROM users";
 	
+	private List<Student> studentList;
+    private List<Teacher> teacherList;
+    private List<Admin> adminList;
 	
 	public UserDataMapper() {
 		
-		//studentClass = new Student("1","2","3","4");
-		//private Teacher teacherClass;
-		//private Admin adminClass;
+		studentList = new ArrayList<>();
+	    teacherList = new ArrayList<>();
+	    adminList = new ArrayList<>();
 		
-	}
+		
+	}	
 	
-	/*private String removeType(String string) {
+	public void loadAllUsers() {
 		
-		return string.substring(1);
-		
-	}*/
-	
-	public static List<Student> getAllStudents() {
-		
-	    List<Student> studentList = new ArrayList<>();
-  		
   	    try {
   	    	
   	    	PreparedStatement stmt = DBConnection.prepare(findAllUsers);
@@ -56,18 +45,38 @@ public class UserDataMapper {
   				String userName = rs.getString(2);
   				String password = rs.getString(3);
   				String userType = rs.getString(4);
-  				String studentId = rs.getString(5);
+  				String userNumber = rs.getString(5);
   				
-  				Student student = new Student(userId, userName, password, studentId);
-    
-  				studentList.add(student);
+  				if (userType.equals("S")) {
   				
+	  				Student student = new Student(userId, userName, password, userNumber);
+	    
+	  				studentList.add(student);
+	  				
+	  				
+	  				//Put the data in the identity map
+	  				IdentityMap<Student> identityMap = IdentityMap.getInstance(student);
+	  				
+	  				//Put the student 
+	  				identityMap.put(userId, student);
+	  				
+  				}
   				
-  				//Put the data in the identity map
-  				IdentityMap<Student> identityMap = IdentityMap.getInstance(student);
+  				if (userType.equals("T")) {
+  	  				
+	  				Teacher teacher = new Teacher(userId, userName, password, userNumber);
+	    
+	  				teacherList.add(teacher);
+	  				
+	  				
+	  				//Put the data in the identity map
+	  				IdentityMap<Teacher> identityMap = IdentityMap.getInstance(teacher);
+	  				
+	  				//Put the student 
+	  				identityMap.put(userId, teacher);
+	  				
+  				}
   				
-  				//Put the student 
-  				identityMap.put(userId, student);
   				
   			}
   			
@@ -77,8 +86,19 @@ public class UserDataMapper {
 	
 		}		
 		
-  	  return studentList;
 	
+	}
+	
+	public List<Student> getAllStudents() {
+		
+		return studentList;
+		
+	}
+	
+public List<Teacher> getAllTeachers() {
+		
+		return teacherList;
+		
 	}
 	
 	private houses convertHouse(String houseKey) {
