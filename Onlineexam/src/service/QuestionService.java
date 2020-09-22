@@ -10,6 +10,8 @@ import datasource.DBConnection;
 import datasource.QuestionDataMapper;
 import domain.MultipleQuestion;
 import domain.ShortQuestion;
+import domain.Question;
+import uow.QuestionUow;
 
 public class QuestionService {
 	
@@ -36,5 +38,15 @@ public class QuestionService {
 	    return shortQuestions;
 	    
 	}
+	
+	
+	public void updateUow(Question q) {
+		QuestionUow.registerDirty(q);
+	}
+	
+	public void commitUow() {
+		QuestionUow.commitAll();
+	}
+
 
 }

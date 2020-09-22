@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class DBConnection {
 	//change the db settings as your environment
-	private static final String DB_CONNECTION = "jdbc:postgresql://localhost:5432/myDB";
+	private static final String DB_CONNECTION = "jdbc:postgresql://localhost:5432/robertDB";
 	private static final String DB_USER = "postgres";
 	private static final String DB_PASSWORD = "3158";
 

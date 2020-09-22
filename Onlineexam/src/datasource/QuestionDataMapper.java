@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domain.MultipleQuestion;
+import domain.Question;
 import domain.Question.choice;
 import domain.ShortQuestion;
 
@@ -14,15 +15,15 @@ public class QuestionDataMapper {
 	
 	private static final String findAllMultipleStatement =
 			//"SELECT * FROM multiq ORDER BY multiq_id";
-    		"SELECT * from multipleQuestion";
+    		"SELECT * from multipleQuestion ORDER BY questionId";
     private static final String changeMultiMark =
-			"UPDATE multipleQuestion SET marks = ? where multiq_id = ? ";
+			"UPDATE multipleQuestion SET possibleMarks = ? where questionId = ?";
 	
     private static final String findAllShortStatement =
-			"SELECT * from shortQuestion";
+			"SELECT * from shortQuestion ORDER BY questionId";
     		//"SELECT * from shortq";
     private static final String changeShortMark =
-			"UPDATE shortQuestion SET marks = ? where shortq_id = ? ";
+			"UPDATE shortQuestion SET possibleMarks = ? where questionId = ? ";
     
     private choice toChoice(String correctAnswer) {
     	
@@ -111,24 +112,37 @@ public class QuestionDataMapper {
 	}
 	
 	
-	
-	/*public void changeMark(String chosen_id, String changed_mark) {
+	public void update(Question q) {
 		
+		MultipleQuestion mq = new MultipleQuestion(null, null, null, null, null, null, null, null, 0, 0);
+		ShortQuestion sq = new ShortQuestion(null, null, null, 0);
 		
 		try {
-
+			if (q.getClass().equals(mq.getClass())) {
 			PreparedStatement updateStatement = DBConnection.prepare(changeMultiMark);
-			//need to convert id to int type to make SQL working properly cuz I have set id as INT type in setDB.sql XD
-			int id = Integer.parseInt( chosen_id );
-			updateStatement.setString(1, changed_mark);
+			//need to convert id to int since the database type is int.
+			int id = Integer.parseInt( q.getId() );
+			updateStatement.setInt(1, q.getPossibleMark());
 			updateStatement.setInt(2, id);
 			
 			System.out.println(updateStatement);
 			updateStatement.execute();
+			}else if (q.getClass().equals(sq.getClass())) {
+				PreparedStatement updateStatement = DBConnection.prepare(changeShortMark);
+				//need to convert id to int since the database type is int.
+				int id = Integer.parseInt( q.getId() );
+				updateStatement.setInt(1, q.getPossibleMark());
+				updateStatement.setInt(2, id);
+				
+				System.out.println(updateStatement);
+				updateStatement.execute();
+			}
 			
 		} catch (SQLException e) {
 		}
 		
-	}*/
+	}
+	
+
 	
 }
