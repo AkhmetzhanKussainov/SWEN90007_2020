@@ -60,7 +60,6 @@ public class QuestionDataMapper {
 		try {
 	    	
 	    	PreparedStatement stmt = DBConnection.prepare(findAllMultipleStatement);
-	    	System.out.println(stmt);
 	    	ResultSet rs = stmt.executeQuery();
 	    	
 			while (rs.next()) {

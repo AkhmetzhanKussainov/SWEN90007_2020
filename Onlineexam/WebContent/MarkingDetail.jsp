@@ -99,7 +99,7 @@ QuestionService qm = new QuestionService();
         	
        	<form name="CommitChanges" action="questions" method="post">
         <input type="hidden" name="qtype" value="commit"/>
-        <input type = "submit" value = "Save" />
+        <input type = "submit" value = "Commit all changes" />
         </form>	
     </div>
 

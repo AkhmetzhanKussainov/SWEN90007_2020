@@ -21,7 +21,9 @@ public class QuestionUow {
 		
 		 if(!dirtyQuestion.contains(q)) {
 			 dirtyQuestion.add(q);
-			 System.out.println("added");
+			 String questionNum = q.getId();
+			 int questionMark = q.getPossibleMark();
+			 System.out.println("Question "+questionNum+" mark to be "+questionMark+" has been saved in the memory.");
 		 }
 	}
 	
