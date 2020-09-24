@@ -28,30 +28,24 @@ tr:nth-child(odd) {
 
 </head>
 <body>
+
 <%
 
-if(session.getAttribute("username") != null){
-	response.sendRedirect("SubjectDisplay.jsp");
+if(session.getAttribute("username") == null){
+	response.sendRedirect("Login.jsp");
 }
 
 %>
 
-<h1>Login</h1>
-<br/>
+<h1>Subjects</h1>
 
-<form action="Login" method="post">
-
-<label>username</label>
-<input  type="text" name="username"/>
-<br/>
-<br/>
-<label>password</label>
-<input type="password" name="password"/>
-<br/>
-<br/>
-<input type="submit" value="login"/>
-
+<form action="Logout" method="post">
+	<input type="submit" value="Logout"/>
 </form>
+
+
+
+<br/>
 
 
 </body>

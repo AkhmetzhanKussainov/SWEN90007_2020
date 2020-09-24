@@ -4,9 +4,9 @@ import java.sql.*;
 
 public class DBConnection {
 	//change the db settings as your environment
-	private static final String DB_CONNECTION = "jdbc:postgresql://localhost:5432/myDB";
+	private static final String DB_CONNECTION = "jdbc:postgresql://localhost:5432/onlineexam_db";
 	private static final String DB_USER = "postgres";
-	private static final String DB_PASSWORD = "3158";
+	private static final String DB_PASSWORD = "Parwad321";
 
 
 	public static PreparedStatement prepare(String stm) throws SQLException {
