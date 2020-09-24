@@ -1,12 +1,19 @@
 package presentation;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import datasource.UserDataMapper;
+import domain.Student;
+import domain.User;
+import domain.Teacher;
+
 
 /**
  * Servlet implementation class Login
@@ -36,14 +43,41 @@ public class Login extends HttpServlet {
 		String password = request.getParameter("password");
 		String usertype = "S";
 		
-		if(username.equals("John") && password.equals("parwad")) {
-			HttpSession session = request.getSession();
-			session.setAttribute("username", username);
-			session.setAttribute("usertype", usertype);
-			response.sendRedirect("SubjectDisplay.jsp");
-		}else {
-			response.sendRedirect("Login.jsp");
+		UserDataMapper um = new UserDataMapper();
+		um.loadAllUsers(); 
+		for (Student student : um.getAllStudents()) {
+			if (student.getUserName().equals(username)) {
+				if (student.getPassword().equals(password)) {
+					HttpSession session = request.getSession();
+					session.setAttribute("username", username);
+					session.setAttribute("usertype", "S");
+					response.sendRedirect("SubjectDisplay.jsp");
+					return;
+				}
+			}
 		}
+		
+		for (Teacher teacher : um.getAllTeachers()) {
+			if (teacher.getUserName().equals(username)) {
+				if (teacher.getPassword().equals(password)) {
+					HttpSession session = request.getSession();
+					session.setAttribute("username", username);
+					session.setAttribute("usertype", "T");
+					response.sendRedirect("SubjectDisplay.jsp");
+					return;
+				}
+			}
+		}
+		response.sendRedirect("Login.jsp");
+		
+//		if(username.equals("John") && password.equals("parwad")) {
+//			HttpSession session = request.getSession();
+//			session.setAttribute("username", username);
+//			session.setAttribute("usertype", usertype);
+//			response.sendRedirect("SubjectDisplay.jsp");
+//		}else {
+//			response.sendRedirect("Login.jsp");
+//		}
 	}
 
 }
