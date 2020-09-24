@@ -35,9 +35,21 @@ if(session.getAttribute("username") == null){
 	response.sendRedirect("Login.jsp");
 }
 
+String heading = "";
+
+if (session.getAttribute("usertype").equals("S")){
+	heading = "Student Portal";
+}else{
+	heading = "Teacher Portal";
+}
+
 %>
 
-<h1>Subjects</h1>
+<h1> <%= heading %></h1>
+<h3> Welcome, <%= session.getAttribute("username") %></h3>
+<br/>
+<h3>Subjects</h3>
+
 
 <form action="Logout" method="post">
 	<input type="submit" value="Logout"/>

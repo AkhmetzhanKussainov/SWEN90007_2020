@@ -51,6 +51,7 @@ public class Login extends HttpServlet {
 					HttpSession session = request.getSession();
 					session.setAttribute("username", username);
 					session.setAttribute("usertype", "S");
+					session.setAttribute("userid", student.getUserId());
 					response.sendRedirect("SubjectDisplay.jsp");
 					return;
 				}
@@ -63,6 +64,7 @@ public class Login extends HttpServlet {
 					HttpSession session = request.getSession();
 					session.setAttribute("username", username);
 					session.setAttribute("usertype", "T");
+					session.setAttribute("userid", teacher.getUserId());
 					response.sendRedirect("SubjectDisplay.jsp");
 					return;
 				}
@@ -70,14 +72,6 @@ public class Login extends HttpServlet {
 		}
 		response.sendRedirect("Login.jsp");
 		
-//		if(username.equals("John") && password.equals("parwad")) {
-//			HttpSession session = request.getSession();
-//			session.setAttribute("username", username);
-//			session.setAttribute("usertype", usertype);
-//			response.sendRedirect("SubjectDisplay.jsp");
-//		}else {
-//			response.sendRedirect("Login.jsp");
-//		}
 	}
 
 }
