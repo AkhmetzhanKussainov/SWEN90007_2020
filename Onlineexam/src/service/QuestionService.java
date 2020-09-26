@@ -7,18 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import datasource.DBConnection;
-import datasource.QuestionDataMapper;
+import datasource.ExamDataMapper;
 import domain.MultipleQuestion;
 import domain.ShortQuestion;
+import domain.Question;
+import uow.QuestionUow;
 
 public class QuestionService {
 	
 	public QuestionService() {
 		
-		QuestionDataMapper qdm = new QuestionDataMapper();
+		ExamDataMapper qdm = new ExamDataMapper();
 		
-		multipleQuestions = qdm.loadMultipleChoiceQuestions();
-		shortQuestions = qdm.loadShortQuestions();
+		//multipleQuestions = qdm.loadMultipleChoiceQuestions();
+		//shortQuestions = qdm.loadShortQuestions();
 		
 	}
 	
@@ -36,5 +38,15 @@ public class QuestionService {
 	    return shortQuestions;
 	    
 	}
+	
+	
+	public void updateUow(Question q) {
+		QuestionUow.registerDirty(q);
+	}
+	
+	public void commitUow() {
+		QuestionUow.commitAll();
+	}
+
 
 }

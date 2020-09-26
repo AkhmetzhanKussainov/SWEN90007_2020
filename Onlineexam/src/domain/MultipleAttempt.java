@@ -10,4 +10,10 @@ public class MultipleAttempt extends Attempt {
 		return chosenAnswer;
 	}
 	
+	public void setChoice(choice chosenAnswer) {
+		
+		this.chosenAnswer = chosenAnswer;
+		
+	}
+	
 }

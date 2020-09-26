@@ -19,6 +19,9 @@ public class MultipleQuestion extends Question {
     public MultipleQuestion(String id, String examId, String questionText, String ansA, String ansB, String ansC, String ansD, choice correctAnswer, int possibleMark, int answerNumber){
     	
     	this.id = id;
+    	
+    	this.examId = examId;
+    	
     	this.questionText = questionText;
     	this.ansA = ansA;
     	this.ansB = ansB;
@@ -29,7 +32,7 @@ public class MultipleQuestion extends Question {
     	
     	this.possibleMark = possibleMark;
     	
-    	this.examId = examId;
+    	
     	
     	this.answerNumber = answerNumber;
     	

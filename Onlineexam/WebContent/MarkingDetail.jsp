@@ -39,7 +39,7 @@ QuestionService qm = new QuestionService();
            		 for (MultipleQuestion multipleq : qm.getAllMultipleQuestions()) {
        		 %>
        		 <h3 align="center">Question</h3>
-       		 <form name="MultiUpdateForm" action="/Onlineexam/" method="post">
+       		 <form name="MultiUpdateForm" action="questions" method="post">
         <table  style="width:90%">
 
         	<tr>        	
@@ -76,7 +76,7 @@ QuestionService qm = new QuestionService();
            		 for (ShortQuestion shortq : qm.getAllShortQuestions()) {
        		 %>
        		 <h3 align="center">Question</h3>		
-		<form name="ShortUpdateForm" action="/Onlineexam/" method="post">
+		<form name="ShortUpdateForm" action="questions" method="post">
 		
 		<table style="width:90%">
 		<tr><td><%= shortq.getQuestionText() %></td>
@@ -96,6 +96,11 @@ QuestionService qm = new QuestionService();
 		<%
           		  } // for loop for short answer question
         	%>
+        	
+       	<form name="CommitChanges" action="questions" method="post">
+        <input type="hidden" name="qtype" value="commit"/>
+        <input type = "submit" value = "Commit all changes" />
+        </form>	
     </div>
 
 </body>
