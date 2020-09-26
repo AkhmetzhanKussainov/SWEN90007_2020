@@ -2,7 +2,7 @@ package uow;
 
 import java.util.ArrayList;
 import domain.Question;
-import datasource.QuestionDataMapper;
+import datasource.ExamDataMapper;
 
 public class QuestionUow {
 
@@ -51,7 +51,7 @@ public class QuestionUow {
 		
 		for(Question q:dirtyQuestion) {
 			try {
-				QuestionDataMapper datamapper = new QuestionDataMapper();
+				ExamDataMapper datamapper = new ExamDataMapper();
 				datamapper.update(q);
 			}catch(Exception e){
 				newDir = false;
