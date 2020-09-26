@@ -1,5 +1,14 @@
+<<<<<<< HEAD
 /datasource/
 /uow/
 /presentation/
 /service/
 /domain/
+=======
+/.DS_Store
+/controller/
+/datasource/
+/domain/
+/presentation/
+/service/
+>>>>>>> robert
