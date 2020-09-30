@@ -22,7 +22,32 @@ public class Subject {
 		
 	}
 	
+	public String getCode() {
+		return subjectCode;
+	}
 	
+	public String getName() {
+		return subjectName;
+	}
 	
+	public void setName(String name) {
+		subjectName = name;
+	}
+	
+	public void assignStudent(Student s) {
+		enrolledStudents.add(s);
+	}
+	
+	public void assignTeacher(Teacher t) {
+		appointedTeachers.add(t);
+	}
+	
+	public void removeStudent(Student s) {
+		enrolledStudents.remove(s);
+	}
+	
+	public void removeTeacher(Teacher t) {
+		appointedTeachers.remove(t);
+	}
 	
 }

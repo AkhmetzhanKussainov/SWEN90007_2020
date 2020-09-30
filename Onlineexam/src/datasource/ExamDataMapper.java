@@ -261,7 +261,7 @@ public class ExamDataMapper {
 	
 	
 	
-	public void update(Question q) {
+	public void updateMarks(Question q) {
 		
 		MultipleQuestion mq = new MultipleQuestion(null, null, null, null, null, null, null, null, 0, 0);
 		ShortQuestion sq = new ShortQuestion(null, null, null, 0);

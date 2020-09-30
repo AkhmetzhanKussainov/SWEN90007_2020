@@ -15,9 +15,21 @@ import domain.User.houses;
 public class UserDataMapper {
 	
 	private static final String findUser = "SELECT * FROM users WHERE userId=";
-	private static final String findUserFull = "SELECT * FROM students JOIN users ON usernumber=studentnumber WHERE userid=";
+	private static final String findStudentFull = "SELECT * FROM students JOIN users ON userNumber=studentNumber WHERE userid=";
+	private static final String findTeacherFull = "SELECT * FROM teachers JOIN users ON userNumber=teacherNumber WHERE userid=";
 	private static final String findAllUsers = "SELECT * FROM users";
 	
+	private static final String findStudentbySubject = "SELECT * FROM students "
+														+ "JOIN student_subject ON student_subject.studentNumber=students.studentNumber "
+														+ "JOIN users ON userNumber=students.studentNumber "
+													+ "WHERE subjectId=WHERE subjectId=";
+	
+	private static final String findTeacherbySubject = "SELECT * FROM teachers "
+														+ "JOIN teacher_subject ON teacher_subject.teacherNumber=teachers.teacherNumber "
+														+ "JOIN users ON userNumber=teachers.teacherNumber "
+														+ "WHERE subjectId=";
+	
+	//private static final String updateStudenthouse = "UPDATE students SET house = ? where studentNumber = ? ";
 	private List<Student> studentList;
     private List<Teacher> teacherList;
     private List<Admin> adminList;
@@ -95,7 +107,7 @@ public class UserDataMapper {
 		
 	}
 	
-public List<Teacher> getAllTeachers() {
+	public List<Teacher> getAllTeachers() {
 		
 		return teacherList;
 		
@@ -127,16 +139,14 @@ public List<Teacher> getAllTeachers() {
 	public Student loadFullStudent(String userId) {
 		
 		//String findUserSpecified = findUser + userId;
-		String findUserFullSpecified = findUserFull + userId; 
+		String findStudentFullSpecified = findStudentFull + userId; 
 		
 	    try {
 	    	
-	    	PreparedStatement stmt = DBConnection.prepare(findUserFullSpecified);
+	    	PreparedStatement stmt = DBConnection.prepare(findStudentFullSpecified);
 	    	
 	    	ResultSet rs = stmt.executeQuery();
-	    	
-			while (rs.next()) {
-				
+		
 				
 				String userName = rs.getString(5);
 				String password = rs.getString(3);
@@ -164,7 +174,7 @@ public List<Teacher> getAllTeachers() {
 				
 				return student;
 				
-			}
+			
 					
 		} catch (SQLException e) {
 	
@@ -174,9 +184,164 @@ public List<Teacher> getAllTeachers() {
 	    
 	}
 	
+	public Teacher loadFullTeacher(String userId) {
+		
+		//String findUserSpecified = findUser + userId;
+		String findTeacherFullSpecified = findTeacherFull + userId; 
+		
+	    try {
+	    	
+	    	PreparedStatement stmt = DBConnection.prepare(findTeacherFullSpecified);
+	    	
+	    	ResultSet rs = stmt.executeQuery();
+				
+				
+				String userName = rs.getString(7);
+				String password = rs.getString(8);
+				String teacherId = rs.getString(1);
+				//String userId = rs.getString(6);
+				
+				houses house = convertHouse(rs.getString(2));
+				String firstName = rs.getString(3);
+				String lastName = rs.getString(4);
+			
+				Teacher teacher = new Teacher(userId, userName, password, teacherId);
+				
+				//Set the new information
+				teacher.setFirstName(firstName);
+				teacher.setLastName(lastName);
+				teacher.setHouse(house);
+				
+				//Update teacher in the Identity Map
+				//Get access to the singleton instance
+				IdentityMap<Teacher> identityMap = IdentityMap.getInstance(teacher);
+				
+				//Replace the student 
+				identityMap.put(userId, teacher);
+				
+				return teacher;
+				
+			
+					
+		} catch (SQLException e) {
 	
+		}		
+		
+	    return null;
+	    
+	}
 	
+	//the relationship of student and subject is not saved in the identity map
+	//we would directly load student in database
+	public List<Student> loadStudentsBySubject(String subjectId){
+		//String findUserSpecified = findUser + userId;
+		
+				String findStudentFullSpecified = findStudentbySubject + subjectId; 
+				List<Student> student_subjectList  = new ArrayList<Student>();
+				
+			    try {
+			    	
+			    	PreparedStatement stmt = DBConnection.prepare(findStudentFullSpecified);
+			    	
+			    	ResultSet rs = stmt.executeQuery();
+			    	
+			    	while(rs.next()) {
+			    	
+				    	
+						String studentId = rs.getString(1);
+						
+						houses house = convertHouse(rs.getString(2));
+						String firstName = rs.getString(3);
+						String lastName = rs.getString(4);	
+						
+						String userId = rs.getString(5);
+				    	String userName = rs.getString(8);
+						String password = rs.getString(9);
+						
+						Student student = new Student(userId, userName, password, studentId);
+						//Set the new information
+						student.setFirstName(firstName);
+						student.setLastName(lastName);
+						student.setHouse(house);
+						student.setStudentId(studentId);
+							
+						//Update student in the Identity Map
+						//Get access to the singleton instance
+						IdentityMap<Student> identityMap = IdentityMap.getInstance(student);
+						
+						//Replace the student 
+						identityMap.put(userId, student);
+						
+						//put student in output list
+						student_subjectList.add(student);
+						
+			    	}
+						return student_subjectList;
+							
+				} catch (SQLException e) {
+			
+				}		
+				
+			    return null;
+			    
+	}
+
+	public List<Teacher> loadTeacherBySubject(String subjectId){
+		//String findUserSpecified = findUser + userId;
+		
+				String findteacherFullSpecified = findTeacherbySubject + subjectId; 
+				List<Teacher> teacher_subjectList  = new ArrayList<Teacher>();
+				
+			    try {
+			    	
+			    	PreparedStatement stmt = DBConnection.prepare(findteacherFullSpecified);
+			    	
+			    	ResultSet rs = stmt.executeQuery();
+			    	
+			    	while(rs.next()) {
+			    		
+			    			
+							String teacherId = rs.getString(1);
+							
+							
+							houses house = convertHouse(rs.getString(2));
+							String firstName = rs.getString(3);
+							String lastName = rs.getString(4);
+							
+							String userId = rs.getString(8);
+							
+							String userName = rs.getString(9);
+							String password = rs.getString(10);
+						
+							Teacher teacher = new Teacher(userId, userName, password, teacherId);
+							
+							//Set the new information
+							teacher.setFirstName(firstName);
+							teacher.setLastName(lastName);
+							teacher.setHouse(house);
+							
+							//Update teacher in the Identity Map
+							//Get access to the singleton instance
+							IdentityMap<Teacher> identityMap = IdentityMap.getInstance(teacher);
+							
+							//Replace the student 
+							identityMap.put(userId, teacher);
+							
+							teacher_subjectList.add(teacher);
+
+						
+			    	}
+						return teacher_subjectList;
+							
+				} catch (SQLException e) {
+			
+				}		
+				
+			    return null;
+			    
+	}
 	
+
 	
 	
 }
