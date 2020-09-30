@@ -26,14 +26,14 @@ public class SubjectDataMapper {
 	private static final String findSubjectByStudent = 
 			
 			"SELECT * from subjects "
-			+ "JOIN student_subject ON student_subject.subjectId = subjects.subjectId "
+			+ "JOIN enrollments ON enrollments.subjectId = subjects.subjectId "
 			+ "WHERE studentNumber = ?";
 	
 	private static final String findSubjectByTeacher = 
 			
 			"SELECT * from subjects "
-			+ "JOIN teacher_subject ON teacher_subject.subjectId = subjects.subjectId"
-			+ "WHERE teacherNumber =";
+			+ "JOIN appointments ON appointments.subjectId = subjects.subjectId"
+			+ "WHERE teacherNumber = ?";
 	
 	
 	
@@ -50,18 +50,18 @@ public class SubjectDataMapper {
 	
 	
 	private static final String insertStudentSubject = 
-			"INSERT INTO student_subject"
-			+ "VALUES ('?', '?')";
+			"INSERT INTO enrollments (year, semester, subjectId, studentNumber)"
+			+ "VALUES ('?', '?', '?', '?')";
 	
 	private static final String insertTeacherSubject = 
-			"INSERT INTO teacher_subject"
-			+ "VALUES ('?', '?')";
+			"INSERT INTO appointments (year, semester, subjectId, teacherNumber)"
+			+ "VALUES ('?', '?', '?', '?')";
 	
 	private static final String deleteStudentSubject = 
-			"DELETE FROM student_subjects WHERE studentNumber = ? AND subjectId = ? ";
+			"DELETE FROM enrollments WHERE studentNumber = ? AND subjectId = ? ";
 	
 	private static final String deleteTeacherSubject = 
-			"DELETE FROM teacher_subjects WHERE teacherNumber = ? AND subjectId = ? ";
+			"DELETE FROM appointments WHERE teacherNumber = ? AND subjectId = ? ";
 
 	
     public List<Subject> loadAllSubject() {
@@ -104,7 +104,7 @@ public class SubjectDataMapper {
     	
 		try {
 			    	
-			    	PreparedStatement stmt = DBConnection.prepare(findAllSubjects);
+			    	PreparedStatement stmt = DBConnection.prepare(findSubject);
 			    	stmt.setNString(1, id);
 			    	
 			    	ResultSet rs = stmt.executeQuery();
@@ -267,11 +267,15 @@ public class SubjectDataMapper {
 	    	
 	    	PreparedStatement stmt = DBConnection.prepare(insertStudentSubject);
 	    	
-	    	String studentID = studentN.getStudentId();
-	    	String subjectID = subjectN.getCode();
 	    	
-	    	stmt.setNString(1, studentID);
-	    	stmt.setNString(2, subjectID);
+	    	String subjectID = subjectN.getCode();
+	    	String studentID = studentN.getStudentId();
+	    	
+	    	stmt.setNString(1, "2020");
+	    	stmt.setNString(2, "2");
+	    	stmt.setNString(3, subjectID);
+	    	stmt.setNString(4, studentID);
+	    	
 	    	
 	    	stmt.executeQuery();
 	    	
@@ -299,11 +303,14 @@ public class SubjectDataMapper {
 		    	
 		    	PreparedStatement stmt = DBConnection.prepare(insertTeacherSubject);
 		    	
-		    	String teacherID = teacherN.getTeacherId();
 		    	String subjectID = subjectN.getCode();
+		    	String teacherID = teacherN.getTeacherId();
 		    	
-		    	stmt.setNString(1, teacherID);
-		    	stmt.setNString(2, subjectID);
+		    	
+		    	stmt.setNString(1, "2020");
+		    	stmt.setNString(2, "2");
+		    	stmt.setNString(3, subjectID);
+		    	stmt.setNString(4, teacherID);
 		    	
 		    	stmt.executeQuery();
 		    	
