@@ -9,6 +9,18 @@ public class Teacher extends User {
 	private String firstName;
 	private String lastName;
 	
+	public Teacher(String userId, String username, String password, String teacherId) {
+		
+		//Lazy initialization
+		house = null;
+		
+		this.password = password;
+		this.userId = userId;
+		this.username = username;
+		this.teacherId = teacherId;
+		
+	}
+	
 	public String getUserName() {
 		return username;
 	}
@@ -25,17 +37,35 @@ public class Teacher extends User {
 		return userId;
 	}
 	
+	public houses getHouse() {	
+		return house;
+	}
 	
-	public Teacher(String userId, String username, String password, String teacherId) {
+	public String getFirstName() {
+		return firstName;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	public void setHouse(houses house) {
 		
-		//Lazy initialization
-		house = null;
+		this.house = house;
+	}
+	
+	public void setFirstName(String firstName) {
+			
+		this.firstName = firstName;
+	}
+
+	public void setLastName(String lastName) {
 		
-		this.password = password;
-		this.userId = userId;
-		this.username = username;
-		this.teacherId = teacherId;
+		this.lastName = lastName;
 		
 	}
+	
+	
+	
 
 }

@@ -52,7 +52,7 @@ public class QuestionUow {
 		for(Question q:dirtyQuestion) {
 			try {
 				ExamDataMapper datamapper = new ExamDataMapper();
-				datamapper.update(q);
+				datamapper.updateMarks(q);
 			}catch(Exception e){
 				newDir = false;
 			}

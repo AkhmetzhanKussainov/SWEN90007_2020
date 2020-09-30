@@ -52,5 +52,8 @@ class IdentityMap<E> {
 	public E get(String id) { 
 		return map.get(id);
 	}	
+	public void remove(String id) {
+		map.remove(id);
+	}
 	
 }

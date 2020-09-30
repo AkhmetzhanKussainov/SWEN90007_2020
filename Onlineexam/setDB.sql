@@ -10,6 +10,8 @@ DROP TABLE IF EXISTS exams cascade;
 DROP TABLE IF EXISTS scriptbooks cascade;
 DROP TABLE IF EXISTS multipleAttempt cascade;
 DROP TABLE IF EXISTS shortAttempt cascade;
+DROP TABLE IF EXISTS teacher_subject cascade;
+DROP TABLE IF EXISTS student_subject cascade;
 
 CREATE TABLE users(
    userId  SERIAL PRIMARY KEY,
@@ -40,48 +42,47 @@ CREATE TABLE teachers(
 
 
 
-INSERT INTO users (userName, userPassword, userType, userNumber)
-VALUES ('HarryP', 'Abra', 'S', 'S10');
-
-INSERT INTO users (userName, userPassword, userType, userNumber)
-VALUES ('HerG', 'Dobb', 'S', 'S11');
-
-INSERT INTO users (userName, userPassword, userType, userNumber)
-VALUES ('RonW', 'Broken', 'S', 'S12');
-
-INSERT INTO users (userName, userPassword, userType, userNumber)
-VALUES ('SSnape', 'ih8harry', 'T', 'T12');
-
-INSERT INTO users (userName, userPassword, userType, userNumber)
-VALUES ('DracoM', 'ih8harry2', 'S', 'S13');
-
-
-INSERT INTO users (userName, userPassword, userType, userNumber)
-VALUES ('Dobby', 'iluvharry', 'A', 'A1');
-
-INSERT INTO students
-VALUES ('S10', 'G','Harry', 'Potter');
-
-INSERT INTO students
-VALUES ('S11', 'G','Hermione', 'Granger');
-
-INSERT INTO students
-VALUES ('S12', 'G','Ron', 'Weasley');
-
-
-INSERT INTO students
-VALUES ('S13', 'S','Draco', 'Malfoy');
-
 CREATE TABLE subjects(
 	subjectId VARCHAR(10) PRIMARY KEY,
 	subjectName VARCHAR(100)
 );
 
+CREATE TABLE teacher_subject(
+
+	teacherNumber VARCHAR(10),
+	subjectId VARCHAR(10),
+	
+	PRIMARY KEY(teacherNumber, subjectId),
+	CONSTRAINT fk_subjectId
+		FOREIGN KEY(subjectId)
+			REFERENCES subjects(subjectId)
+			ON DELETE CASCADE,
+	CONSTRAINT fk_teacherNumber
+		FOREIGN KEY(teacherNumber)
+			REFERENCES teachers(teacherNumber)
+			ON DELETE CASCADE
+);
+
+CREATE TABLE student_subject(
+
+	studentNumber VARCHAR(10),
+	subjectId VARCHAR(10),
+	
+	PRIMARY KEY(studentNumber, subjectId),
+	CONSTRAINT fk_subjectId
+		FOREIGN KEY(subjectId)
+			REFERENCES subjects(subjectId)
+			ON DELETE CASCADE,
+	CONSTRAINT fk_studentNumber
+		FOREIGN KEY(studentNumber)
+			REFERENCES students(studentNumber)	
+			ON DELETE CASCADE
+);
 
 CREATE TABLE exams(
 	
 	subjectId VARCHAR(10),
-year VARCHAR(10),
+	year VARCHAR(10),
 	semester VARCHAR(1),
 	examType VARCHAR(1),
 	examName VARCHAR(100),
@@ -132,41 +133,45 @@ CREATE TABLE scriptbooks(
 	);
 	
 	
-	CREATE TABLE multipleQuestion (
-	--questionId  SERIAL PRIMARY KEY,
-	questionId  smallint,
-subjectId VARCHAR(10),
-year VARCHAR(10),
-	semester VARCHAR(1),
-	examType VARCHAR(1),
-	questionText 	VARCHAR(500),
-	ansA		VARCHAR(100),
-	ansB		VARCHAR(100),
-	ansC		VARCHAR(100),
-	ansD		VARCHAR(100),
-	correctAnswer	VARCHAR(1),
-	possibleMarks smallint,
-	answerNumber smallint,
-	PRIMARY KEY (subjectId,year,semester,examType, questionId), 
-	CONSTRAINT fk_examId
-		FOREIGN KEY(subjectId,year,semester,examType)
-			REFERENCES exams(subjectId,year,semester,examType)
-			ON DELETE CASCADE);
+CREATE TABLE multipleQuestion (
+		--questionId  SERIAL PRIMARY KEY,
+		questionId  smallint,
+		subjectId VARCHAR(10),
+		year VARCHAR(10),
+		semester VARCHAR(1),
+		examType VARCHAR(1),
+		questionText 	VARCHAR(500),
+		ansA		VARCHAR(100),
+		ansB		VARCHAR(100),
+		ansC		VARCHAR(100),
+		ansD		VARCHAR(100),
+		correctAnswer	VARCHAR(1),
+		possibleMarks smallint,
+		answerNumber smallint,
+		
+		PRIMARY KEY (subjectId,year,semester,examType, questionId), 
+		
+		CONSTRAINT fk_examId
+			FOREIGN KEY(subjectId,year,semester,examType)
+				REFERENCES exams(subjectId,year,semester,examType)
+				ON DELETE CASCADE);
 
 CREATE TABLE shortQuestion(
-	--questionId  SERIAL PRIMARY KEY,
-	questionId  smallint,
-subjectId VARCHAR(10),
-year VARCHAR(10),
-	semester VARCHAR(1),
-	examType VARCHAR(1),
-	questionText 	VARCHAR(500),
-	possibleMarks smallint,
-	PRIMARY KEY (subjectId,year,semester,examType, questionId),
-	CONSTRAINT fk_examId
-		FOREIGN KEY(subjectId,year,semester,examType)
-			REFERENCES exams(subjectId,year,semester,examType)
-			ON DELETE CASCADE);
+		--questionId  SERIAL PRIMARY KEY,
+		questionId  smallint,
+		subjectId VARCHAR(10),
+		year VARCHAR(10),
+		semester VARCHAR(1),
+		examType VARCHAR(1),
+		questionText 	VARCHAR(500),
+		possibleMarks smallint,
+		
+		PRIMARY KEY (subjectId,year,semester,examType, questionId),
+		
+		CONSTRAINT fk_examId
+			FOREIGN KEY(subjectId,year,semester,examType)
+				REFERENCES exams(subjectId,year,semester,examType)
+				ON DELETE CASCADE);
 	
 CREATE TABLE multipleAttempt (
 	
@@ -197,9 +202,77 @@ CREATE TABLE shortAttempt (
 
 			);			
 			
-			
+CREATE TABLE appointments(
+	appointmentsId  SERIAL PRIMARY KEY,
+	year VARCHAR(10),
+	semester VARCHAR(1),
+	subjectId VARCHAR(10),
+	teacherNumber VARCHAR(10),
+	CONSTRAINT fk_subjectId
+		FOREIGN KEY(subjectId)
+			REFERENCES subjects(subjectId)
+			ON DELETE CASCADE,
+	CONSTRAINT fk_teacherNumber
+		FOREIGN KEY(teacherNumber)
+			REFERENCES teachers(teacherNumber)
+				ON DELETE CASCADE
+
+);
+
+CREATE TABLE enrollments(
+	enrollmentsId  SERIAL PRIMARY KEY,
+	year VARCHAR(10),
+	semester VARCHAR(1),
+	subjectId VARCHAR(10),
+	studentNumber VARCHAR(10),
+	CONSTRAINT fk_subjectId
+		FOREIGN KEY(subjectId)
+			REFERENCES subjects(subjectId)
+			ON DELETE CASCADE,
+	CONSTRAINT fk_studentNumber
+		FOREIGN KEY(studentNumber)
+			REFERENCES students(studentNumber)	
+			ON DELETE CASCADE
+
+);			
 	
-	
+
+
+
+
+
+
+INSERT INTO users (userName, userPassword, userType, userNumber)
+VALUES ('HarryP', 'Abra', 'S', 'S10');
+
+INSERT INTO users (userName, userPassword, userType, userNumber)
+VALUES ('HerG', 'Dobb', 'S', 'S11');
+
+INSERT INTO users (userName, userPassword, userType, userNumber)
+VALUES ('RonW', 'Broken', 'S', 'S12');
+
+INSERT INTO users (userName, userPassword, userType, userNumber)
+VALUES ('SSnape', 'ih8harry', 'T', 'T12');
+
+INSERT INTO users (userName, userPassword, userType, userNumber)
+VALUES ('DracoM', 'ih8harry2', 'S', 'S13');
+
+
+INSERT INTO users (userName, userPassword, userType, userNumber)
+VALUES ('Dobby', 'iluvharry', 'A', 'A1');
+
+INSERT INTO students
+VALUES ('S10', 'G','Harry', 'Potter');
+
+INSERT INTO students
+VALUES ('S11', 'G','Hermione', 'Granger');
+
+INSERT INTO students
+VALUES ('S12', 'G','Ron', 'Weasley');
+
+
+INSERT INTO students
+VALUES ('S13', 'S','Draco', 'Malfoy');	
 	
 
 
@@ -240,6 +313,17 @@ VALUES ('HIS101', '2020','2','M','History of Magic End of Midsemester Exam','T12
 INSERT INTO exams
 VALUES ('DEF101', '2020','2','F','Defense Against the Dark Arts End of Magic End of Semester Exam','T12',30);
 
+INSERT INTO teacher_subject
+VALUES ('T12', 'HIS101');
+
+INSERT INTO teacher_subject
+VALUES ('T12', 'DEF101');
+
+INSERT INTO student_subject
+VALUES ('S12', 'HIS101');
+
+INSERT INTO student_subject
+VALUES ('S13', 'HIS101');
 
 INSERT INTO scriptbooks
 VALUES ('HIS101', '2020','2','F','S12',0,false);
@@ -272,39 +356,7 @@ VALUES (2,'DEF101', '2020','2','F','True or false, AbraCadavre can only be used 
 
 
 
-CREATE TABLE appointments(
-	appointmentsId  SERIAL PRIMARY KEY,
-	year VARCHAR(10),
-	semester VARCHAR(1),
-	subjectId VARCHAR(10),
-	teacherNumber VARCHAR(10),
-	CONSTRAINT fk_subjectId
-		FOREIGN KEY(subjectId)
-			REFERENCES subjects(subjectId)
-			ON DELETE CASCADE,
-	CONSTRAINT fk_teacherNumber
-		FOREIGN KEY(teacherNumber)
-			REFERENCES teachers(teacherNumber)
-				ON DELETE CASCADE
 
-);
-
-CREATE TABLE enrollments(
-	enrollmentsId  SERIAL PRIMARY KEY,
-	year VARCHAR(10),
-	semester VARCHAR(1),
-	subjectId VARCHAR(10),
-	studentNumber VARCHAR(10),
-	CONSTRAINT fk_subjectId
-		FOREIGN KEY(subjectId)
-			REFERENCES subjects(subjectId)
-			ON DELETE CASCADE,
-	CONSTRAINT fk_studentNumber
-		FOREIGN KEY(studentNumber)
-			REFERENCES students(studentNumber)	
-			ON DELETE CASCADE
-
-);
 
 
 
