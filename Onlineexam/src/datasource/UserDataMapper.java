@@ -19,15 +19,19 @@ public class UserDataMapper {
 	private static final String findTeacherFull = "SELECT * FROM teachers JOIN users ON userNumber=teacherNumber WHERE userid=";
 	private static final String findAllUsers = "SELECT * FROM users";
 	
-	private static final String findStudentbySubject = "SELECT * FROM students "
-														+ "JOIN student_subject ON student_subject.studentNumber=students.studentNumber "
-														+ "JOIN users ON userNumber=students.studentNumber "
-													+ "WHERE subjectId=WHERE subjectId=";
+
 	
-	private static final String findTeacherbySubject = "SELECT * FROM teachers "
-														+ "JOIN teacher_subject ON teacher_subject.teacherNumber=teachers.teacherNumber "
-														+ "JOIN users ON userNumber=teachers.teacherNumber "
-														+ "WHERE subjectId=";
+	private static final String findSubjectByStudent = 
+			
+			"SELECT * from subjects "
+			+ "JOIN enrollments ON enrollments.subjectId = subjects.subjectId "
+			+ "WHERE studentNumber = ?";
+	
+	private static final String findSubjectByTeacher = 
+			
+			"SELECT * from subjects "
+			+ "JOIN appointments ON appointments.subjectId = subjects.subjectId"
+			+ "WHERE teacherNumber = ?";
 	
 	//private static final String updateStudenthouse = "UPDATE students SET house = ? where studentNumber = ? ";
 	private List<Student> studentList;
@@ -230,116 +234,78 @@ public class UserDataMapper {
 	    return null;
 	    
 	}
+
 	
-	//the relationship of student and subject is not saved in the identity map
-	//we would directly load student in database
-	public List<Student> loadStudentsBySubject(String subjectId){
-		//String findUserSpecified = findUser + userId;
-		
-				String findStudentFullSpecified = findStudentbySubject + subjectId; 
-				List<Student> student_subjectList  = new ArrayList<Student>();
+	
+    public List<Subject> loadSubjectByStudent(Student s){
+    	
+    	List<Subject> subjects = new ArrayList<Subject>();
+        
+    	try {
+	    	
+	    	PreparedStatement stmt = DBConnection.prepare(findSubjectByStudent);
+	    	
+	    	String studentID = s.getStudentId();
+	    	
+	    	stmt.setString(1, studentID); 	
+	    	
+	    	ResultSet rs = stmt.executeQuery();
+	    	
+			while (rs.next()) {
 				
-			    try {
-			    	
-			    	PreparedStatement stmt = DBConnection.prepare(findStudentFullSpecified);
-			    	
-			    	ResultSet rs = stmt.executeQuery();
-			    	
-			    	while(rs.next()) {
-			    	
-				    	
-						String studentId = rs.getString(1);
-						
-						houses house = convertHouse(rs.getString(2));
-						String firstName = rs.getString(3);
-						String lastName = rs.getString(4);	
-						
-						String userId = rs.getString(5);
-				    	String userName = rs.getString(8);
-						String password = rs.getString(9);
-						
-						Student student = new Student(userId, userName, password, studentId);
-						//Set the new information
-						student.setFirstName(firstName);
-						student.setLastName(lastName);
-						student.setHouse(house);
-						student.setStudentId(studentId);
-							
-						//Update student in the Identity Map
-						//Get access to the singleton instance
-						IdentityMap<Student> identityMap = IdentityMap.getInstance(student);
-						
-						//Replace the student 
-						identityMap.put(userId, student);
-						
-						//put student in output list
-						student_subjectList.add(student);
-						
-			    	}
-						return student_subjectList;
-							
-				} catch (SQLException e) {
-			
-				}		
+				String subjectId = rs.getString(1);
+				String name = rs.getString(2);
 				
-			    return null;
-			    
-	}
+				Subject subject = new Subject(subjectId, name);
+				
+				subjects.add(subject);
+				
+				IdentityMap<Subject> identityMap = IdentityMap.getInstance(subject);
+				identityMap.put(subjectId, subject);
+				
+			}
+										
+		} catch (SQLException e) {
+	
+		}   	
+    	return subjects;
+    	
+    }
 
-	public List<Teacher> loadTeacherBySubject(String subjectId){
-		//String findUserSpecified = findUser + userId;
-		
-				String findteacherFullSpecified = findTeacherbySubject + subjectId; 
-				List<Teacher> teacher_subjectList  = new ArrayList<Teacher>();
-				
-			    try {
-			    	
-			    	PreparedStatement stmt = DBConnection.prepare(findteacherFullSpecified);
-			    	
-			    	ResultSet rs = stmt.executeQuery();
-			    	
-			    	while(rs.next()) {
-			    		
-			    			
-							String teacherId = rs.getString(1);
-							
-							
-							houses house = convertHouse(rs.getString(2));
-							String firstName = rs.getString(3);
-							String lastName = rs.getString(4);
-							
-							String userId = rs.getString(8);
-							
-							String userName = rs.getString(9);
-							String password = rs.getString(10);
-						
-							Teacher teacher = new Teacher(userId, userName, password, teacherId);
-							
-							//Set the new information
-							teacher.setFirstName(firstName);
-							teacher.setLastName(lastName);
-							teacher.setHouse(house);
-							
-							//Update teacher in the Identity Map
-							//Get access to the singleton instance
-							IdentityMap<Teacher> identityMap = IdentityMap.getInstance(teacher);
-							
-							//Replace the student 
-							identityMap.put(userId, teacher);
-							
-							teacher_subjectList.add(teacher);
-
-						
-			    	}
-						return teacher_subjectList;
-							
-				} catch (SQLException e) {
+	public List<Subject> loadSubjectByTeacher(Teacher t){
+	    	
+	    	List<Subject> subjects = new ArrayList<Subject>();
+	        
+	    	try {
+		    	
+		    	PreparedStatement stmt = DBConnection.prepare(findSubjectByTeacher);
+		    	
+		    	String teacherID = t.getTeacherId();
+		    	
+		    	stmt.setString(1, teacherID); 	
+		    	
+		    	ResultSet rs = stmt.executeQuery();
+		    	
+				while (rs.next()) {
+					
+					String subjectId = rs.getString(1);
+					String name = rs.getString(2);
+					
+					Subject subject = new Subject(subjectId, name);
+					
+					subjects.add(subject);
+					
+					IdentityMap<Subject> identityMap = IdentityMap.getInstance(subject);
+					identityMap.put(subjectId, subject);
 			
-				}		
-				
-			    return null;
-			    
-	}
+				}
+											
+			} catch (SQLException e) {
+		
+			}   	
+	    	return subjects;
+	    	
+	    }
 	
 
 	

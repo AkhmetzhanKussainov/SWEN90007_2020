@@ -13,6 +13,7 @@ import domain.ShortQuestion;
 import domain.Student;
 import domain.Subject;
 import domain.Teacher;
+import domain.User.houses;
 
 public class SubjectDataMapper {
 	
@@ -23,17 +24,16 @@ public class SubjectDataMapper {
 	private static final String findSubject =
 			"SELECT * from subjects WHERE subjectId = ?";
 	
-	private static final String findSubjectByStudent = 
-			
-			"SELECT * from subjects "
-			+ "JOIN enrollments ON enrollments.subjectId = subjects.subjectId "
-			+ "WHERE studentNumber = ?";
-	
-	private static final String findSubjectByTeacher = 
-			
-			"SELECT * from subjects "
-			+ "JOIN appointments ON appointments.subjectId = subjects.subjectId"
-			+ "WHERE teacherNumber = ?";
+	private static final String findStudentbySubject = "SELECT * FROM students "
+			+ "JOIN enrollments ON enrollments.studentNumber=students.studentNumber "
+			+ "JOIN users ON userNumber=students.studentNumber "
+		+ "WHERE subjectId=";
+
+	private static final String findTeacherbySubject = "SELECT * FROM teachers "
+			+ "JOIN appointments ON appointments.teacherNumber=teachers.teacherNumber "
+			+ "JOIN users ON userNumber=teachers.teacherNumber "
+			+ "WHERE subjectId=";
+
 	
 	
 	
@@ -62,7 +62,29 @@ public class SubjectDataMapper {
 	
 	private static final String deleteTeacherSubject = 
 			"DELETE FROM appointments WHERE teacherNumber = ? AND subjectId = ? ";
-
+	
+	private houses convertHouse(String houseKey) {
+		
+		if (houseKey.equals("G")) {
+			return houses.Gryffindor;
+		}
+		
+		if (houseKey.equals("S")) {
+			return houses.Slytherin;
+		}
+		
+		if (houseKey.equals("H")) {
+			return houses.Hufflepuff;
+		}
+		
+		if (houseKey.equals("R")) {
+			return houses.Ravenclaw;
+		}
+		
+		return null;
+		
+	}
+	
 	
     public List<Subject> loadAllSubject() {
     	
@@ -128,76 +150,114 @@ public class SubjectDataMapper {
 		    	
     }
     
-    public List<Subject> loadSubjectByStudent(Student s){
-    	
-    	List<Subject> subjects = new ArrayList<Subject>();
-        
-    	try {
-	    	
-	    	PreparedStatement stmt = DBConnection.prepare(findSubjectByStudent);
-	    	
-	    	String studentID = s.getStudentId();
-	    	
-	    	stmt.setString(1, studentID); 	
-	    	
-	    	ResultSet rs = stmt.executeQuery();
-	    	
-			while (rs.next()) {
-				
-				String subjectId = rs.getString(1);
-				String name = rs.getString(2);
-				
-				Subject subject = new Subject(subjectId, name);
-				
-				subjects.add(subject);
-				
-				IdentityMap<Subject> identityMap = IdentityMap.getInstance(subject);
-				identityMap.put(subjectId, subject);
-				
-			}
-										
-		} catch (SQLException e) {
-	
-		}   	
-    	return subjects;
-    	
-    }
 
-	public List<Subject> loadSubjectTeacher(Teacher t){
-	    	
-	    	List<Subject> subjects = new ArrayList<Subject>();
-	        
-	    	try {
-		    	
-		    	PreparedStatement stmt = DBConnection.prepare(findSubjectByTeacher);
-		    	
-		    	String teacherID = t.getTeacherId();
-		    	
-		    	stmt.setString(1, teacherID); 	
-		    	
-		    	ResultSet rs = stmt.executeQuery();
-		    	
-				while (rs.next()) {
-					
-					String subjectId = rs.getString(1);
-					String name = rs.getString(2);
-					
-					Subject subject = new Subject(subjectId, name);
-					
-					subjects.add(subject);
-					
-					IdentityMap<Subject> identityMap = IdentityMap.getInstance(subject);
-					identityMap.put(subjectId, subject);
-			
-				}
-											
-			} catch (SQLException e) {
+    public List<Student> loadStudentsBySubject(String subjectId){
+		//String findUserSpecified = findUser + userId;
 		
-			}   	
-	    	return subjects;
-	    	
-	    }
-    
+				String findStudentFullSpecified = findStudentbySubject + subjectId; 
+				List<Student> student_subjectList  = new ArrayList<Student>();
+				
+			    try {
+			    	
+			    	PreparedStatement stmt = DBConnection.prepare(findStudentFullSpecified);
+			    	
+			    	ResultSet rs = stmt.executeQuery();
+			    	
+			    	while(rs.next()) {
+			    	
+				    	
+						String studentId = rs.getString(1);
+						
+						houses house = convertHouse(rs.getString(2));
+						String firstName = rs.getString(3);
+						String lastName = rs.getString(4);	
+						
+						String userId = rs.getString(10);
+				    	String userName = rs.getString(11);
+						String password = rs.getString(12);
+						
+						Student student = new Student(userId, userName, password, studentId);
+						//Set the new information
+						student.setFirstName(firstName);
+						student.setLastName(lastName);
+						student.setHouse(house);
+						student.setStudentId(studentId);
+							
+						//Update student in the Identity Map
+						//Get access to the singleton instance
+						IdentityMap<Student> identityMap = IdentityMap.getInstance(student);
+						
+						//Replace the student 
+						identityMap.put(userId, student);
+						
+						//put student in output list
+						student_subjectList.add(student);
+						
+			    	}
+						return student_subjectList;
+							
+				} catch (SQLException e) {
+			
+				}		
+				
+			    return null;
+			    
+	}
+
+	public List<Teacher> loadTeacherBySubject(String subjectId){
+		//String findUserSpecified = findUser + userId;
+		
+				String findteacherFullSpecified = findTeacherbySubject + subjectId; 
+				List<Teacher> teacher_subjectList  = new ArrayList<Teacher>();
+				
+			    try {
+			    	
+			    	PreparedStatement stmt = DBConnection.prepare(findteacherFullSpecified);
+			    	
+			    	ResultSet rs = stmt.executeQuery();
+			    	
+			    	while(rs.next()) {
+			    		
+			    			
+							String teacherId = rs.getString(1);
+							
+							
+							houses house = convertHouse(rs.getString(2));
+							String firstName = rs.getString(3);
+							String lastName = rs.getString(4);
+							
+							String userId = rs.getString(11);
+							
+							String userName = rs.getString(12);
+							String password = rs.getString(13);
+						
+							Teacher teacher = new Teacher(userId, userName, password, teacherId);
+							
+							//Set the new information
+							teacher.setFirstName(firstName);
+							teacher.setLastName(lastName);
+							teacher.setHouse(house);
+							
+							//Update teacher in the Identity Map
+							//Get access to the singleton instance
+							IdentityMap<Teacher> identityMap = IdentityMap.getInstance(teacher);
+							
+							//Replace the student 
+							identityMap.put(userId, teacher);
+							
+							teacher_subjectList.add(teacher);
+
+						
+			    	}
+						return teacher_subjectList;
+							
+				} catch (SQLException e) {
+			
+				}		
+				
+			    return null;
+			    
+	}
     
     
     public void createSubject(String id, String name) {
