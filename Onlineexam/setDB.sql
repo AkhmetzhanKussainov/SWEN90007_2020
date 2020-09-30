@@ -47,37 +47,7 @@ CREATE TABLE subjects(
 	subjectName VARCHAR(100)
 );
 
-CREATE TABLE teacher_subject(
 
-	teacherNumber VARCHAR(10),
-	subjectId VARCHAR(10),
-	
-	PRIMARY KEY(teacherNumber, subjectId),
-	CONSTRAINT fk_subjectId
-		FOREIGN KEY(subjectId)
-			REFERENCES subjects(subjectId)
-			ON DELETE CASCADE,
-	CONSTRAINT fk_teacherNumber
-		FOREIGN KEY(teacherNumber)
-			REFERENCES teachers(teacherNumber)
-			ON DELETE CASCADE
-);
-
-CREATE TABLE student_subject(
-
-	studentNumber VARCHAR(10),
-	subjectId VARCHAR(10),
-	
-	PRIMARY KEY(studentNumber, subjectId),
-	CONSTRAINT fk_subjectId
-		FOREIGN KEY(subjectId)
-			REFERENCES subjects(subjectId)
-			ON DELETE CASCADE,
-	CONSTRAINT fk_studentNumber
-		FOREIGN KEY(studentNumber)
-			REFERENCES students(studentNumber)	
-			ON DELETE CASCADE
-);
 
 CREATE TABLE exams(
 	
@@ -312,18 +282,6 @@ VALUES ('HIS101', '2020','2','M','History of Magic End of Midsemester Exam','T12
 
 INSERT INTO exams
 VALUES ('DEF101', '2020','2','F','Defense Against the Dark Arts End of Magic End of Semester Exam','T12',30);
-
-INSERT INTO teacher_subject
-VALUES ('T12', 'HIS101');
-
-INSERT INTO teacher_subject
-VALUES ('T12', 'DEF101');
-
-INSERT INTO student_subject
-VALUES ('S12', 'HIS101');
-
-INSERT INTO student_subject
-VALUES ('S13', 'HIS101');
 
 INSERT INTO scriptbooks
 VALUES ('HIS101', '2020','2','F','S12',0,false);
