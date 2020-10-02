@@ -3,7 +3,9 @@ package datasource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import domain.MultipleQuestion;
@@ -40,6 +42,8 @@ public class ExamDataMapper {
     		
     private static final String changeShortMark =
 			"UPDATE shortQuestion SET marks = ? where shortq_id = ? ";
+    
+    private static final String examTimeCheck = "";
     
     private choice toChoice(String correctAnswer) {
     	
@@ -289,7 +293,48 @@ public class ExamDataMapper {
 			
 		} catch (SQLException e) {
 		}
+	
+	}
+	
+	public boolean checkSubmitTime() {
+		try {
+		
+			//Run SQL to get exam information
+			
+			
+			//Set up time stamp format
+			Date date = new Date();
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+			String info = sdf1.format(date);
+			
+			
+			//put exam start and end time in two variable
+			Date start = sdf1.parse("2013-10-23 08:10:10:000");
+			Date end = sdf1.parse("2020-10-23 08:10:10:000");
+			
+
+			
+			//get current time
+			Date time_now = sdf1.parse(info);
+			long now = time_now.getTime();
+			
+			
+			if(now<=end.getTime() && now>=start.getTime()) {
+				
+				System.out.println(now);
+				return true;
+				
+			}
+			
+			
+			
+		}catch(Exception e) {
+			
+		}
+		
+		return false;
 		
 	}
+	
 	
 }

@@ -1,9 +1,12 @@
 package datasource;
 
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import domain.Exam;
@@ -16,6 +19,8 @@ import domain.Teacher;
 import domain.User.houses;
 
 public class SubjectDataMapper {
+	
+	
 	
 	private static final String findAllSubjects = 
 			
@@ -62,6 +67,13 @@ public class SubjectDataMapper {
 	
 	private static final String deleteTeacherSubject = 
 			"DELETE FROM appointments WHERE teacherNumber = ? AND subjectId = ? ";
+	
+	private String getYear() {
+		
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		return sdf.format(date);
+	}
 	
 	private houses convertHouse(String houseKey) {
 		
@@ -331,7 +343,7 @@ public class SubjectDataMapper {
 	    	String subjectID = subjectN.getCode();
 	    	String studentID = studentN.getStudentId();
 	    	
-	    	stmt.setNString(1, "2020");
+	    	stmt.setNString(1, getYear());
 	    	stmt.setNString(2, "2");
 	    	stmt.setNString(3, subjectID);
 	    	stmt.setNString(4, studentID);
@@ -367,7 +379,8 @@ public class SubjectDataMapper {
 		    	String teacherID = teacherN.getTeacherId();
 		    	
 		    	
-		    	stmt.setNString(1, "2020");
+		    	
+		    	stmt.setNString(1, getYear());
 		    	stmt.setNString(2, "2");
 		    	stmt.setNString(3, subjectID);
 		    	stmt.setNString(4, teacherID);
