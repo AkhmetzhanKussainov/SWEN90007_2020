@@ -78,8 +78,62 @@ public class MultipleQuestion extends Question {
 		
 	}
 	
-	public choice getCorrectAnswer() {
-		return correctAnswer;
+	public String getCorrectAnswer() {
+		return correctAnswer.toString();
 	}
+
+	public String getAnsA() {
+		return ansA;
+	}
+
+	public void setAnsA(String ansA) {
+		this.ansA = ansA;
+	}
+
+	public String getAnsB() {
+		return ansB;
+	}
+
+	public void setAnsB(String ansB) {
+		this.ansB = ansB;
+	}
+
+	public String getAnsC() {
+		return ansC;
+	}
+
+	public void setAnsC(String ansC) {
+		this.ansC = ansC;
+	}
+
+	public String getAnsD() {
+		return ansD;
+	}
+
+	public void setAnsD(String ansD) {
+		this.ansD = ansD;
+	}
+
+	public String getExamId() {
+		return examId;
+	}
+
+	public void setExamId(String examId) {
+		this.examId = examId;
+	}
+
+	public int getAnswerNumber() {
+		return answerNumber;
+	}
+
+	public void setAnswerNumber(int answerNumber) {
+		this.answerNumber = answerNumber;
+	}
+
+	public void setCorrectAnswer(choice correctAnswer) {
+		this.correctAnswer = correctAnswer;
+	}
+	
+	
 	
 }

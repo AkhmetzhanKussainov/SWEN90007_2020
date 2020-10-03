@@ -11,6 +11,7 @@ import domain.Question.choice;
 import domain.Question;
 import domain.Scriptbook;
 import domain.ShortQuestion;
+import domain.Attempt;
 import domain.Exam;
 
 public class ExamDataMapper {
@@ -53,6 +54,31 @@ public class ExamDataMapper {
     
     private static final String findExam =
     		"SELECT * from exams where examId=?";
+    
+    private static final String closeExam =
+    		"UPDATE exams SET closed = 'Y' where subjectId=?, year=?, semester = ?, examType = ?";
+    
+    private static final String addScriptbook =
+    		"INSERT into scriptbooks (subjectId,year,semester,examType,studentNumber, scriptTotalMarks, marked)"
+    		+ "VALUES (?,?,?,?,?,?,?)";
+    
+    private static final String deleteMultipleStatement =
+    		"DELETE from multipleQuestion where subjectId=? , year = ? , semester = ? , examType = ?";
+    
+    private static final String deleteShortStatement = 
+    		"DELETE from shortQuestion where subjectId=? , year = ? , semester = ? , examType = ?";
+    
+    private static final String addShortStatement =
+    		"INSERT into shortQuestion (questionId, subjectId, year, semester, examType, questionText, possibleMarks)"
+    		+ "VALUES (?,?,?,?,?,?,?)";
+    
+    private static final String addMultipleStatement =
+    		"INSERT into shortQuestion (questionId, subjectId, year, semester, examType, questionText, ansA, ansB, ansC, ansD, correctAnswer, possibleMarks, answerNumber)"
+    	    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    
+    private static final String getAttemptsStatement =
+    		"SELECT * from ";
+    
     
     private choice toChoice(String correctAnswer) {
     	
@@ -272,6 +298,91 @@ public class ExamDataMapper {
 	    return shortQuestions;
 	}
 	
+	public void deleteShortQuestions(Exam exam)
+	{
+		PreparedStatement statement;
+		try {
+			statement = DBConnection.prepare(deleteShortStatement);
+			statement.setString(1, exam.getSubjectID());
+			statement.setString(2, exam.getYear());
+			statement.setString(3, exam.getSemester());
+			statement.setString(4, exam.getExamType());
+			
+			statement.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void deleteMultipleQuestions(Exam exam)
+	{
+		PreparedStatement statement;
+		try {
+			statement = DBConnection.prepare(deleteMultipleStatement);
+			statement.setString(1, exam.getSubjectID());
+			statement.setString(2, exam.getYear());
+			statement.setString(3, exam.getSemester());
+			statement.setString(4, exam.getExamType());
+			
+			statement.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void addMultipleQuestions(Exam exam, MultipleQuestion q)
+	{
+
+		try {
+			PreparedStatement statement = DBConnection.prepare(addMultipleStatement);
+			statement.setInt(1, Integer.parseInt(q.getId()));
+			statement.setString(2, exam.getSubjectID());
+			statement.setString(3, exam.getYear());
+			statement.setString(4, exam.getSemester());
+			statement.setString(5, exam.getExamType());
+			statement.setString(6, q.getQuestionText());
+			statement.setString(7, q.getAnsA());
+			statement.setString(8, q.getAnsB());
+			statement.setString(9, q.getAnsC());
+			statement.setString(10, q.getAnsD());
+			statement.setNString(11, q.getCorrectAnswer());
+			statement.setInt(12, q.getPossibleMark());
+			statement.setInt(13, q.getAnswerNumber());
+			
+			
+			statement.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void addShortQuestions(Exam exam, ShortQuestion q)
+	{
+
+		try {
+			PreparedStatement statement = DBConnection.prepare(addShortStatement);
+			statement.setInt(1, Integer.parseInt(q.getId()));
+			statement.setString(2, exam.getSubjectID());
+			statement.setString(3, exam.getYear());
+			statement.setString(4, exam.getSemester());
+			statement.setString(5, exam.getExamType());
+			statement.setString(6, q.getQuestionText());
+			statement.setInt(7, q.getPossibleMark());
+
+			
+			statement.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	
 	
 	public void updateMarks(Question q) {
@@ -305,6 +416,8 @@ public class ExamDataMapper {
 		
 	}
 	
+	
+	//function to change the exam related information (NOT FOR UPDATING QUESTIONS)
 	public void changeExam(Exam updatedExam)
 	{
 		try
@@ -312,17 +425,17 @@ public class ExamDataMapper {
 			if(updatedExam.canEdit())
 			{
 				PreparedStatement statement = DBConnection.prepare(changeExam);
-				int subjectID = updatedExam.getSubjectID();
+				String subjectID = updatedExam.getSubjectID();
 				String examName = updatedExam.getExamName();
 				String examCreator = updatedExam.getexamCreator();
-				int year = updatedExam.getYear();
+				String year = updatedExam.getYear();
 				String semester = updatedExam.getSemester();
 				String examType = updatedExam.getExamType();
 				
 				statement.setString(1, examName);
 				statement.setString(2, examCreator);
-				statement.setInt(3, subjectID);
-				statement.setInt(4, year);
+				statement.setString(3, subjectID);
+				statement.setString(4, year);
 				statement.setString(5, semester);
 				statement.setString(6, examType);
 				
@@ -335,13 +448,6 @@ public class ExamDataMapper {
 					{
 						System.out.println("Error while updating!");
 					};
-				
-				//update exam questions
-				List<Question> updatedQuestions = updatedExam.getQuestionList();
-				for(int i=0;i<updatedQuestions.size();i++)
-				{
-					updateMarks(updatedQuestions.get(i));
-				}	
 			}else
 			{
 				System.out.println("Cannot edit, One of the students has already taken the exam");
@@ -358,16 +464,16 @@ public class ExamDataMapper {
 		try
 		{
 			PreparedStatement statement = DBConnection.prepare(createExam);
-			int subjectId = newExam.getSubjectID();
-			int year = newExam.getYear();
+			String subjectId = newExam.getSubjectID();
+			String year = newExam.getYear();
 			String semester = newExam.getSemester();
 			String examType = newExam.getExamType();
 			String examName = newExam.getExamName();
 			String examCreator = newExam.getexamCreator();
 			int totalMarks = newExam.getTotalMarks();
 			
-			statement.setInt(1, subjectId);
-			statement.setInt(2, year);
+			statement.setString(1, subjectId);
+			statement.setString(2, year);
 			statement.setString(3, semester);
 			statement.setString(4, examType);
 			statement.setString(5, examName);
@@ -395,8 +501,8 @@ public class ExamDataMapper {
 		try
 		{
 			PreparedStatement statement = DBConnection.prepare(deleteExam);
-			statement.setInt(1, examToDelete.getSubjectID());
-			statement.setInt(2, examToDelete.getYear());
+			statement.setString(1, examToDelete.getSubjectID());
+			statement.setString(2, examToDelete.getYear());
 			statement.setString(3, examToDelete.getSemester());
 			statement.setString(4,examToDelete.getExamType());
 			
@@ -416,6 +522,7 @@ public class ExamDataMapper {
 		}
 	}
 	
+	
 	/*public void saveExam(List<MultipleQuestion> multipleQuestionList, List<ShortQuestion> shortQuestionList)
 	{
 		try
@@ -431,5 +538,80 @@ public class ExamDataMapper {
 			e.printStackTrace();
 		}
 	}*/
+	
+	public void closeExam(Exam closedExam)
+	{
+		try
+		{
+			PreparedStatement statement = DBConnection.prepare(closeExam);
+			
+			statement.setString(1, closedExam.getSubjectID());
+			statement.setString(2, closedExam.getYear());
+			statement.setString(3, closedExam.getSemester());
+			statement.setString(4,closedExam.getExamType());
+			
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void addScriptbook(Scriptbook scriptbook)
+	{
+		try
+		{
+			PreparedStatement statement = DBConnection.prepare(addScriptbook);
+			
+			statement.setString(1, scriptbook.getSubjectId());
+			statement.setNString(2, scriptbook.getYear());
+			statement.setString(3, scriptbook.getSemester());
+			statement.setString(4, scriptbook.getExamType());
+			statement.setString(5, scriptbook.getStudentNumber());
+			statement.setInt(6,scriptbook.getTotalMark());
+			statement.setBoolean(7, scriptbook.isMarked());
+			
+			statement.execute();
+			
+			System.out.println(statement);
+			
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateQuestions(Exam exam,List<MultipleQuestion> multiplequestions, List<ShortQuestion> shortQuestions)
+	{
+		this.deleteMultipleQuestions(exam);
+		this.deleteShortQuestions(exam);
+		int id = 0;
+		for(MultipleQuestion q: multiplequestions)
+		{
+			q.setId(Integer.toString(id));
+			this.addMultipleQuestions(exam, q);
+			id++;
+		}
+		for(ShortQuestion q: shortQuestions)
+		{
+			q.setId(Integer.toString(id));
+			this.addShortQuestions(exam, q);
+			id++;
+		}
+	}
+	
+	public List<Attempt> getAllAttempts(Scriptbook s)
+	{
+		List<Attempt> attempts = new ArrayList<>();
+		if(s.isSubmitted())
+		{
+			
+		}else
+		{
+			return null;
+		}
+		
+		return attempts;
+		
+	}
 	
 }

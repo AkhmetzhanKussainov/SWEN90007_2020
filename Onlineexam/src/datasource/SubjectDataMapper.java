@@ -1,9 +1,12 @@
 package datasource;
 
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import domain.Exam;
@@ -16,6 +19,8 @@ import domain.Teacher;
 import domain.User.houses;
 
 public class SubjectDataMapper {
+	
+	
 	
 	private static final String findAllSubjects = 
 			
@@ -33,12 +38,16 @@ public class SubjectDataMapper {
 			+ "JOIN appointments ON appointments.teacherNumber=teachers.teacherNumber "
 			+ "JOIN users ON userNumber=teachers.teacherNumber "
 			+ "WHERE subjectId=";
-
+	
+	private static final String findExambySubject = 
+			"SELECT * FROM exams "
+			+ "JOIN subjects ON exams.subjectId = subjects.subjectId "
+			+ "WHERE subjectId =";
 	
 	
 	
 	private static final String createSubject = 
-			"INSERT INTO subjects"
+			"INSERT INTO subjects "
 			+ "VALUES ('?', '?')";
 	
 	private static final String updateSubjectName = 
@@ -50,11 +59,11 @@ public class SubjectDataMapper {
 	
 	
 	private static final String insertStudentSubject = 
-			"INSERT INTO enrollments (year, semester, subjectId, studentNumber)"
+			"INSERT INTO enrollments (year, semester, subjectId, studentNumber) "
 			+ "VALUES ('?', '?', '?', '?')";
 	
 	private static final String insertTeacherSubject = 
-			"INSERT INTO appointments (year, semester, subjectId, teacherNumber)"
+			"INSERT INTO appointments (year, semester, subjectId, teacherNumber) "
 			+ "VALUES ('?', '?', '?', '?')";
 	
 	private static final String deleteStudentSubject = 
@@ -62,6 +71,26 @@ public class SubjectDataMapper {
 	
 	private static final String deleteTeacherSubject = 
 			"DELETE FROM appointments WHERE teacherNumber = ? AND subjectId = ? ";
+	
+    private static final String findPublishedExam = 
+    		"SELECT * FROM exams "
+    		+ "JOIN enrollments ON exams.subjectId = enrollments.subjectId "
+    		+ "WHERE published = 'Y' AND studentNumber = ? ";
+	
+	private static final String findExambyName = 
+			"SELECT * FROM exams "
+			+ "WHERE examName = ?";
+	
+	private static final String findExambyInfo = 
+			"SELECT * FROM exams "
+			+ "WHERE year = ? AND semester = ? AND examType = ?";
+	
+	private String getYear() {
+		
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		return sdf.format(date);
+	}
 	
 	private houses convertHouse(String houseKey) {
 		
@@ -204,7 +233,7 @@ public class SubjectDataMapper {
 			    
 	}
 
-	public List<Teacher> loadTeacherBySubject(String subjectId){
+	public List<Teacher> loadTeachersBySubject(String subjectId){
 		//String findUserSpecified = findUser + userId;
 		
 				String findteacherFullSpecified = findTeacherbySubject + subjectId; 
@@ -259,7 +288,42 @@ public class SubjectDataMapper {
 			    
 	}
     
+	public List<Exam> loadAllExamBySubject(String subjectId) {
+		
+		String findteacherFullSpecified = findExambySubject + subjectId; 
+		List<Exam> examList  = new ArrayList<Exam>();
+		
+	    try {
+	    	
+	    	PreparedStatement stmt = DBConnection.prepare(findteacherFullSpecified);
+	    	
+	    	ResultSet rs = stmt.executeQuery();
+	    	
+	    	while(rs.next()) {
+	    		
+	    		String year = rs.getNString(2);
+				String semester = rs.getNString(3);
+				String examType = rs.getNString(4);
+				String examName = rs.getNString(5);
+				String examCreatetor = rs.getNString(6);
+				int totalMarks = rs.getInt(8);
+			
+				Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreatetor, totalMarks);
+					
+				examList.add(exam);
+
+				
+	    	}
+				return examList;
+					
+		} catch (SQLException e) {
+	
+		}		
+		
+	    return null;
+	}
     
+	
     public void createSubject(String id, String name) {
 	try {
 		    	
@@ -300,7 +364,7 @@ public class SubjectDataMapper {
 	}
     }
     
-    public void deleteSubejct(String id) {
+    public void deleteSubject(String id) {
     	
 	try {
 		    	
@@ -321,17 +385,17 @@ public class SubjectDataMapper {
     }
     
 
-    public void assignStudentSubject(Student studentN, Subject subjectN) {
+    public void assignStudentSubject(Student studentN, String subjectID) {
     	
     	try {
 	    	
 	    	PreparedStatement stmt = DBConnection.prepare(insertStudentSubject);
 	    	
-	    	
-	    	String subjectID = subjectN.getCode();
+
 	    	String studentID = studentN.getStudentId();
+	    	Subject instance = new Subject(null, null);
 	    	
-	    	stmt.setNString(1, "2020");
+	    	stmt.setNString(1, getYear());
 	    	stmt.setNString(2, "2");
 	    	stmt.setNString(3, subjectID);
 	    	stmt.setNString(4, studentID);
@@ -341,7 +405,7 @@ public class SubjectDataMapper {
 	    	
 	    	
 	    	
-	    	IdentityMap<Subject> identityMap1 = IdentityMap.getInstance(subjectN);
+	    	IdentityMap<Subject> identityMap1 = IdentityMap.getInstance(instance);
 	    	Subject subjectO = identityMap1.get(subjectID);
 	    	
 	    	IdentityMap<Student> identityMap2 = IdentityMap.getInstance(studentN);
@@ -357,24 +421,25 @@ public class SubjectDataMapper {
 	}
     }
     
-	public void assignTeacherSubject(Teacher teacherN, Subject subjectN) {
+	public void assignTeacherSubject(Teacher teacherN, String subjectID) {
 	    	
 	    	try {
 		    	
 		    	PreparedStatement stmt = DBConnection.prepare(insertTeacherSubject);
 		    	
-		    	String subjectID = subjectN.getCode();
+		    	Subject instance = new Subject(null, null);
 		    	String teacherID = teacherN.getTeacherId();
 		    	
 		    	
-		    	stmt.setNString(1, "2020");
+		    	
+		    	stmt.setNString(1, getYear());
 		    	stmt.setNString(2, "2");
 		    	stmt.setNString(3, subjectID);
 		    	stmt.setNString(4, teacherID);
 		    	
 		    	stmt.executeQuery();
 		    	
-		    	IdentityMap<Subject> identityMap1 = IdentityMap.getInstance(subjectN);
+		    	IdentityMap<Subject> identityMap1 = IdentityMap.getInstance(instance);
 		    	Subject subjectO = identityMap1.get(subjectID);
 		    	
 		    	IdentityMap<Teacher> identityMap2 = IdentityMap.getInstance(teacherN);
@@ -445,4 +510,80 @@ public class SubjectDataMapper {
 	
 	}
 }
+
+	
+	public List<Exam> loadPublishedExamsByStudent(Student student) {
+		
+		List<Exam> publishedExam = new ArrayList<Exam>();
+		
+		try {
+			PreparedStatement stmt = DBConnection.prepare(findPublishedExam);
+			String studentId = student.getStudentId();
+			stmt.setNString(1, studentId);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				String subjectId = rs.getNString(1);
+				String year = rs.getNString(2);
+				String semester = rs.getNString(3);
+				String examType = rs.getNString(4);
+				String examName = rs.getNString(5);
+				String examCreatetor = rs.getNString(6);
+				int totalMarks = rs.getInt(8); 
+				
+				Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreatetor, totalMarks);
+				
+				publishedExam.add(exam);
+			}
+
+			return publishedExam;
+			
+		} catch (Exception e) {
+			
+		}
+		return null;
+	}
+
+	public boolean checkExamName(String examName) {
+		
+		try {
+	    	
+	    	PreparedStatement stmt = DBConnection.prepare(findExambyName);
+	    	
+	    	stmt.setNString(1, examName);
+	    	
+	    	ResultSet rs = stmt.executeQuery();
+	    	
+	    	if(rs.first()==false)//check when using this
+				return true;
+					
+		} catch (SQLException e) {
+	
+		}		
+		
+	    return false;
+	}
+	
+	public boolean checkExamSignificantInfo(String year, String semester, String examType) {
+		
+		try {
+	    	
+	    	PreparedStatement stmt = DBConnection.prepare(findExambyInfo);
+	    	
+	    	stmt.setNString(1, year);
+	    	stmt.setNString(2, semester);
+	    	stmt.setNString(3, examType);
+	    	
+	    	ResultSet rs = stmt.executeQuery();
+	    	
+	    	if(rs.first()==false)//check when using this
+				return true;
+					
+		} catch (SQLException e) {
+	
+		}		
+		
+	    return false;
+	}
 }

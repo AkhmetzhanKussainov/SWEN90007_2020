@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import datasource.ExamDataMapper;
+import datasource.SubjectDataMapper;
 
 public class Exam {
 	
@@ -12,13 +13,15 @@ public class Exam {
 	
 	private List<Scriptbook> scriptbookList;
 	
+	private List<Student> studentList;
+	
 	private int totalMarks;
 	
 	private int studentsTaking;
 	
-	private int subjectID;
+	private String subjectID;
 	
-	private int year;
+	private String year;
 	
 	private String examType;
 	
@@ -43,10 +46,11 @@ public class Exam {
 		
 		this.questionList = new ArrayList<>();
 		this.scriptbookList = new ArrayList<>();
+		this.studentList = new ArrayList<>();
 		this.setTotalMarks(totalMarks);	
 		this.studentsTaking = 0;
-		this.subjectID = Integer.parseInt(subjectId);
-		this.year = Integer.parseInt(year);
+		this.subjectID = subjectId;
+		this.year = year;
 		this.semester= semester;
 		this.examType = examType;
 		this.examName = examName;
@@ -80,12 +84,12 @@ public class Exam {
 		this.studentsTaking++;
 	} 
 	
-	public int getSubjectID()
+	public String getSubjectID()
 	{
 		return this.subjectID;
 	}
 	
-	public int getYear()
+	public String getYear()
 	{
 		return this.year;
 	}
@@ -115,10 +119,77 @@ public class Exam {
 		return this.questionList;
 	}
 	
-	public void saveExam(List<MultipleQuestion> multipleQuestionList, List<ShortQuestion> shortQuestionList)
+	public void updateQuestions(List<MultipleQuestion> multipleQuestionList, List<ShortQuestion> shortQuestionList)
 	{
+		ExamDataMapper datamapper = new ExamDataMapper();
+		datamapper.updateQuestions(this,multipleQuestionList,shortQuestionList);
 		
 	}
+	
+	
+	public Boolean hasStudentTakenExam(String studentID)
+	{
+		ExamDataMapper datamapper = new ExamDataMapper();
+		this.scriptbookList = datamapper.loadScriptbooksForExam(subjectID, examType, studentID, studentID);
+		for(Scriptbook s:this.scriptbookList)
+		{
+			if(s.getStudentNumber().equals(studentID))
+			{
+				return true;
+			}
+		}		
+		return false;
+	}
+	
+	private void subjectDidNotSubmitScriptbook(Student student)
+	{
+		Scriptbook scriptbook = new Scriptbook(this.subjectID, this.year, this.semester, this.examType, student.getStudentId(),0,false);
+		this.scriptbookList.add(scriptbook);
+	}
+	
+	
+	public void close()
+	{
+		SubjectDataMapper subjectDataMapper = new SubjectDataMapper();
+		ExamDataMapper examDataMapper = new ExamDataMapper();
+		this.studentList = subjectDataMapper.loadStudentsBySubject(this.subjectID);
+		for(Student student: this.studentList)
+		{
+			Boolean foundStudent = false;
+			for(Scriptbook scriptbook: this.scriptbookList)
+			{
+				if(scriptbook.getStudentNumber() == student.getStudentId())
+				{
+					foundStudent = true;
+					if(!scriptbook.isSubmitted())
+					{
+						//reset attemptList if the exam is closed
+						scriptbook.resetAttemptList();
+					}
+					break;
+				}
+			}
+			if(!foundStudent)
+			{
+				this.subjectDidNotSubmitScriptbook(student);
+			}				
+		}
+		examDataMapper.closeExam(this);
+		for(Scriptbook scriptbook: this.scriptbookList)
+		{
+			examDataMapper.addScriptbook(scriptbook);
+		}
+	}
+	
+	public List<Scriptbook> getAllScriptbooks()
+	{
+		ExamDataMapper mapper = new ExamDataMapper();
+		this.scriptbookList = mapper.loadScriptbooksForExam(this.subjectID, this.examType, this.year, this.semester);
+		return this.scriptbookList;
+	}
+	
+	
+	
 
 	
 	

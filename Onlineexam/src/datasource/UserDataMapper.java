@@ -19,6 +19,20 @@ public class UserDataMapper {
 	private static final String findTeacherFull = "SELECT * FROM teachers JOIN users ON userNumber=teacherNumber WHERE userid=";
 	private static final String findAllUsers = "SELECT * FROM users";
 	
+	private static final String createUser = 
+			"INSERT INTO users (userName, userPassword, userType, userNumber) "
+			+ "VALUES ('?', '?', '?', '?');";
+	private static final String createTeacher = 
+			"INSERT INTO teachers "
+			+ "VALUES ('?', '?', '?', '?', '?');";
+	private static final String createStudent = 
+			"INSERT INTO students "
+			+ "VALUES ('?', '?', '?', '?');	";
+
+	private static final String deleteTeacher = 
+			"DELETE FROM teachers WHERE teacherId = ?";
+	private static final String deleteStudent = 
+			"DELETE FROM students WHERE studentId = ?";
 
 	
 	private static final String findSubjectByStudent = 
@@ -30,7 +44,7 @@ public class UserDataMapper {
 	private static final String findSubjectByTeacher = 
 			
 			"SELECT * from subjects "
-			+ "JOIN appointments ON appointments.subjectId = subjects.subjectId"
+			+ "JOIN appointments ON appointments.subjectId = subjects.subjectId "
 			+ "WHERE teacherNumber = ?";
 	
 	//private static final String updateStudenthouse = "UPDATE students SET house = ? where studentNumber = ? ";
@@ -139,6 +153,27 @@ public class UserDataMapper {
 		
 	}
 	
+	private String convertKey(houses h) {
+		
+		if (h.equals(houses.Gryffindor)) {
+			return "G";
+		}
+		
+		if (h.equals(houses.Slytherin)) {
+			return "S";
+		}
+		
+		if (h.equals(houses.Hufflepuff)) {
+			return "H";
+		}
+		
+		if (h.equals(houses.Ravenclaw)) {
+			return "R";
+		}
+		
+		return null;
+	}
+	
 	//Load all of the information
 	public Student loadFullStudent(String userId) {
 		
@@ -235,8 +270,7 @@ public class UserDataMapper {
 	    
 	}
 
-	
-	
+
     public List<Subject> loadSubjectByStudent(Student s){
     	
     	List<Subject> subjects = new ArrayList<Subject>();
@@ -307,7 +341,86 @@ public class UserDataMapper {
 	    	
 	    }
 	
-
+	
+	public void createTeacher(Teacher teacher) {
+		
+		try {
+	    	
+	    	PreparedStatement stmt2 = DBConnection.prepare(createTeacher);
+	    	
+	    	stmt2.setNString(1, teacher.getTeacherId());
+	    	
+	    	stmt2.setNString(2, convertKey(teacher.getHouse()));
+	    	stmt2.setNString(3, teacher.getFirstName());
+	    	stmt2.setNString(4, teacher.getLastName());
+	    	stmt2.setNString(5, teacher.getTitle());
+	    	
+	    	stmt2.executeQuery();
+							
+		} catch (SQLException e) {
+	
+	}
+	}
+	
+	public void deleteTeacher(String teacherId) {
+		try {
+			
+	    	
+	    	
+	    	PreparedStatement stmt1 = DBConnection.prepare(deleteTeacher);
+	    	
+	    	stmt1.setNString(1, teacherId);
+	    	
+	    	stmt1.executeQuery();
+			
+		}catch(Exception e) {
+			
+		}
+	}
+	
+	public void updateTeacher(Teacher t) {
+		deleteTeacher(t.getTeacherId());
+		createTeacher(t);
+	}
 	
 	
+	public void createStudent(Student student) {
+			
+			try {
+		    	
+		    	PreparedStatement stmt = DBConnection.prepare(createStudent);
+		    	
+		    	stmt.setNString(1, student.getStudentId());
+		    	
+		    	stmt.setNString(2, convertKey(student.getHouse()));
+		    	stmt.setNString(3, student.getFirstName());
+		    	stmt.setNString(4, student.getLastName());
+		    	
+		    	stmt.executeQuery();
+								
+			} catch (SQLException e) {
+		
+	}
+	}
+	
+	public void deleteStudent(String studentId) {
+		try {
+			
+	    	
+	    	
+	    	PreparedStatement stmt1 = DBConnection.prepare(deleteStudent);
+	    	
+	    	stmt1.setNString(1, studentId);
+	    	
+	    	stmt1.executeQuery();
+			
+		}catch(Exception e) {
+			
+		}
+	}
+	
+	public void updateStudent(Student s) {
+		deleteStudent(s.getStudentId());
+		createStudent(s);
+	}
 }
