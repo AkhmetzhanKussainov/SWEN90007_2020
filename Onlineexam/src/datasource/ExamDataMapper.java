@@ -41,6 +41,16 @@ public class ExamDataMapper {
     private static final String changeShortMark =
 			"UPDATE shortQuestion SET marks = ? where shortq_id = ? ";
     
+    private static final String changeExam =
+    		"UPDATE exams SET examName = ? , examCreator = ? where subjectId = ?, year=?, semester=? , examType=?";
+    
+    private static final String createExam = 
+    		"INSERT into exams (subjectId, year, semester, examType, examName, examCreator, totalMarks)"
+    		+ "VALUES (?,?,?,?,?,?,?)";
+    
+    private static final String deleteExam = 
+    		"DELETE from exams where subjectId=? , year = ? , semester = ? , examType = ?";
+    
     private choice toChoice(String correctAnswer) {
     	
 	    	switch (correctAnswer) {
@@ -291,5 +301,117 @@ public class ExamDataMapper {
 		}
 		
 	}
+	
+	public void changeExam(Exam updatedExam)
+	{
+		try
+		{
+			if(updatedExam.canEdit())
+			{
+				PreparedStatement statement = DBConnection.prepare(changeExam);
+				int subjectID = updatedExam.getSubjectID();
+				String examName = updatedExam.getExamName();
+				String examCreator = updatedExam.getexamCreator();
+				int year = updatedExam.getYear();
+				String semester = updatedExam.getSemester();
+				String examType = updatedExam.getExamType();
+				
+				statement.setString(1, examName);
+				statement.setString(2, examCreator);
+				statement.setInt(3, subjectID);
+				statement.setInt(4, year);
+				statement.setString(5, semester);
+				statement.setString(6, examType);
+				
+				System.out.println(statement);
+				
+				if(statement.execute())
+					{
+						System.out.println("Successfully updated!");
+					}else
+					{
+						System.out.println("Error while updating!");
+					};
+				
+				//update exam questions
+				List<Question> updatedQuestions = updatedExam.getQuestionList();
+				for(int i=0;i<updatedQuestions.size();i++)
+				{
+					updateMarks(updatedQuestions.get(i));
+				}	
+			}else
+			{
+				System.out.println("Cannot edit, One of the students has already taken the exam");
+			}
+		
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void publishExam(Exam newExam)
+	{
+		try
+		{
+			PreparedStatement statement = DBConnection.prepare(createExam);
+			int subjectId = newExam.getSubjectID();
+			int year = newExam.getYear();
+			String semester = newExam.getSemester();
+			String examType = newExam.getExamType();
+			String examName = newExam.getExamName();
+			String examCreator = newExam.getexamCreator();
+			int totalMarks = newExam.getTotalMarks();
+			
+			statement.setInt(1, subjectId);
+			statement.setInt(2, year);
+			statement.setString(3, semester);
+			statement.setString(4, examType);
+			statement.setString(5, examName);
+			statement.setNString(6, examCreator);
+			statement.setInt(7, totalMarks);
+			
+			System.out.println(statement);
+			
+			if(statement.execute())
+			{
+				System.out.println("Successfully executed");
+			}else
+			{
+				System.out.println("Error while creating the exam");
+			}
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void deleteExam(Exam examToDelete)
+	{
+		try
+		{
+			PreparedStatement statement = DBConnection.prepare(deleteExam);
+			statement.setInt(1, examToDelete.getSubjectID());
+			statement.setInt(2, examToDelete.getYear());
+			statement.setString(3, examToDelete.getSemester());
+			statement.setString(4,examToDelete.getExamType());
+			
+			System.out.println(statement);
+			
+			if(statement.execute())
+			{
+				System.out.println("Successfully deleted exam");
+			}else
+			{
+				System.out.println("Failed to delete the exam");
+			}
+			
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	
 }
