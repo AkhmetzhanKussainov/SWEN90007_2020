@@ -30,7 +30,7 @@ public class UserDataMapper {
 	private static final String findSubjectByTeacher = 
 			
 			"SELECT * from subjects "
-			+ "JOIN appointments ON appointments.subjectId = subjects.subjectId"
+			+ "JOIN appointments ON appointments.subjectId = subjects.subjectId "
 			+ "WHERE teacherNumber = ?";
 	
 	//private static final String updateStudenthouse = "UPDATE students SET house = ? where studentNumber = ? ";
@@ -150,6 +150,7 @@ public class UserDataMapper {
 	    	PreparedStatement stmt = DBConnection.prepare(findStudentFullSpecified);
 	    	
 	    	ResultSet rs = stmt.executeQuery();
+	    	while(rs.next()) {
 		
 				
 				String userName = rs.getString(5);
@@ -177,11 +178,11 @@ public class UserDataMapper {
 				identityMap.put(userId, student);
 				
 				return student;
-				
+	    	}
 			
 					
 		} catch (SQLException e) {
-	
+			System.out.println(e);
 		}		
 		
 	    return null;
@@ -198,6 +199,7 @@ public class UserDataMapper {
 	    	PreparedStatement stmt = DBConnection.prepare(findTeacherFullSpecified);
 	    	
 	    	ResultSet rs = stmt.executeQuery();
+	    	while(rs.next()) {
 				
 				
 				String userName = rs.getString(7);
@@ -224,11 +226,12 @@ public class UserDataMapper {
 				identityMap.put(userId, teacher);
 				
 				return teacher;
+	    	}
 				
 			
 					
 		} catch (SQLException e) {
-	
+			System.out.println(e);
 		}		
 		
 	    return null;
@@ -248,6 +251,7 @@ public class UserDataMapper {
 	    	String studentID = s.getStudentId();
 	    	
 	    	stmt.setString(1, studentID); 	
+	    	System.out.println(stmt);
 	    	
 	    	ResultSet rs = stmt.executeQuery();
 	    	
@@ -255,7 +259,6 @@ public class UserDataMapper {
 				
 				String subjectId = rs.getString(1);
 				String name = rs.getString(2);
-				
 				Subject subject = new Subject(subjectId, name);
 				
 				subjects.add(subject);
@@ -275,7 +278,7 @@ public class UserDataMapper {
 	public List<Subject> loadSubjectByTeacher(Teacher t){
 	    	
 	    	List<Subject> subjects = new ArrayList<Subject>();
-	        
+	  
 	    	try {
 		    	
 		    	PreparedStatement stmt = DBConnection.prepare(findSubjectByTeacher);
@@ -283,8 +286,11 @@ public class UserDataMapper {
 		    	String teacherID = t.getTeacherId();
 		    	
 		    	stmt.setString(1, teacherID); 	
+		    	System.out.println(stmt);
 		    	
 		    	ResultSet rs = stmt.executeQuery();
+		    	System.out.println("reached");
+		    	
 		    	
 				while (rs.next()) {
 					
@@ -301,7 +307,7 @@ public class UserDataMapper {
 				}
 											
 			} catch (SQLException e) {
-		
+				System.out.println(e);
 			}   	
 	    	return subjects;
 	    	

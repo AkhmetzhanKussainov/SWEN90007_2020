@@ -28,109 +28,38 @@ tr:nth-child(odd) {
 
 </head>
 <body>
-<h3 align="center">User Information</h3>
-
-<div align="center">
-<%
-UserDataMapper um = new UserDataMapper();
-  um.loadAllUsers();
-           		 for (Student student : um.getAllStudents()) {
-       		 %>
-       		 <h3 align="center">User info:</h3>
-       		 
-       		 
-       		  <table>
-  <tr>
-    <th>User Name</th>
-    <th>Password</th>
-    <th>StudentId</th>
-  </tr>
-  <tr>
-    <td><%= student.getUserName() %></td>
-    <td><%= student.getPassword() %></td>
-    <td><%= student.getStudentId() %></td>
-  </tr>
-  
-</table> 
-       		 
-            
-                
-                
-             
-          
-        <%
-          		  } // for loop for multiple choise question
-        	%>
-</div>
-
-
-<div align="center">
 <%
 
-           		 for (Teacher teacher : um.getAllTeachers()) {
-       		 %>
-       		 <h3 align="center">Teacher info:</h3>
-       		 
-       		 
-       		  <table>
-  <tr>
-    <th>User Name</th>
-    <th>Password</th>
-    <th>TeacherId</th>
-  </tr>
-  <tr>
-    <td><%= teacher.getUserName() %></td>
-    <td><%= teacher.getPassword() %></td>
-    <td><%= teacher.getTeacherId() %></td>
-  </tr>
-  
-</table> 
-       		 
-            
-                
-                
-             
-          
-        <%
-          		  } // for loop for multiple choise question
-        	%>
-</div>
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 
+if(session.getAttribute("usertype") != null){
+	if (session.getAttribute("usertype").equals("S")){
+		response.sendRedirect("StudentSubjectDisplay.jsp");	
+	}
+	else if (session.getAttribute("usertype").equals("T")){
+		response.sendRedirect("TeacherSubjectDisplay.jsp");	
+	}
+}
 
-<div align="center">
-<%
+%>
 
-           		 for (Student student : um.getAllStudents()) {
-       		 %>
-       		 <h3 align="center">Lazy info:</h3>
-       		 
-       		 
-       		  <table>
-  <tr>
-    <th>User Name</th>
-    <th>First Name</th>
-    <th>Last Name</th>
-    <th>House</th>
-  </tr>
-  <tr>
-    <td><%= student.getUserName() %></td>
-    <td><%= student.getFirstName() %></td>
-    <td><%= student.getLastName() %></td>
-    <td><%= student.getHouseAsString() %></td>
-  </tr>
-  
-</table> 
-       		 
-            
-                
-                
-             
-          
-        <%
-          		  } // for loop for multiple choise question
-        	%>
-</div>
+<h1>Login</h1>
+<br/>
+
+<form action="Login" method="post">
+
+<label>username</label>
+<input  type="text" name="username"/>
+<br/>
+<br/>
+<label>password</label>
+<input type="password" name="password"/>
+<br/>
+<br/>
+<input type="submit" value="login"/>
+
+</form>
 
 
 </body>
-</html>
+</html> 

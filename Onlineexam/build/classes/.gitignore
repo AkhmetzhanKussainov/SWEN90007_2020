@@ -1,4 +1,3 @@
-/.DS_Store
-/domain/
 /datasource/
-/uow/
+/domain/
+/presentation/
