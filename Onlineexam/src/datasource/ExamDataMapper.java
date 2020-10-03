@@ -297,50 +297,7 @@ public class ExamDataMapper {
 	
 	}
 	
-	public boolean checkSubmitTime(Exam exam) {
-		try {
-		
-			//Run SQL to get exam start time and end time
-			
-			
-			
-			
-			//Set up time stamp format
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-			
-			
-			//put exam start and end time in two Date variable
-			Date start = sdf.parse("2013-10-23 08:10:10:000");
-			Date end = sdf.parse("2020-10-23 08:10:10:000");
 
-			//Get curent time
-			Date now = new Date();
-			
-			//Convert String time into long
-			
-			long now_time = now.getTime();
-			long start_time = start.getTime();
-			long end_time = end.getTime();
-			
-			
-			if(now_time >= start_time && now_time <= end_time) {
-				
-				
-				System.out.println(now_time);
-				return true;
-				
-				
-			}
-			
-			
-			
-		}catch(Exception e) {
-			
-		}
-		
-		return false;
-		
-	}
 	
 
 	
