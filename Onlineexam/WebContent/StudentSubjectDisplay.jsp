@@ -49,6 +49,7 @@ Student student_obj = um.loadFullStudent(student_id);
 <tr>
 <th>subjectId</th>
 <th>Name</th>
+<th></th>
 </tr>
 
 <%
@@ -60,6 +61,7 @@ for (Subject subject : um.loadSubjectByStudent(student_obj)) {
 <tr>
 <td><%= subject.getCode() %></td>
 <td><%= subject.getName() %></td>
+<td><button data-value="<%= subject.getCode() %>" class="exam-link">Exams</button></td>
 </tr>
 
 		        
@@ -83,4 +85,18 @@ for (Subject subject : um.loadSubjectByStudent(student_obj)) {
 
 
 </body>
+<script>
+function load(){
+	var examLinks = document.querySelectorAll(".exam-link");
+	for (var i=0; i<examLinks.length; i++){
+		examLinks[i].addEventListener("click", function(e){
+			var link = `${document.location.origin}/Onlineexam/StudentExam.jsp?subjectCode=` +  e.target.getAttribute("data-value")
+			window.location = link
+		})
+	}	
+}
+
+window.onload = load
+
+</script>
 </html> 

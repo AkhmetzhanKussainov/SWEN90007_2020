@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Detail View</title>
+<title>Teacher Subject Display</title>
 
 <style>
 table {
@@ -27,7 +27,7 @@ tr:nth-child(odd) {
 </style>
 
 </head>
-<body>
+<body onload="">
 <%
 
 String heading =  "Teacher Portal";
@@ -50,6 +50,7 @@ System.out.println(um.loadFullTeacher(teacher_id));
 <tr>
 <th>subjectId</th>
 <th>Name</th>
+<th></th>
 </tr>
 
 <%
@@ -62,6 +63,7 @@ for (Subject subject : um.loadSubjectByTeacher(teacher_obj)) {
 <tr>
 <td><%= subject.getCode() %></td>
 <td><%= subject.getName() %></td>
+<td><button data-value="<%= subject.getCode() %>" class="exam-link">Exams</button></td>
 </tr>
 
 		        
@@ -85,4 +87,18 @@ for (Subject subject : um.loadSubjectByTeacher(teacher_obj)) {
 
 
 </body>
+<script>
+function load(){
+	var examLinks = document.querySelectorAll(".exam-link");
+	for (var i=0; i<examLinks.length; i++){
+		examLinks[i].addEventListener("click", function(e){
+			var link = `${document.location.origin}/Onlineexam/TeacherExam.jsp?subjectCode=` +  e.target.getAttribute("data-value")
+			window.location = link
+		})
+	}	
+}
+
+window.onload = load
+
+</script>
 </html> 
