@@ -8,6 +8,7 @@ public class Teacher extends User {
 	private houses house;
 	private String firstName;
 	private String lastName;
+	private String title;
 	
 	public Teacher(String userId, String username, String password, String teacherId) {
 		
@@ -49,6 +50,10 @@ public class Teacher extends User {
 		return lastName;
 	}
 	
+	public String getTitle() {
+		return title;
+	}
+	
 	public void setHouse(houses house) {
 		
 		this.house = house;
@@ -65,7 +70,9 @@ public class Teacher extends User {
 		
 	}
 	
-	
+	public void setTitle(String title) {
+		this.title = title;
+	}
 	
 
 }

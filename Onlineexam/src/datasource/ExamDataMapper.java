@@ -43,7 +43,8 @@ public class ExamDataMapper {
     private static final String changeShortMark =
 			"UPDATE shortQuestion SET marks = ? where shortq_id = ? ";
     
-    private static final String examTimeCheck = "";
+    
+
     
     private choice toChoice(String correctAnswer) {
     	
@@ -296,7 +297,7 @@ public class ExamDataMapper {
 	
 	}
 	
-	public boolean checkSubmitTime() {
+	public boolean checkSubmitTime(Exam exam) {
 		try {
 		
 			//Run SQL to get exam start time and end time
@@ -341,5 +342,6 @@ public class ExamDataMapper {
 		
 	}
 	
+
 	
 }
