@@ -30,13 +30,13 @@ public class ExamDataMapper {
 			"SELECT * from shortQuestion";
     		
     private static final String findAllMultipleByExamStatement =
-    "select * from multiplequestion where subjectid=";
+    "select * from multiplequestion where examId=";
     
     private static final String findAllShortByExamStatement =
-    	    "select * from shortquestion where subjectid=";
+    	    "select * from shortquestion where examId=";
     
     private static final String findAllScriptbooksByExamStatement =
-    	    "select * from scriptbooks where subjectid=";
+    	    "select * from scriptbooks where examId=";
     		
     private static final String changeShortMark =
 			"UPDATE shortQuestion SET marks = ? where shortq_id = ? ";
@@ -50,6 +50,9 @@ public class ExamDataMapper {
     
     private static final String deleteExam = 
     		"DELETE from exams where subjectId=? , year = ? , semester = ? , examType = ?";
+    
+    private static final String findExam =
+    		"SELECT * from exams where examId=?";
     
     private choice toChoice(String correctAnswer) {
     	
@@ -413,5 +416,20 @@ public class ExamDataMapper {
 		}
 	}
 	
+	/*public void saveExam(List<MultipleQuestion> multipleQuestionList, List<ShortQuestion> shortQuestionList)
+	{
+		try
+		{
+			PreparedStatement statement = DBConnection.prepare(findExam);
+			
+			String examID = new String();
+			
+			statement.setString(1,examID);
+			
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}*/
 	
 }

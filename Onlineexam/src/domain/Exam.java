@@ -39,11 +39,6 @@ public class Exam {
 		
 	}
 	
-	public Exam()
-	{
-		
-	}
-	
 	public Exam(String subjectId, String year, String semester, String examType, String examName, String examCreator, int totalMarks) {
 		
 		this.questionList = new ArrayList<>();
@@ -118,6 +113,11 @@ public class Exam {
 	public List<Question> getQuestionList()
 	{
 		return this.questionList;
+	}
+	
+	public void saveExam(List<MultipleQuestion> multipleQuestionList, List<ShortQuestion> shortQuestionList)
+	{
+		
 	}
 
 	

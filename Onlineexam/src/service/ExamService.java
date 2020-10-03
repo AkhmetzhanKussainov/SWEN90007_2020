@@ -9,7 +9,6 @@ public class ExamService {
 	{
 		 ExamDataMapper examDataMapper=new ExamDataMapper();
 		 
-		 Exam exam = new Exam();
 		 
 	}
 	
