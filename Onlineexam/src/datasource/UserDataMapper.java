@@ -44,7 +44,7 @@ public class UserDataMapper {
 	private static final String findSubjectByTeacher = 
 			
 			"SELECT * from subjects "
-			+ "JOIN appointments ON appointments.subjectId = subjects.subjectId"
+			+ "JOIN appointments ON appointments.subjectId = subjects.subjectId "
 			+ "WHERE teacherNumber = ?";
 	
 	//private static final String updateStudenthouse = "UPDATE students SET house = ? where studentNumber = ? ";

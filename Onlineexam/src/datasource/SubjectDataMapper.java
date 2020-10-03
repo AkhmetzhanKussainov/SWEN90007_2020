@@ -40,14 +40,14 @@ public class SubjectDataMapper {
 			+ "WHERE subjectId=";
 	
 	private static final String findExambySubject = 
-			"SELECT * FROM exams"
-			+ "JOIN subjects ON exams.subjectId = subjects.subjectId"
+			"SELECT * FROM exams "
+			+ "JOIN subjects ON exams.subjectId = subjects.subjectId "
 			+ "WHERE subjectId =";
 	
 	
 	
 	private static final String createSubject = 
-			"INSERT INTO subjects"
+			"INSERT INTO subjects "
 			+ "VALUES ('?', '?')";
 	
 	private static final String updateSubjectName = 
@@ -59,11 +59,11 @@ public class SubjectDataMapper {
 	
 	
 	private static final String insertStudentSubject = 
-			"INSERT INTO enrollments (year, semester, subjectId, studentNumber)"
+			"INSERT INTO enrollments (year, semester, subjectId, studentNumber) "
 			+ "VALUES ('?', '?', '?', '?')";
 	
 	private static final String insertTeacherSubject = 
-			"INSERT INTO appointments (year, semester, subjectId, teacherNumber)"
+			"INSERT INTO appointments (year, semester, subjectId, teacherNumber) "
 			+ "VALUES ('?', '?', '?', '?')";
 	
 	private static final String deleteStudentSubject = 
@@ -74,15 +74,15 @@ public class SubjectDataMapper {
 	
     private static final String findPublishedExam = 
     		"SELECT * FROM exams "
-    		+ "JOIN enrollments ON exams.subjectId = enrollments.subjectId"
+    		+ "JOIN enrollments ON exams.subjectId = enrollments.subjectId "
     		+ "WHERE published = 'Y' AND studentNumber = ? ";
 	
 	private static final String findExambyName = 
-			"SELECT * FROM exams"
+			"SELECT * FROM exams "
 			+ "WHERE examName = ?";
 	
 	private static final String findExambyInfo = 
-			"SELECT * FROM exams"
+			"SELECT * FROM exams "
 			+ "WHERE year = ? AND semester = ? AND examType = ?";
 	
 	private String getYear() {
