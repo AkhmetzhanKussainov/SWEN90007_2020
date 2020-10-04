@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS multipleQuestion cascade;
 DROP TABLE IF EXISTS shortQuestion cascade;
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS users cascade;
 DROP TABLE IF EXISTS students cascade;
 DROP TABLE IF EXISTS teachers cascade;
 DROP TABLE IF EXISTS enrollments;
@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS multipleAttempt cascade;
 DROP TABLE IF EXISTS shortAttempt cascade;
 DROP TABLE IF EXISTS teacher_subject cascade;
 DROP TABLE IF EXISTS student_subject cascade;
+DROP TABLE IF EXISTS administrators cascade;
 
 CREATE TABLE users(
    userId  SERIAL PRIMARY KEY,
@@ -19,6 +20,7 @@ CREATE TABLE users(
    userPassword            VARCHAR(10)       NOT NULL,
    userType        VARCHAR(1),
    userNumber         VARCHAR(10) UNIQUE
+   
 );
 
 CREATE TABLE students(
@@ -31,7 +33,9 @@ CREATE TABLE students(
 		FOREIGN KEY(studentNumber)
 			REFERENCES users(userNumber)
 			ON DELETE CASCADE
+
 );
+
 
 CREATE TABLE teachers(
 	teacherNumber VARCHAR(10) PRIMARY KEY,
@@ -44,6 +48,7 @@ CREATE TABLE teachers(
 		FOREIGN KEY(teacherNumber)
 			REFERENCES users(userNumber)
 			ON DELETE CASCADE
+
 );
 
 CREATE TABLE administrators(
@@ -53,6 +58,7 @@ CREATE TABLE administrators(
 		FOREIGN KEY(adminNumber)
 			REFERENCES users(userNumber)
 			ON DELETE CASCADE
+
 );
 
 
@@ -296,19 +302,19 @@ VALUES ('DIV101', 'Divination');
 
 
 INSERT INTO exams
-VALUES ('HIS101', '2020','2','F','History of Magic End of Semester Exam','T12','N', 70);
+VALUES ('HIS101', '2020','2','F','History of Magic End of Semester Exam','T12','F', 'F', 70, '1','2');
 
 INSERT INTO exams
-VALUES ('HIS101', '2020','2','M','History of Magic End of Midsemester Exam','T12','Y', 30);
+VALUES ('HIS101', '2020','2','M','History of Magic End of Midsemester Exam','T12','T', 'F', 30, '1','2');
 
 INSERT INTO exams
-VALUES ('DEF101', '2020','2','F','Defense Against the Dark Arts End of Magic End of Semester Exam','T12','Y', 30);
+VALUES ('DEF101', '2020','2','F','Defense Against the Dark Arts End of Magic End of Semester Exam','T12','T', 'F', 30, '1','2');
 
 INSERT INTO scriptbooks
-VALUES ('HIS101', '2020','2','F','S12',0,false);
+VALUES ('HIS101', '2020','2','F','T','S12',0,false);
 
 INSERT INTO scriptbooks
-VALUES ('HIS101', '2020','2','F','S13',60,true);
+VALUES ('HIS101', '2020','2','F','T','S13',60,true);
 
 INSERT INTO multipleAttempt
 VALUES (1,'HIS101', '2020','2','F','S12','A',0,false);
@@ -360,17 +366,3 @@ INSERT INTO enrollments (year, semester, subjectId, studentNumber)
 VALUES ('2020', '2','DEF101', 'S11');
 INSERT INTO enrollments (year, semester, subjectId, studentNumber)
 VALUES ('2020', '2','DEF101', 'S12');
-
-
-
-
-
-
-
---SELECT * FROM users ORDER BY userId
---SELECT * FROM users WHERE userId=2
-
---SELECT * FROM students WHERE studentnumber='S12346';
---SELECT * FROM users WHERE usernumber='S12346';
-
---SELECT * FROM students JOIN users ON usernumber=studentnumber WHERE studentnumber='S12346';
