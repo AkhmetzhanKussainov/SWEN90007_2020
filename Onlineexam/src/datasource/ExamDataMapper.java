@@ -465,11 +465,23 @@ public class ExamDataMapper {
 				String semester = updatedExam.getSemester();
 				String examType = updatedExam.getExamType();
 				int totalMarks = updatedExam.getTotalMarks();
+				
+				String startTimeString = null;
+				String endTimeString = null;
+				
 				Date startTime = updatedExam.getStartDate();
 				Date endTime = updatedExam.getEndDate();
-				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-				String startTimeString = dateFormat.format(startTime);
-				String endTimeString = dateFormat.format(endTime);  
+
+				try
+				{
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+					startTimeString = dateFormat.format(startTime);
+					endTimeString = dateFormat.format(endTime);  
+				}catch(Exception e)
+				{
+					
+				}
+
 				
 				statement.setString(1, examName);
 				statement.setString(2, examCreator);
@@ -513,12 +525,20 @@ public class ExamDataMapper {
 			String examName = newExam.getExamName();
 			String examCreator = newExam.getexamCreator();
 			int totalMarks = newExam.getTotalMarks();
-			Date startTime = newExam.getStartDate();
-			Date endTime = newExam.getEndDate();
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-			String startTimeString = dateFormat.format(startTime);
-			String endTimeString = dateFormat.format(endTime);  
-			
+			String startTimeString = null;
+			String endTimeString = null;
+			try
+			{
+				Date startTime = newExam.getStartDate();
+				Date endTime = newExam.getEndDate();
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+				startTimeString = dateFormat.format(startTime);
+				endTimeString = dateFormat.format(endTime);  
+			}catch(Exception e)
+			{
+	
+			}
+
 			statement.setString(1, subjectId);
 			statement.setString(2, year);
 			statement.setString(3, semester);
@@ -805,15 +825,6 @@ public class ExamDataMapper {
 				statementSubmitMultiple.execute();
 			}
 
-			
-			/*statement.setNString(2, exam.getYear());
-			statement.setString(3, exam.getSemester());
-			statement.setString(4, exam.getExamType());
-			statement.setString(5, studentId);
-			statement.execute();*/
-			
-			
-			//PreparedStatement statement = DBConnection.prepare(stm)
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

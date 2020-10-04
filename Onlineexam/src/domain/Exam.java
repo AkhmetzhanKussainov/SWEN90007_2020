@@ -90,8 +90,16 @@ public class Exam {
 		this.examType = examType;
 		this.examName = examName;
 		this.examCreator = examCreator;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		try
+		{
+			this.startDate = startDate;
+			this.endDate = endDate;
+		}catch(Exception e)
+		{
+			this.startDate = null;
+			this.endDate = null;
+		}
+
 	}
 	
 	public void addScriptbook(Scriptbook scriptbook) {
@@ -305,6 +313,10 @@ public class Exam {
 	
 	public Boolean checkSubmissionTimeValid()
 	{
+		if(this.startDate == null || this.endDate == null)
+		{
+			return true;
+		}
 		ExamTimeRange etr = new ExamTimeRange();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
 		String startTimeString = dateFormat.format(this.getStartDate());
