@@ -74,8 +74,6 @@ public class UserDataMapper {
   			while (rs.next()) {
   				
   				String userId = rs.getString(1);
-  				String userName = rs.getString(2);
-  				String password = rs.getString(3);
   				String userType = rs.getString(4);
   				String userNumber = rs.getString(5);
   				
@@ -245,7 +243,6 @@ public class UserDataMapper {
 				String password = rs.getString(8);
 				String teacherId = rs.getString(1);
 				String userId = rs.getString(6);
-				System.out.println(userId);
 				houses house = convertHouse(rs.getString(2));
 				String firstName = rs.getString(3);
 				String lastName = rs.getString(4);

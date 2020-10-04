@@ -134,8 +134,7 @@ public class SubjectDataMapper {
 				Subject subject = new Subject(subjectId, name);
 				
 				subjects.add(subject);
-				
-				System.out.println(subject.getCode());
+
 				
 				//identity map
 				IdentityMap<Subject> identityMap = IdentityMap.getInstance(subject);
