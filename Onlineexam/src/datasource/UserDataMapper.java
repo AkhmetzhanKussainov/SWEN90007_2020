@@ -341,10 +341,29 @@ public class UserDataMapper {
 	    	
 	    }
 	
+	public void createUser(String userName, String password, String Type, String userNumber) {
+		try {
+			PreparedStatement stmt = DBConnection.prepare(createUser);
+			
+			stmt.setNString(1, userName);
+	    	
+	    	stmt.setNString(2, password);
+	    	stmt.setNString(3, Type);
+	    	stmt.setNString(4, userNumber);
+	    	
+	    	stmt.executeQuery();
+			
+		}catch(Exception E) {
+			
+		}
+		
+	}
 	
 	public void createTeacher(Teacher teacher) {
 		
 		try {
+			
+			createUser(teacher.getUsername(), teacher.getPassword(), "T", teacher.getTeacherId());
 	    	
 	    	PreparedStatement stmt2 = DBConnection.prepare(createTeacher);
 	    	
@@ -388,6 +407,8 @@ public class UserDataMapper {
 			
 			try {
 		    	
+				createUser(student.getUsername(), student.getPassword(), "T", student.getStudentId());
+				
 		    	PreparedStatement stmt = DBConnection.prepare(createStudent);
 		    	
 		    	stmt.setNString(1, student.getStudentId());
