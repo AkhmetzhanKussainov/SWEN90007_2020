@@ -50,7 +50,7 @@ public class ExamDataMapper {
 			"UPDATE shortQuestion SET marks = ? where subjectId=?,year=?,semester=?,examType=?, questionId=?, studentNumber = ? ";
     
     private static final String changeExam =
-    		"UPDATE exams SET examName = ? , examCreator = ?, totalMarks=?, startTime =?, endTime=? where subjectId = ?, year=?, semester=? , examType=?";
+    		"UPDATE exams SET examName = ? , examCreator = ?, totalMarks=?, startTime =?, endTime=? where subjectId = ?, year=?, semester=? , examType=?, published=?, closed=?";
     
     private static final String createExam = 
     		"INSERT into exams (subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed, startTime, endTime)"
@@ -438,7 +438,7 @@ public class ExamDataMapper {
 	
 	
 	//function to change the exam related information (NOT FOR UPDATING QUESTIONS)
-	public void changeExam(Exam updatedExam)
+	public String changeExam(Exam updatedExam)
 	{
 		try
 		{
@@ -454,19 +454,23 @@ public class ExamDataMapper {
 				int totalMarks = updatedExam.getTotalMarks();
 				Date startTime = updatedExam.getStartDate();
 				Date endTime = updatedExam.getEndDate();
+				String published = updatedExam.getPublished();
+				String closed = updatedExam.getClosed();
 				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-				String startTimeString = dateFormat.format(startTime);
-				String endTimeString = dateFormat.format(endTime);  
+//				String startTimeString = dateFormat.format(startTime);
+//				String endTimeString = dateFormat.format(endTime);  
 				
 				statement.setString(1, examName);
 				statement.setString(2, examCreator);
 				statement.setInt(3, totalMarks);
-				statement.setString(4,startTimeString);
-				statement.setNString(5, endTimeString);
+				statement.setString(4,null);
+				statement.setNString(5, null);
 				statement.setString(6, subjectID);
 				statement.setString(7, year);
 				statement.setString(8, semester);
 				statement.setString(9, examType);
+				statement.setString(10, published);
+				statement.setString(11, closed);
 				
 				System.out.println(statement);
 				
@@ -485,7 +489,9 @@ public class ExamDataMapper {
 		}catch(SQLException e)
 		{
 			e.printStackTrace();
+			return "Failure";
 		}
+		return "Success";
 	}
 	
 	public String publishExam(Exam newExam)

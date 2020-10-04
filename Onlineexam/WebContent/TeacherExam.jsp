@@ -69,6 +69,7 @@ em.loadExams();
 <th>Total Marks</th>
 <th>Published</th>
 <th>Closed</th>
+<th>Edit</th>
 </tr>
 
 <%
@@ -88,6 +89,7 @@ for (Exam exam : em.loadExams()) {
 <td><%= exam.getTotalMarks() %></td>
 <td><%= exam.getPublished() %></td>
 <td><%= exam.getClosed() %></td>
+<td><button data-subject-id="<%=subject.getCode()%>" data-year="<%=exam.getYear()%>" data-semester="<%=exam.getSemester()%>" data-exam-type="<%=exam.getExamType()%>" class="edit-exam">Edit</button></td>
 </tr>
 
   
@@ -111,13 +113,19 @@ function load(){
 		window.location = link
 	})
 	
-	
-	/* for (var i=0; i<examLinks.length; i++){
-		examLinks[i].addEventListener("click", function(e){
-			var link = `${document.location.origin}/Onlineexam/TeacherExam.jsp?subjectCode=` +  e.target.getAttribute("data-value")
+	var editButtons = document.querySelectorAll(".edit-exam");
+	console.log(editButtons);
+	for (var i=0; i<editButtons.length; i++){
+		editButtons[i].addEventListener("click", function(e){
+			var link = `${document.location.origin}/Onlineexam/TeacherExamDetailEdit.jsp?`
+			var params = "subjectCode=" + e.target.getAttribute("data-subject-id") + 
+			"&year=" + e.target.getAttribute("data-year") + 
+			"&semester=" + e.target.getAttribute("data-semester") + 
+			"&examType=" + e.target.getAttribute("data-exam-type")
+			link = link + params
 			window.location = link
 		})
-	}	 */
+	}
 }
 
 window.onload = load
