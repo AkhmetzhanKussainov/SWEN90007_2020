@@ -77,7 +77,9 @@ public class Exam {
 	}
 	
 	public void addScriptbook(Scriptbook scriptbook) {
-	
+		
+		ExamDataMapper dm = new ExamDataMapper();
+		dm.addScriptbook(scriptbook);
 		scriptbookList.add(scriptbook);
 		
 	}
@@ -170,7 +172,14 @@ public class Exam {
 		{
 			if(s.getStudentNumber().equals(studentID))
 			{
-				return true;
+				if(s.isSubmitted())
+				{
+					return true;
+				}else
+				{
+					return false;
+				}
+
 			}
 		}		
 		return false;
@@ -268,6 +277,38 @@ public class Exam {
 		}
 	}
 	
+	public void studentTakesExam(String studentId)
+	{
+		if(studentCanTakeExam(studentId))
+		{
+			this.studentTakes();
+			this.addScriptbook(new Scriptbook(this.subjectID, this.year,this.semester,this.examType,studentId,this.totalMarks, false));
+		}
+	}
+	
+	public Boolean studentCanTakeExam(String studentId)
+	{
+		if(this.hasStudentTakenExam(studentId))
+		{
+			System.out.println("Student has already taken the exam");
+			return false;
+		}else
+		{
+			if(this.checkSubmissionTimeValid())
+			{
+				return true;
+			}else
+			{
+				System.out.println("Wrong time to take the exam");
+				return false;
+			}
+		}
+	}
+	
+	public void studentSubmitExam()
+	{
+		
+	}
 
 	
 	

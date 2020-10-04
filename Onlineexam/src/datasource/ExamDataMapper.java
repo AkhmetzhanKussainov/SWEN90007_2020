@@ -731,12 +731,7 @@ public class ExamDataMapper {
 		}
 	}*/
 	
-	public void studentTakesExam()
-	{
-		
-	}
-	
-	
+
 	
 	
 	//TODO studentTakesExam
