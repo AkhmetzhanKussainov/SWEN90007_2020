@@ -713,7 +713,7 @@ public class ExamDataMapper {
 	}
 	
 	//TODO submissionTimeValid
-	public Boolean checkSubmissionTimeValid(Exam exam)
+/*	public Boolean checkSubmissionTimeValid(Exam exam)
 	{
 		ExamTimeRange etr = new ExamTimeRange();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
@@ -729,7 +729,11 @@ public class ExamDataMapper {
 		{
 			return false;
 		}
-
+	}*/
+	
+	public void studentTakesExam()
+	{
+		
 	}
 	
 	

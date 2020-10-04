@@ -1,6 +1,8 @@
 package domain;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -248,7 +250,23 @@ public class Exam {
 		dm.publishExam(this);
 	}
 	
-	
+	public Boolean checkSubmissionTimeValid()
+	{
+		ExamTimeRange etr = new ExamTimeRange();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		String startTimeString = dateFormat.format(this.getStartDate());
+		String endTimeString = dateFormat.format(this.getEndDate());  
+		etr.setStart_time(startTimeString);
+		etr.setEnd_time(endTimeString);
+		Adjudicator adjudicator = new Adjudicator();
+		if(adjudicator.checkExamTime(etr))
+		{
+			return true;
+		}else
+		{
+			return false;
+		}
+	}
 	
 
 	
