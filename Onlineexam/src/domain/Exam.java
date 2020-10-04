@@ -35,6 +35,9 @@ public class Exam {
 	private String examCreator;
 
 	private String semester;
+	private String published;
+
+	private String closed;
 
 	private Date startDate = null;
 
@@ -47,7 +50,7 @@ public class Exam {
 	}
 
 	public Exam(String subjectId, String year, String semester, String examType, String examName,
-			String examCreator, int totalMarks) {
+			String examCreator, int totalMarks, String published, String closed) {
 
 		this.subjectId = subjectId;
 //		this.examId = examId;
@@ -62,6 +65,8 @@ public class Exam {
 		this.examType = examType;
 		this.examName = examName;
 		this.examCreator = examCreator;
+		this.published = published;
+		this.closed = closed;
 	}
 
 	public Exam(String subjectId, String year, String semester, String examType, String examName, String examCreator,
@@ -106,6 +111,14 @@ public class Exam {
 
 	public String getExamId() {
 		return this.examId;
+	}
+	
+	public String getPublished() {
+		return this.published;
+	}
+	
+	public String getClosed() {
+		return this.closed;
 	}
 
 	public Boolean canEdit() {

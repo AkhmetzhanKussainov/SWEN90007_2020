@@ -52,7 +52,8 @@ Subject subject = sm.loadSubject(request.getParameter("subjectCode"));
 <th>Exam Creator</th>
 <th>Exam Name</th>
 <th>Total Marks</th>
-<th>Total Marks</th>
+<th>Published</th>
+<th>Closed</th>
 </tr>
 
 <%
@@ -70,6 +71,8 @@ for (Exam exam : em.loadExams()) {
 <td><%= exam.getExamCreator() %></td>
 <td><%= exam.getExamName() %></td>
 <td><%= exam.getTotalMarks() %></td>
+<td><%= exam.getPublished() %></td>
+<td><%= exam.getClosed() %></td>
 </tr>
 
       

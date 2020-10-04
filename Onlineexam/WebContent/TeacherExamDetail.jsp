@@ -6,17 +6,8 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Teacher Subject Display</title>
 
 <style>
-
-.title{
-display: flex;
-justify-content: space-between; 
-align-items: center;
-
-}
-
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -35,7 +26,7 @@ tr:nth-child(odd) {
 </style>
 
 </head>
-<title>Teacher Subject Exams</title>
+<title>Teacher Exam Detail</title>
 </head>
 <body>
 <%
@@ -49,17 +40,50 @@ em.loadExams();
 
 
 %>
-<h1><%= subject.getName()%>: <%= subject.getCode()%></h1>
-<div class="title">
-<h2>Exams</h2>
-
-<div>
-<button data-value="<%= subject.getCode() %>" id="add-btn">Add</button>
-</div>
-</div>
+<%-- <h1><%= subject.getName()%>: <%= subject.getCode()%></h1> --%>
+<h1>Add Exam for: <%= subject.getCode()%></h1>
 
 
-<table>
+<form action="CreateExam" method="post">
+
+<label>Year</label>
+<input required type="text" name="year"/>
+<br/>
+<br/>
+<label>Semester</label>
+<input required type="text" name="semester"/>
+<br/>
+<br/>
+<label>Exam Name</label>
+<input required type="text" name="exam-name"/>
+<br/>
+<br/>
+<label>Exam Type</label>
+<select name="exam-type">
+<option value="F">F</option>
+<option value="M">M</option>
+</select>
+
+<br/>
+<br/>
+<label>Total Marks</label>
+<input required required type="number" name="total-marks"/>
+<br/>
+<br/>
+<label>Start Time</label>
+<input type="datetime-local" name="start-time"/>
+<br/>
+<br/>
+<label>End Time</label>
+<input type="datetime-local" name="end-time"/>
+<br/>
+<br/>
+<input type="hidden" name="subject-id" value="<%= subject.getCode()%>"/>
+<input type="submit" value="Add Exam"/>
+
+</form>
+
+<%-- <table>
 <tr>
 <!-- <th>Exam Id</th> -->
 <th>Year</th>
@@ -80,7 +104,7 @@ for (Exam exam : em.loadExams()) {
 		 
 		
 <tr>
-<%-- <td><%= exam.getExamId() %></td> --%>
+<td><%= exam.getExamId() %></td>
 <td><%= exam.getYear() %></td>
 <td><%= exam.getSemester() %></td>
 <td><%= exam.getExamCreator() %></td>
@@ -90,7 +114,7 @@ for (Exam exam : em.loadExams()) {
 <td><%= exam.getClosed() %></td>
 </tr>
 
-  
+      
     
  
 <%
@@ -99,28 +123,8 @@ for (Exam exam : em.loadExams()) {
 	%>
 
 </table>
-
+ --%>
 
 
 </body>
-<script>
-function load(){
-	var addButton = document.getElementById("add-btn");
-	addButton.addEventListener("click", function(e){
-		var link = `${document.location.origin}/Onlineexam/TeacherExamDetail.jsp?subjectCode=` +  e.target.getAttribute("data-value")
-		window.location = link
-	})
-	
-	
-	/* for (var i=0; i<examLinks.length; i++){
-		examLinks[i].addEventListener("click", function(e){
-			var link = `${document.location.origin}/Onlineexam/TeacherExam.jsp?subjectCode=` +  e.target.getAttribute("data-value")
-			window.location = link
-		})
-	}	 */
-}
-
-window.onload = load
-
-</script>
 </html>

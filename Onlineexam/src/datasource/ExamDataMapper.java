@@ -53,8 +53,8 @@ public class ExamDataMapper {
     		"UPDATE exams SET examName = ? , examCreator = ?, totalMarks=?, startTime =?, endTime=? where subjectId = ?, year=?, semester=? , examType=?";
     
     private static final String createExam = 
-    		"INSERT into exams (subjectId, year, semester, examType, examName, examCreator, totalMarks, startTime, endTime)"
-    		+ "VALUES (?,?,?,?,?,?,?,?,?)";
+    		"INSERT into exams (subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed, startTime, endTime)"
+    		+ " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
     
     private static final String deleteExam = 
     		"DELETE from exams where subjectId=? , year = ? , semester = ? , examType = ?";
@@ -172,8 +172,10 @@ public class ExamDataMapper {
 				String examType =rs.getString(4);
 				String semester = rs.getString(3);
 				int totalMarks =  Integer.parseInt(rs.getString(9));
+				String published = rs.getString(7);
+				String closed = rs.getString(8);
 				
-				Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks);
+				Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed);
 				
 				for (MultipleQuestion multipleQuestion : loadMultipleQuestionsForExam(subjectId, examType, year, semester)) {
 					
@@ -486,7 +488,7 @@ public class ExamDataMapper {
 		}
 	}
 	
-	public void publishExam(Exam newExam)
+	public String publishExam(Exam newExam)
 	{
 		try
 		{
@@ -500,33 +502,41 @@ public class ExamDataMapper {
 			int totalMarks = newExam.getTotalMarks();
 			Date startTime = newExam.getStartDate();
 			Date endTime = newExam.getEndDate();
+			String published = newExam.getPublished();
+			String closed = newExam.getClosed();
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-			String startTimeString = dateFormat.format(startTime);
-			String endTimeString = dateFormat.format(endTime);  
+//			String startTimeString = dateFormat.format(startTime);
+//			String endTimeString = dateFormat.format(endTime);  
 			
 			statement.setString(1, subjectId);
 			statement.setString(2, year);
 			statement.setString(3, semester);
 			statement.setString(4, examType);
 			statement.setString(5, examName);
-			statement.setNString(6, examCreator);
+			statement.setString(6, examCreator);
+			statement.setString(8, published);
+			statement.setString(9, closed);
 			statement.setInt(7, totalMarks);
-			statement.setString(8,startTimeString);
-			statement.setString(9,endTimeString);
-			
+			statement.setString(10, null);
+			statement.setString(11, null);
 			System.out.println(statement);
 			
-			if(statement.execute())
-			{
-				System.out.println("Successfully executed");
-			}else
-			{
-				System.out.println("Error while creating the exam");
-			}
+			statement.execute();
+			
+//			if(statement.execute())
+//			{
+//				System.out.println("Successfully executed");
+//			}else
+//			{
+//				System.out.println("Error while creating the exam");
+//			}
 		}catch(SQLException e)
 		{
+			System.out.println(e);
 			e.printStackTrace();
+			return "Failure";
 		}
+		return "Success";
 	}
 	
 	
@@ -545,6 +555,7 @@ public class ExamDataMapper {
 			if(statement.execute())
 			{
 				System.out.println("Successfully deleted exam");
+				
 			}else
 			{
 				System.out.println("Failed to delete the exam");

@@ -83,8 +83,8 @@ CREATE TABLE exams(
 	
 	totalMarks smallint,
 	
-	startTime VARCHAR(100),
-	endTime VARCHAR(100),
+	startTime VARCHAR(100)  Null,
+	endTime VARCHAR(100) Null,
 	
 	--startTime time,
 	--endTime time,

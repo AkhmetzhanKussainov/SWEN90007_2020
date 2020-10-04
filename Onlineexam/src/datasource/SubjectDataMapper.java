@@ -301,14 +301,17 @@ public class SubjectDataMapper {
 	    	
 	    	while(rs.next()) {
 	    		
-	    		String year = rs.getNString(2);
+	    		String subjectID = rs.getNString(1);
+				String year = rs.getNString(2);
 				String semester = rs.getNString(3);
 				String examType = rs.getNString(4);
 				String examName = rs.getNString(5);
 				String examCreatetor = rs.getNString(6);
-				int totalMarks = rs.getInt(8);
-			
-				Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreatetor, totalMarks);
+				int totalMarks = rs.getInt(9); 
+				String published = rs.getString(7);
+				String closed = rs.getString(8);
+				
+				Exam exam = new Exam(subjectID, year, semester, examType, examName, examCreatetor, totalMarks, published, closed);
 					
 				examList.add(exam);
 
@@ -530,9 +533,11 @@ public class SubjectDataMapper {
 				String examType = rs.getNString(4);
 				String examName = rs.getNString(5);
 				String examCreatetor = rs.getNString(6);
-				int totalMarks = rs.getInt(8); 
+				int totalMarks = rs.getInt(9); 
+				String published = rs.getString(7);
+				String closed = rs.getString(8);
 				
-				Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreatetor, totalMarks);
+				Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreatetor, totalMarks, published, closed);
 				
 				publishedExam.add(exam);
 			}
