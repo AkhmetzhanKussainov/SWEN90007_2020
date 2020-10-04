@@ -5,12 +5,24 @@ import domain.Exam;
 
 public class ExamService {
 	
+	ExamDataMapper examDataMapper;
+	
 	public ExamService()
 	{
-		 ExamDataMapper examDataMapper=new ExamDataMapper();
-		 
+		 examDataMapper=new ExamDataMapper();		 
 		 
 	}
+	
+	public void createExam(Exam newExam)
+	{
+		examDataMapper.publishExam(newExam);
+	}
+	
+	public void updateExam(Exam updatedExam)
+	{
+		examDataMapper.changeExam(updatedExam);
+	}
+	
 	
 
 	

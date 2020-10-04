@@ -43,7 +43,7 @@ public class detailPageController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	/*protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// get data according to name tag in submitted form.
 				String qtype = request.getParameter("qtype");
 				
@@ -64,6 +64,6 @@ public class detailPageController extends HttpServlet {
 		doGet(request,response);
 		
 		
-	}
+	}*/
 
 }

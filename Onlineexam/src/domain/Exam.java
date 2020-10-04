@@ -106,7 +106,6 @@ public class Exam {
 		
 		ExamDataMapper dm = new ExamDataMapper();
 		dm.addScriptbook(scriptbook);
-		scriptbookList.add(scriptbook);
 		
 	}
 
@@ -361,11 +360,19 @@ public class Exam {
 		}
 	}
 	
-	public void studentSubmitExam(Student studentId)
+	public void studentSubmitExam(Scriptbook scriptbook)
 	{
-		
+		ExamDataMapper edm = new ExamDataMapper();
+		edm.studentSubmitsExam(scriptbook);
 	}
-
+	
+	
+	//Scriptbook should already contain updated marks
+	public void updateMarks(Scriptbook scriptbook)
+	{
+		ExamDataMapper edm = new ExamDataMapper();
+		edm.updateMarks(scriptbook);
+	}
 	
 	
 }

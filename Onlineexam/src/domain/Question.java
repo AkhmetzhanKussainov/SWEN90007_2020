@@ -4,8 +4,12 @@ public abstract class Question {
 
 	protected int possibleMark;	
 	protected String id;
+	//protected String examId;
+	protected String subjectId;
+	protected String year;
+	protected String semester;
+	protected String examType;
 	protected String questionText;
-	protected String examId;
 	
 	public enum choice {
 		
@@ -16,11 +20,11 @@ public abstract class Question {
 		
 	}
 	
-	public String getExamId() {
+	/*public String getExamId() {
 		
 		return examId;
 		
-	}
+	}*/
 	
 	public String getId() {
     	return id;
@@ -48,9 +52,9 @@ public abstract class Question {
 		this.questionText = questionText;
 	}
 
-	public void setExamId(String examId) {
+	/*public void setExamId(String examId) {
 		this.examId = examId;
 	}
-
+*/
     
 }

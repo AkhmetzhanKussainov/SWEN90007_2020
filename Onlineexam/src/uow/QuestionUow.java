@@ -49,14 +49,14 @@ public class QuestionUow {
 			}
 		}
 		
-		for(Question q:dirtyQuestion) {
+		/**for(Question q:dirtyQuestion) {
 			try {
 				ExamDataMapper datamapper = new ExamDataMapper();
 				datamapper.updateMarks(q);
 			}catch(Exception e){
 				newDir = false;
 			}
-		}
+		}*/
 		
 		for(Question q:deleteQuestion) {
 			try {
