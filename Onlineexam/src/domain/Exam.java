@@ -305,7 +305,7 @@ public class Exam {
 		}
 	}
 	
-	public void studentSubmitExam()
+	public void studentSubmitExam(Student studentId)
 	{
 		
 	}

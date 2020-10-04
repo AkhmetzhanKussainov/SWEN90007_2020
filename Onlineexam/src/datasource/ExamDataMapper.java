@@ -91,6 +91,12 @@ public class ExamDataMapper {
     private static final String getAttemptsMultiple =
     		"SELECT * from multipleAttempt where subjectId=?,year=?,semester=?,examType=?, studentNumber=?";
     
+    private static final String submittedScriptbook =
+    		"UPDATE scriptbooks SET submitted = TRUE where subjectId=?,year=?,semester=?,examType=?, studentNumber=?";
+    
+    private static final String submitShortAttempt =
+    		"INSERT into shortAttempt ()";
+    
     
     private choice toChoice(String correctAnswer) {
     	
@@ -732,7 +738,27 @@ public class ExamDataMapper {
 	}*/
 	
 
-	
+	public void studentSubmitsExam(Exam exam, String studentId)
+	{
+		//submits scriptbook to set the value to true
+		try {
+			PreparedStatement statement = DBConnection.prepare(submittedScriptbook);
+			statement.setString(1, exam.getSubjectID());
+			statement.setNString(2, exam.getYear());
+			statement.setString(3, exam.getSemester());
+			statement.setString(4, exam.getExamType());
+			statement.setString(5, studentId);
+			statement.execute();
+			
+			
+			//PreparedStatement statement = DBConnection.prepare(stm)
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
 	
 	//TODO studentTakesExam
 	//TODO studentgetAllSubjets
