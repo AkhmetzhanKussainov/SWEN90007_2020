@@ -164,16 +164,16 @@ public class ExamDataMapper {
 	    	
 			while (rs.next()) {
 				
-				String examId = rs.getString(1);
-				String subjectId = rs.getString(2);
-				String examName = rs.getString(3);
-				String examCreator = rs.getString(4);
-				String year = rs.getString(5);
-				String examType = "";
-				String semester = rs.getString(6);
-				int totalMarks =  Integer.parseInt(rs.getString(7));
+//				String examId = rs.getString(1);
+				String subjectId = rs.getString(1);
+				String examName = rs.getString(5);
+				String examCreator = rs.getString(6);
+				String year = rs.getString(2);
+				String examType =rs.getString(4);
+				String semester = rs.getString(3);
+				int totalMarks =  Integer.parseInt(rs.getString(9));
 				
-				Exam exam = new Exam(examId, subjectId, year, semester, examType, examName, examCreator, totalMarks);
+				Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks);
 				
 				for (MultipleQuestion multipleQuestion : loadMultipleQuestionsForExam(subjectId, examType, year, semester)) {
 					

@@ -46,11 +46,11 @@ public class Exam {
 
 	}
 
-	public Exam(String examId, String subjectId, String year, String semester, String examType, String examName,
+	public Exam(String subjectId, String year, String semester, String examType, String examName,
 			String examCreator, int totalMarks) {
 
 		this.subjectId = subjectId;
-		this.examId = examId;
+//		this.examId = examId;
 		this.questionList = new ArrayList<>();
 		this.scriptbookList = new ArrayList<>();
 		this.studentList = new ArrayList<>();

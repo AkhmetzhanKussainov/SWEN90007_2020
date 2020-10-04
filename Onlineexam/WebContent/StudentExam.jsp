@@ -37,7 +37,7 @@ ExamDataMapper em = new ExamDataMapper();
 Subject subject = sm.loadSubject(request.getParameter("subjectCode"));
 
 
-em.loadExams();
+/* em.loadExams(); */
 
 
 %>
@@ -46,11 +46,12 @@ em.loadExams();
 
 <table>
 <tr>
-<th>Exam Id</th>
+<!-- <th>Exam Id</th> -->
 <th>Year</th>
 <th>Semester</th>
 <th>Exam Creator</th>
 <th>Exam Name</th>
+<th>Total Marks</th>
 <th>Total Marks</th>
 </tr>
 
@@ -63,7 +64,7 @@ for (Exam exam : em.loadExams()) {
 		 
 		
 <tr>
-<td><%= exam.getExamId() %></td>
+<%-- <td><%= exam.getExamId() %></td> --%>
 <td><%= exam.getYear() %></td>
 <td><%= exam.getSemester() %></td>
 <td><%= exam.getExamCreator() %></td>
