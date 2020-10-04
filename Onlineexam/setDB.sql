@@ -18,32 +18,42 @@ CREATE TABLE users(
    userName           VARCHAR(10)      NOT NULL,
    userPassword            VARCHAR(10)       NOT NULL,
    userType        VARCHAR(1),
-   userNumber         VARCHAR(10)
-   
+   userNumber         VARCHAR(10) UNIQUE
 );
 
 CREATE TABLE students(
 	studentNumber VARCHAR(10) PRIMARY KEY UNIQUE,
 	house VARCHAR(1),
 	firstName VARCHAR(25),
-	lastName VARCHAR(25)
-
+	lastName VARCHAR(25),
+	
+	CONSTRAINT fk_studentId
+		FOREIGN KEY(studentNumber)
+			REFERENCES users(userNumber)
+			ON DELETE CASCADE
 );
-
 
 CREATE TABLE teachers(
 	teacherNumber VARCHAR(10) PRIMARY KEY,
 	house VARCHAR(1),
 	firstName VARCHAR(25),
 	lastName VARCHAR(25),
-	title VARCHAR(25)
-
+	title VARCHAR(25),
+	
+	CONSTRAINT fk_teacherId
+		FOREIGN KEY(teacherNumber)
+			REFERENCES users(userNumber)
+			ON DELETE CASCADE
 );
 
---CREATE TABLE administrators(
---	adminNumber VARCHAR(10) PRIMARY KEY,
-
---);
+CREATE TABLE administrators(
+	adminNumber VARCHAR(10) PRIMARY KEY,
+	
+	CONSTRAINT fk_adminId
+		FOREIGN KEY(adminNumber)
+			REFERENCES users(userNumber)
+			ON DELETE CASCADE
+);
 
 
 
