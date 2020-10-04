@@ -350,7 +350,7 @@ public class UserDataMapper {
 	    	
 	    }
 	
-	public void createUser(String userName, String password, String Type, String userNumber) {
+	private void createUser(String userName, String password, String Type, String userNumber) {
 		try {
 			PreparedStatement stmt = DBConnection.prepare(createUser);
 			
