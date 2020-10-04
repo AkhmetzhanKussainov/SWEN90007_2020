@@ -40,10 +40,10 @@ CREATE TABLE teachers(
 
 );
 
-CREATE TABLE administrators(
-	adminNumber VARCHAR(10) PRIMARY KEY,
+--CREATE TABLE administrators(
+--	adminNumber VARCHAR(10) PRIMARY KEY,
 
-);
+--);
 
 
 

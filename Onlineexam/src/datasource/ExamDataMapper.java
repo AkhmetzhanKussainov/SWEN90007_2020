@@ -53,8 +53,8 @@ public class ExamDataMapper {
     		"UPDATE exams SET examName = ? , examCreator = ?, totalMarks=?, startTime =?, endTime=? where subjectId = ?, year=?, semester=? , examType=?";
     
     private static final String createExam = 
-    		"INSERT into exams (subjectId, year, semester, examType, examName, examCreator, totalMarks, startTime, endTime)"
-    		+ "VALUES (?,?,?,?,?,?,?,?,?)";
+    		"INSERT into exams (subjectId, year, semester, examType, examName, examCreator, published, closed, totalMarks, startTime, endTime)"
+    		+ "VALUES (?,?,?,?,?,?,'Y','N',?,?,?)";
     
     private static final String deleteExam = 
     		"DELETE from exams where subjectId=? , year = ? , semester = ? , examType = ?";
