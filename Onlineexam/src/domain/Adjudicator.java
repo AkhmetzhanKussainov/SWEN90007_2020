@@ -16,7 +16,7 @@ public class Adjudicator {
 			Date start = sdf.parse(etr.getStart_time());
 			Date end = sdf.parse(etr.getEnd_time());
 
-			//Get curent time
+			//Get current time
 			Date now = new Date();
 			
 			//Convert String time into long

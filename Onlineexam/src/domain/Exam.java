@@ -31,9 +31,9 @@ public class Exam {
 	
 	private String semester;
 	
-	private Date startDate;
+	private Date startDate = null;
 	
-	private Date endDate;
+	private Date endDate = null;
 	
 	
 	public void addQuestion(Question question) {
@@ -55,6 +55,23 @@ public class Exam {
 		this.examType = examType;
 		this.examName = examName;
 		this.examCreator = examCreator;
+	}
+	
+	public Exam(String subjectId, String year, String semester, String examType, String examName, String examCreator, int totalMarks, Date startDate, Date endDate) {
+		
+		this.questionList = new ArrayList<>();
+		this.scriptbookList = new ArrayList<>();
+		this.studentList = new ArrayList<>();
+		this.setTotalMarks(totalMarks);	
+		this.studentsTaking = 0;
+		this.subjectID = subjectId;
+		this.year = year;
+		this.semester= semester;
+		this.examType = examType;
+		this.examName = examName;
+		this.examCreator = examCreator;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 	
 	public void addScriptbook(Scriptbook scriptbook) {
@@ -119,6 +136,22 @@ public class Exam {
 		return this.questionList;
 	}
 	
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
 	public void updateQuestions(List<MultipleQuestion> multipleQuestionList, List<ShortQuestion> shortQuestionList)
 	{
 		ExamDataMapper datamapper = new ExamDataMapper();
@@ -186,6 +219,33 @@ public class Exam {
 		ExamDataMapper mapper = new ExamDataMapper();
 		this.scriptbookList = mapper.loadScriptbooksForExam(this.subjectID, this.examType, this.year, this.semester);
 		return this.scriptbookList;
+	}
+	
+	public List<Attempt> getAllAttempts(String studentId)
+	{
+		List<Attempt> attempts = new ArrayList<>();
+		ExamDataMapper mapper = new ExamDataMapper();
+		List<Scriptbook> temp = mapper.loadScriptbooksForExam(this.subjectID, this.examType, this.year, this.semester);
+		for(Scriptbook s: temp)
+		{
+			if(s.getStudentNumber().equals(studentId))
+			{
+				if(s.isSubmitted())
+				{
+					return mapper.getAllAttempts(this, studentId);
+				}else
+				{
+					return null;
+				}
+			}
+		}
+		return attempts;
+	}
+	
+	public void createNewExam()
+	{
+		ExamDataMapper dm = new ExamDataMapper();
+		dm.publishExam(this);
 	}
 	
 	

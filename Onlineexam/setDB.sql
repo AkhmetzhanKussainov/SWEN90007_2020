@@ -40,6 +40,11 @@ CREATE TABLE teachers(
 
 );
 
+CREATE TABLE administrators(
+	adminNumber VARCHAR(10) PRIMARY KEY,
+
+);
+
 
 
 CREATE TABLE subjects(
@@ -62,8 +67,8 @@ CREATE TABLE exams(
 	
 	totalMarks smallint,
 	
-	--startTime VARCHAR(50),
-	--endTime VARCHAR(50),
+	startTime VARCHAR(100),
+	endTime VARCHAR(100),
 	
 	--startTime time,
 	--endTime time,

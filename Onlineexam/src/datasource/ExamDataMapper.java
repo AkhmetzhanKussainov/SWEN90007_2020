@@ -3,16 +3,23 @@ package datasource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import domain.MultipleQuestion;
 import domain.Question.choice;
 import domain.Question;
 import domain.Scriptbook;
+import domain.ShortAttempt;
 import domain.ShortQuestion;
+import domain.Adjudicator;
 import domain.Attempt;
 import domain.Exam;
+import domain.ExamTimeRange;
+import domain.MultipleAttempt;
 
 public class ExamDataMapper {
 	
@@ -25,29 +32,29 @@ public class ExamDataMapper {
     		"SELECT * from multipleQuestion";
 	
     private static final String changeMultiMark =
-			"UPDATE multipleQuestion SET marks = ? where multiq_id = ? ";
+			"UPDATE multipleQuestion SET marks = ? where subjectId=?,year=?,semester=?,examType=?, questionId=?, studentNumber = ? ";
 	
     private static final String findAllShortStatement =
 			"SELECT * from shortQuestion";
     		
     private static final String findAllMultipleByExamStatement =
-    "select * from multiplequestion where examId=";
+    "select * from multiplequestion where subjectId=?,year=?,semester=?,examType=?";
     
     private static final String findAllShortByExamStatement =
-    	    "select * from shortquestion where examId=";
+    	    "select * from shortquestion where subjectId=?,year=?,semester=?,examType=?";
     
     private static final String findAllScriptbooksByExamStatement =
-    	    "select * from scriptbooks where examId=";
+    	    "select * from scriptbooks where subjectId=?,year=?,semester=?,examType=?";
     		
     private static final String changeShortMark =
-			"UPDATE shortQuestion SET marks = ? where shortq_id = ? ";
+			"UPDATE shortQuestion SET marks = ? where subjectId=?,year=?,semester=?,examType=?, questionId=?, studentNumber = ? ";
     
     private static final String changeExam =
-    		"UPDATE exams SET examName = ? , examCreator = ? where subjectId = ?, year=?, semester=? , examType=?";
+    		"UPDATE exams SET examName = ? , examCreator = ?, totalMarks=?, startTime =?, endTime=? where subjectId = ?, year=?, semester=? , examType=?";
     
     private static final String createExam = 
-    		"INSERT into exams (subjectId, year, semester, examType, examName, examCreator, totalMarks)"
-    		+ "VALUES (?,?,?,?,?,?,?)";
+    		"INSERT into exams (subjectId, year, semester, examType, examName, examCreator, totalMarks, startTime, endTime)"
+    		+ "VALUES (?,?,?,?,?,?,?,?,?)";
     
     private static final String deleteExam = 
     		"DELETE from exams where subjectId=? , year = ? , semester = ? , examType = ?";
@@ -76,8 +83,13 @@ public class ExamDataMapper {
     		"INSERT into shortQuestion (questionId, subjectId, year, semester, examType, questionText, ansA, ansB, ansC, ansD, correctAnswer, possibleMarks, answerNumber)"
     	    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
     
-    private static final String getAttemptsStatement =
-    		"SELECT * from ";
+    private static final String findScriptBookByExamStudent =
+    		"SELECT * from scripbooks where subjectId=?,year=?,semester=?,examType=?, studentNumber=?";
+    
+    private static final String getAttemptsShort =
+    		"SELECT * from shortAttempt where subjectId=?,year=?,semester=?,examType=?, studentNumber=?";
+    private static final String getAttemptsMultiple =
+    		"SELECT * from multipleAttempt where subjectId=?,year=?,semester=?,examType=?, studentNumber=?";
     
     
     private choice toChoice(String correctAnswer) {
@@ -258,11 +270,16 @@ public class ExamDataMapper {
 				String semester = rs.getString(3);
 				String examType = rs.getString(4);
 				
-				String studentId = rs.getString(5);
-				int scriptMark = Integer.parseInt( rs.getString(9) );
-				boolean marked = isTrue(rs.getString(10));
+				boolean submitted = rs.getBoolean(5);
 				
-				scriptbooks.add(new Scriptbook(subjectId, year, semester, examType, studentId, scriptMark, marked));
+				String studentId = rs.getString(5);
+				int scriptMark = Integer.parseInt( rs.getString(6) );
+				boolean marked = isTrue(rs.getString(7));
+				
+				Scriptbook temp = new Scriptbook(subjectId, year, semester, examType, studentId, scriptMark, marked);
+				temp.setSubmitted(submitted);
+				
+				scriptbooks.add(temp);
 			
 			}
 					
@@ -431,13 +448,22 @@ public class ExamDataMapper {
 				String year = updatedExam.getYear();
 				String semester = updatedExam.getSemester();
 				String examType = updatedExam.getExamType();
+				int totalMarks = updatedExam.getTotalMarks();
+				Date startTime = updatedExam.getStartDate();
+				Date endTime = updatedExam.getEndDate();
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+				String startTimeString = dateFormat.format(startTime);
+				String endTimeString = dateFormat.format(endTime);  
 				
 				statement.setString(1, examName);
 				statement.setString(2, examCreator);
-				statement.setString(3, subjectID);
-				statement.setString(4, year);
-				statement.setString(5, semester);
-				statement.setString(6, examType);
+				statement.setInt(3, totalMarks);
+				statement.setString(4,startTimeString);
+				statement.setNString(5, endTimeString);
+				statement.setString(6, subjectID);
+				statement.setString(7, year);
+				statement.setString(8, semester);
+				statement.setString(9, examType);
 				
 				System.out.println(statement);
 				
@@ -471,6 +497,11 @@ public class ExamDataMapper {
 			String examName = newExam.getExamName();
 			String examCreator = newExam.getexamCreator();
 			int totalMarks = newExam.getTotalMarks();
+			Date startTime = newExam.getStartDate();
+			Date endTime = newExam.getEndDate();
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+			String startTimeString = dateFormat.format(startTime);
+			String endTimeString = dateFormat.format(endTime);  
 			
 			statement.setString(1, subjectId);
 			statement.setString(2, year);
@@ -479,6 +510,8 @@ public class ExamDataMapper {
 			statement.setString(5, examName);
 			statement.setNString(6, examCreator);
 			statement.setInt(7, totalMarks);
+			statement.setString(8,startTimeString);
+			statement.setString(9,endTimeString);
 			
 			System.out.println(statement);
 			
@@ -522,22 +555,6 @@ public class ExamDataMapper {
 		}
 	}
 	
-	
-	/*public void saveExam(List<MultipleQuestion> multipleQuestionList, List<ShortQuestion> shortQuestionList)
-	{
-		try
-		{
-			PreparedStatement statement = DBConnection.prepare(findExam);
-			
-			String examID = new String();
-			
-			statement.setString(1,examID);
-			
-		}catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
-	}*/
 	
 	public void closeExam(Exam closedExam)
 	{
@@ -599,19 +616,130 @@ public class ExamDataMapper {
 		}
 	}
 	
-	public List<Attempt> getAllAttempts(Scriptbook s)
+	/*public Scriptbook findScriptByExamStudent(Exam exam, String studentID)
+	{
+		try {
+			PreparedStatement statement = DBConnection.prepare(findScriptBookByExamStudent);
+			statement.setString(1, exam.getSubjectID());
+			statement.setNString(2, exam.getYear());
+			statement.setNString(3, exam.getSemester());
+			statement.setNString(4, exam.getExamType());
+			statement.setNString(5, studentID);
+			
+			ResultSet rs = statement.executeQuery();
+			
+			while(rs.next())
+			{
+				String subjectId = rs.getString(1);
+				String year = rs.getString(2);
+				String semester = rs.getNString(3);
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}*/
+	
+	
+	
+	public List<Attempt> getAllAttempts(Exam exam, String studentID)
 	{
 		List<Attempt> attempts = new ArrayList<>();
-		if(s.isSubmitted())
+		try
 		{
+			PreparedStatement statement = DBConnection.prepare(getAttemptsShort);
+			statement.setString(1, exam.getSubjectID());
+			statement.setNString(2, exam.getYear());
+			statement.setNString(3, exam.getSemester());
+			statement.setNString(4, exam.getExamType());
+			statement.setNString(5, studentID);
 			
-		}else
+			ResultSet rs = statement.executeQuery();
+			
+			while(rs.next())
+			{
+				int questionId = rs.getInt(1);
+				String subjectId = rs.getNString(2);
+				String year =rs.getNString(3);
+				String semester = rs.getNString(4);
+				String examType = rs.getNString(5);
+				String studentNumber = rs.getNString(6);
+				String attemptAns = rs.getNString(7);
+				int mark = rs.getInt(8);
+				boolean marked = rs.getBoolean(9);
+				Attempt temp = new Attempt(Integer.toString(questionId),subjectId,year,semester,examType,studentNumber,attemptAns);
+				attempts.add(temp);
+			}
+			
+		}catch(SQLException e)
 		{
-			return null;
+			e.printStackTrace();
+		}
+		
+		try
+		{
+			PreparedStatement statement = DBConnection.prepare(getAttemptsMultiple);
+			statement.setString(1, exam.getSubjectID());
+			statement.setNString(2, exam.getYear());
+			statement.setNString(3, exam.getSemester());
+			statement.setNString(4, exam.getExamType());
+			statement.setNString(5, studentID);
+			
+			ResultSet rs = statement.executeQuery();
+			
+			while(rs.next())
+			{
+				int questionId = rs.getInt(1);
+				String subjectId = rs.getNString(2);
+				String year =rs.getNString(3);
+				String semester = rs.getNString(4);
+				String examType = rs.getNString(5);
+				String studentNumber = rs.getNString(6);
+				String attemptAns = rs.getNString(7);
+				int mark = rs.getInt(8);
+				boolean marked = rs.getBoolean(9);
+				Attempt temp = new Attempt(Integer.toString(questionId),subjectId,year,semester,examType,studentNumber,attemptAns);
+				attempts.add(temp);
+			}
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
 		}
 		
 		return attempts;
-		
 	}
+	
+	//TODO submissionTimeValid
+	public Boolean checkSubmissionTimeValid(Exam exam)
+	{
+		ExamTimeRange etr = new ExamTimeRange();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		String startTimeString = dateFormat.format(exam.getStartDate());
+		String endTimeString = dateFormat.format(exam.getEndDate());  
+		etr.setStart_time(startTimeString);
+		etr.setEnd_time(endTimeString);
+		Adjudicator adjudicator = new Adjudicator();
+		if(adjudicator.checkExamTime(etr))
+		{
+			return true;
+		}else
+		{
+			return false;
+		}
+
+	}
+	
+	
+	
+	
+	//TODO studentTakesExam
+	//TODO studentgetAllSubjets
+	//TODO studentsubmitExam
+
+	
+	//TODO update SQL statements from previous to fit the current DB
 	
 }

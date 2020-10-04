@@ -2,11 +2,29 @@ package domain;
 
 public class Attempt {
 
-	private int mark;
 	
-	private boolean marked = false;
+	protected String questionId;
+	protected String subjectId;
+	protected String year;
+	protected String semester;
+	protected String examType;
+	protected String studentNumber;
+	protected String attemptAns;
+	protected int mark;
+	protected boolean marked = false;
 	
-	private String questionId;
+	public Attempt(String questionId, String subjectId, String year, String semester, String examType, String studentNumber, String attemptedAns)
+	{
+		this.questionId = questionId;
+		this.subjectId = subjectId;
+		this.year = year;
+		this.semester = semester;
+		this.examType = examType;
+		this.studentNumber = studentNumber;
+		this.attemptAns = attemptedAns;
+	}
+	
+
 	
 	public void setQuestionId(String questionId) {
 		
