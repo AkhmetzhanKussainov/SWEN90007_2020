@@ -11,7 +11,11 @@ import datasource.SubjectDataMapper;
 
 public class Exam {
 	
-	private List<Question> questionList;
+	//private List<Question> questionList;
+	
+	private List<MultipleQuestion> multipleQuestionList;
+	
+	private List<ShortQuestion> shortQuestionList;
 	
 	private List<Scriptbook> scriptbookList;
 	
@@ -38,15 +42,27 @@ public class Exam {
 	private Date endDate = null;
 	
 	
-	public void addQuestion(Question question) {
+	/*public void addQuestion(Question question) {
 		
 		questionList.add(question);
 		
+	}*/
+	
+	public void addMultipleQuestion(MultipleQuestion q)
+	{
+		this.multipleQuestionList.add(q);
+	}
+	
+	public void addShortQuestion(ShortQuestion q)
+	{
+		this.shortQuestionList.add(q);
 	}
 	
 	public Exam(String subjectId, String year, String semester, String examType, String examName, String examCreator, int totalMarks) {
 		
-		this.questionList = new ArrayList<>();
+		//this.questionList = new ArrayList<>();
+		this.multipleQuestionList = new ArrayList<>();
+		this.shortQuestionList = new ArrayList<>();
 		this.scriptbookList = new ArrayList<>();
 		this.studentList = new ArrayList<>();
 		this.setTotalMarks(totalMarks);	
@@ -61,7 +77,9 @@ public class Exam {
 	
 	public Exam(String subjectId, String year, String semester, String examType, String examName, String examCreator, int totalMarks, Date startDate, Date endDate) {
 		
-		this.questionList = new ArrayList<>();
+		//this.questionList = new ArrayList<>();
+		this.multipleQuestionList = new ArrayList<>();
+		this.shortQuestionList = new ArrayList<>();
 		this.scriptbookList = new ArrayList<>();
 		this.studentList = new ArrayList<>();
 		this.setTotalMarks(totalMarks);	
@@ -135,10 +153,20 @@ public class Exam {
 		return this.examName;
 	}
 	
-	public List<Question> getQuestionList()
+	public List<MultipleQuestion> getMultipleQuestionList()
+	{
+		return this.multipleQuestionList;
+	}
+	
+	public List<ShortQuestion> getShortQuestionList()
+	{
+		return this.shortQuestionList;
+	}
+	
+	/*public List<Question> getQuestionList()
 	{
 		return this.questionList;
-	}
+	}*/
 	
 	public Date getStartDate() {
 		return startDate;
@@ -232,7 +260,7 @@ public class Exam {
 		return this.scriptbookList;
 	}
 	
-	public List<Attempt> getAllAttempts(String studentId)
+	/*public List<Attempt> getAllAttempts(String studentId)
 	{
 		List<Attempt> attempts = new ArrayList<>();
 		ExamDataMapper mapper = new ExamDataMapper();
@@ -251,6 +279,22 @@ public class Exam {
 			}
 		}
 		return attempts;
+	}*/
+	
+	public List<MultipleAttempt> getMultipleAttempts(String studentID)
+	{
+		List<MultipleAttempt> attempts = new ArrayList<>();
+		ExamDataMapper mapper = new ExamDataMapper();
+		return mapper.getMultipleAttempt(this, studentID);
+		
+	}
+	
+	public List<ShortAttempt> getShortAttempts(String studentID)
+	{
+		List<ShortAttempt> attempts = new ArrayList<>();
+		ExamDataMapper mapper = new ExamDataMapper();
+		return mapper.getShortAttempts(this, studentID);
+		
 	}
 	
 	public void createNewExam()

@@ -54,7 +54,7 @@ public class ExamDataMapper {
     
     private static final String createExam = 
     		"INSERT into exams (subjectId, year, semester, examType, examName, examCreator, published, closed, totalMarks, startTime, endTime)"
-    		+ "VALUES (?,?,?,?,?,?,'Y','N',?,?,?)";
+    		+ "VALUES (?,?,?,?,?,?,'T','F',?,?,?)";
     
     private static final String deleteExam = 
     		"DELETE from exams where subjectId=? , year = ? , semester = ? , examType = ?";
@@ -63,7 +63,7 @@ public class ExamDataMapper {
     		"SELECT * from exams where examId=?";
     
     private static final String closeExam =
-    		"UPDATE exams SET closed = 'Y' where subjectId=?, year=?, semester = ?, examType = ?";
+    		"UPDATE exams SET closed = 'T' where subjectId=?, year=?, semester = ?, examType = ?";
     
     private static final String addScriptbook =
     		"INSERT into scriptbooks (subjectId,year,semester,examType,studentNumber, scriptTotalMarks, marked)"
@@ -95,7 +95,11 @@ public class ExamDataMapper {
     		"UPDATE scriptbooks SET submitted = TRUE where subjectId=?,year=?,semester=?,examType=?, studentNumber=?";
     
     private static final String submitShortAttempt =
-    		"INSERT into shortAttempt ()";
+    		"INSERT into shortAttempt (questionId, subjectId, year, semester, examType, studentNumber, attemptAns, mark, marked)"
+    		+ "VALUES(?,?,?,?,?,?,?,?,?)";
+    private static final String submitMultipleAttempt =
+    		"INSERT into multipleAttempt (questionId, subjectId, year, semester, examType, studentNumber, attemptAns, mark, marked)"
+    		+ "VALUES(?,?,?,?,?,?,?,?,?)";
     
     
     private choice toChoice(String correctAnswer) {
@@ -176,19 +180,25 @@ public class ExamDataMapper {
 				String examType = rs.getString(4);
 				String examName = rs.getString(5);
 				String examCreator = rs.getString(6);
-				int totalMarks =  Integer.parseInt(rs.getString(7));
+				String published = rs.getNString(7);
+				String closed = rs.getNString(8);
+				
+				int totalMarks =  Integer.parseInt(rs.getString(9));
+				
+				String startTime = rs.getNString(10);
+				String endTime = rs.getNString(11);
 				
 				Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks);
 				
 				for (MultipleQuestion multipleQuestion : loadMultipleQuestionsForExam(subjectId, examType, year, semester)) {
 					
-					exam.addQuestion(multipleQuestion);
+					exam.addMultipleQuestion(multipleQuestion);
 					
 				}
 				
 				for (ShortQuestion shortQuestion : loadShortQuestionsForExam(subjectId, examType, year, semester)) {
 					
-					exam.addQuestion(shortQuestion);
+					exam.addShortQuestion(shortQuestion);
 					
 				}
 				
@@ -622,7 +632,7 @@ public class ExamDataMapper {
 		}
 	}
 	
-	/*public Scriptbook findScriptByExamStudent(Exam exam, String studentID)
+	public Scriptbook findScriptByExamStudent(Exam exam, String studentID)
 	{
 		try {
 			PreparedStatement statement = DBConnection.prepare(findScriptBookByExamStudent);
@@ -639,6 +649,14 @@ public class ExamDataMapper {
 				String subjectId = rs.getString(1);
 				String year = rs.getString(2);
 				String semester = rs.getNString(3);
+				String examType = rs.getNString(4);
+				boolean submitted = rs.getBoolean(5);
+				String studentNumber = rs.getNString(6);
+				int scriptTotalMarks = rs.getInt(7);
+				boolean marked = rs.getBoolean(8);
+				Scriptbook temp = new Scriptbook(subjectId,year, semester,examType,studentNumber,scriptTotalMarks, marked);
+				temp.setSubmitted(submitted);
+				return temp;
 			}
 			
 			
@@ -647,13 +665,13 @@ public class ExamDataMapper {
 		}
 		
 		return null;
-	}*/
+	}
 	
 	
 	
-	public List<Attempt> getAllAttempts(Exam exam, String studentID)
+	public List<ShortAttempt> getShortAttempts(Exam exam, String studentID)
 	{
-		List<Attempt> attempts = new ArrayList<>();
+		List<ShortAttempt> attempts = new ArrayList<>();
 		try
 		{
 			PreparedStatement statement = DBConnection.prepare(getAttemptsShort);
@@ -676,7 +694,7 @@ public class ExamDataMapper {
 				String attemptAns = rs.getNString(7);
 				int mark = rs.getInt(8);
 				boolean marked = rs.getBoolean(9);
-				Attempt temp = new Attempt(Integer.toString(questionId),subjectId,year,semester,examType,studentNumber,attemptAns);
+				ShortAttempt temp = new ShortAttempt(Integer.toString(questionId),subjectId,year,semester,examType,studentNumber,attemptAns);
 				attempts.add(temp);
 			}
 			
@@ -684,7 +702,11 @@ public class ExamDataMapper {
 		{
 			e.printStackTrace();
 		}
-		
+		return attempts;
+	}
+	public List<MultipleAttempt> getMultipleAttempt(Exam exam, String studentID)
+	{
+		List<MultipleAttempt> attempts = new ArrayList<>();
 		try
 		{
 			PreparedStatement statement = DBConnection.prepare(getAttemptsMultiple);
@@ -707,7 +729,7 @@ public class ExamDataMapper {
 				String attemptAns = rs.getNString(7);
 				int mark = rs.getInt(8);
 				boolean marked = rs.getBoolean(9);
-				Attempt temp = new Attempt(Integer.toString(questionId),subjectId,year,semester,examType,studentNumber,attemptAns);
+				MultipleAttempt temp = new MultipleAttempt(Integer.toString(questionId),subjectId,year,semester,examType,studentNumber,attemptAns);
 				attempts.add(temp);
 			}
 		}catch(SQLException e)
@@ -717,6 +739,7 @@ public class ExamDataMapper {
 		
 		return attempts;
 	}
+	
 	
 	//TODO submissionTimeValid
 /*	public Boolean checkSubmissionTimeValid(Exam exam)
@@ -738,17 +761,56 @@ public class ExamDataMapper {
 	}*/
 	
 
-	public void studentSubmitsExam(Exam exam, String studentId)
+	public void studentSubmitsExam(Scriptbook scriptbook)
 	{
 		//submits scriptbook to set the value to true
 		try {
-			PreparedStatement statement = DBConnection.prepare(submittedScriptbook);
-			statement.setString(1, exam.getSubjectID());
-			statement.setNString(2, exam.getYear());
+			PreparedStatement statementUpdateScriptbook = DBConnection.prepare(submittedScriptbook);
+			statementUpdateScriptbook.setString(1, scriptbook.getSubjectId());
+			statementUpdateScriptbook.setNString(2, scriptbook.getYear());
+			statementUpdateScriptbook.setString(3, scriptbook.getSemester());
+			statementUpdateScriptbook.setString(4,	scriptbook.getExamType());
+			statementUpdateScriptbook.setString(5, scriptbook.getStudentNumber());
+			statementUpdateScriptbook.execute();
+			
+			List<ShortAttempt> sa = scriptbook.getShortAttemptList();
+			List<MultipleAttempt> ma = scriptbook.getMultipleAttemptList();
+			
+			for(ShortAttempt a:sa)
+			{
+				PreparedStatement statementSubmitShort = DBConnection.prepare(submitShortAttempt);
+				statementSubmitShort.setInt(1, Integer.parseInt(a.getQuestionId()));
+				statementSubmitShort.setString(2, scriptbook.getSubjectId());
+				statementSubmitShort.setNString(3, scriptbook.getYear());
+				statementSubmitShort.setString(4, scriptbook.getSemester());
+				statementSubmitShort.setString(5,	scriptbook.getExamType());
+				statementSubmitShort.setString(6, scriptbook.getStudentNumber());
+				statementSubmitShort.setNString(7, a.getShortAnswer());
+				statementSubmitShort.setInt(8, a.getMark());
+				statementSubmitShort.setBoolean(9, false);
+				statementSubmitShort.execute();
+			}
+			
+			for(MultipleAttempt a:ma)
+			{
+				PreparedStatement statementSubmitMultiple = DBConnection.prepare(submitMultipleAttempt);
+				statementSubmitMultiple.setInt(1, Integer.parseInt(a.getQuestionId()));
+				statementSubmitMultiple.setNString(2, scriptbook.getYear());
+				statementSubmitMultiple.setString(3, scriptbook.getSemester());
+				statementSubmitMultiple.setString(4,	scriptbook.getExamType());
+				statementSubmitMultiple.setString(5, scriptbook.getStudentNumber());
+				statementSubmitMultiple.setNString(6, a.getChoice().toString());
+				statementSubmitMultiple.setInt(7, a.getMark());
+				statementSubmitMultiple.setBoolean(8, false);
+				statementSubmitMultiple.execute();
+			}
+
+			
+			/*statement.setNString(2, exam.getYear());
 			statement.setString(3, exam.getSemester());
 			statement.setString(4, exam.getExamType());
 			statement.setString(5, studentId);
-			statement.execute();
+			statement.execute();*/
 			
 			
 			//PreparedStatement statement = DBConnection.prepare(stm)

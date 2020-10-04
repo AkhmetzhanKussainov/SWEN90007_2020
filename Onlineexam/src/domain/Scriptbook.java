@@ -13,7 +13,11 @@ public class Scriptbook {
 	
 	private Exam exam;
 	
-	private List<Attempt> attemptList;
+	//private List<Attempt> attemptList;
+	
+	private List<MultipleAttempt> multipleAttemptList;
+	
+	private List<ShortAttempt> shortAttemptList;
 	
 	private String studentNumber;
 	
@@ -35,7 +39,10 @@ public class Scriptbook {
 		this.marked = marked;
 		this.totalMark = scriptMark;
 		
-		attemptList = new ArrayList<>();
+		multipleAttemptList = new ArrayList<>();
+		shortAttemptList = new ArrayList<>();
+		
+		//attemptList = new ArrayList<>();
 				
 	}
 	
@@ -76,13 +83,22 @@ public class Scriptbook {
 		
 		int summedMark = 0;
 		
-		for (Attempt attempt : attemptList) {
+		for (MultipleAttempt attempt : multipleAttemptList) {
 			if (attempt.isMarked()) {
 				
 				summedMark += attempt.getMark();
 				
 			}
-		}	
+		}
+		
+		for(ShortAttempt attempt: shortAttemptList)
+		{
+			if (attempt.isMarked()) {
+				
+				summedMark += attempt.getMark();
+				
+			}
+		}
 		
 		return summedMark;
 		
@@ -95,7 +111,9 @@ public class Scriptbook {
 	
 	public void resetAttemptList()
 	{
-		this.attemptList = new ArrayList<>();
+		this.multipleAttemptList = new ArrayList<>();
+		this.shortAttemptList = new ArrayList<>();
+		//this.attemptList = new ArrayList<>();
 	}
 
 	public String getSubjectId() {
@@ -137,18 +155,40 @@ public class Scriptbook {
 	public void setExam(Exam exam) {
 		this.exam = exam;
 	}
+	
 
-	public List<Attempt> getAttemptList() {
+
+	/*public List<Attempt> getAttemptList() {
 		return attemptList;
+	}*/
+
+public List<MultipleAttempt> getMultipleAttemptList() {
+		return multipleAttemptList;
 	}
 
-	public void setAttemptList(List<Attempt> attemptList) {
-		this.attemptList = attemptList;
+	public void setMultipleAttemptList(List<MultipleAttempt> multipleAttemptList) {
+		this.multipleAttemptList = multipleAttemptList;
+	}
+
+	public List<ShortAttempt> getShortAttemptList() {
+		return shortAttemptList;
+	}
+
+	public void setShortAttemptList(List<ShortAttempt> shortAttemptList) {
+		this.shortAttemptList = shortAttemptList;
 	}
 
 	public void setSubmitted(boolean submitted) {
 		this.submitted = submitted;
 	}
+
+/**	public void setAttemptList(List<Attempt> attemptList) {
+		this.attemptList = attemptList;
+	}/
+
+	public void setSubmitted(boolean submitted) {
+		this.submitted = submitted;
+	}*/
 
 	public void setStudentNumber(String studentNumber) {
 		this.studentNumber = studentNumber;
