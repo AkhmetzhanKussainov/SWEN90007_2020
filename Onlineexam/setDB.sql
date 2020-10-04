@@ -40,6 +40,11 @@ CREATE TABLE teachers(
 
 );
 
+CREATE TABLE administrators(
+	adminNumber VARCHAR(10) PRIMARY KEY,
+
+);
+
 
 
 CREATE TABLE subjects(
@@ -57,8 +62,13 @@ CREATE TABLE exams(
 	examType VARCHAR(1),
 	examName VARCHAR(100),
 	examCreator VARCHAR(10),
+	published VARCHAR(1),
+	closed VARCHAR(1),
 	
 	totalMarks smallint,
+	
+	startTime VARCHAR(100),
+	endTime VARCHAR(100),
 	
 	--startTime time,
 	--endTime time,
@@ -82,6 +92,7 @@ CREATE TABLE scriptbooks(
 	year VARCHAR(10),
 	semester VARCHAR(1),
 	examType VARCHAR(1),
+	submitted boolean,
 	
 	studentNumber VARCHAR(10),
 	
@@ -275,13 +286,13 @@ VALUES ('DIV101', 'Divination');
 
 
 INSERT INTO exams
-VALUES ('HIS101', '2020','2','F','History of Magic End of Semester Exam','T12',70);
+VALUES ('HIS101', '2020','2','F','History of Magic End of Semester Exam','T12','N', 70);
 
 INSERT INTO exams
-VALUES ('HIS101', '2020','2','M','History of Magic End of Midsemester Exam','T12',30);
+VALUES ('HIS101', '2020','2','M','History of Magic End of Midsemester Exam','T12','Y', 30);
 
 INSERT INTO exams
-VALUES ('DEF101', '2020','2','F','Defense Against the Dark Arts End of Magic End of Semester Exam','T12',30);
+VALUES ('DEF101', '2020','2','F','Defense Against the Dark Arts End of Magic End of Semester Exam','T12','Y', 30);
 
 INSERT INTO scriptbooks
 VALUES ('HIS101', '2020','2','F','S12',0,false);

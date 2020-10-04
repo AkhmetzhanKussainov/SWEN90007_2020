@@ -36,5 +36,21 @@ public abstract class Question {
     	
     }
 
+	public void setPossibleMark(int possibleMark) {
+		this.possibleMark = possibleMark;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setQuestionText(String questionText) {
+		this.questionText = questionText;
+	}
+
+	public void setExamId(String examId) {
+		this.examId = examId;
+	}
+
     
 }
