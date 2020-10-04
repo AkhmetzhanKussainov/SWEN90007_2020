@@ -15,8 +15,9 @@ import domain.User.houses;
 public class UserDataMapper {
 	
 	private static final String findUser = "SELECT * FROM users WHERE userId=";
-	private static final String findStudentFull = "SELECT * FROM students JOIN users ON userNumber=studentNumber WHERE userid=";
-	private static final String findTeacherFull = "SELECT * FROM teachers JOIN users ON userNumber=teacherNumber WHERE userid=";
+
+	private static final String findStudentFull = "SELECT * FROM students JOIN users ON userNumber=studentNumber WHERE userNumber= ?";
+	private static final String findTeacherFull = "SELECT * FROM teachers JOIN users ON userNumber=teacherNumber WHERE userNumber= ?";
 	private static final String findAllUsers = "SELECT * FROM users";
 	
 	private static final String createUser = 
@@ -69,6 +70,7 @@ public class UserDataMapper {
   	    	
   	    	ResultSet rs = stmt.executeQuery();
   	    	
+
   			while (rs.next()) {
   				
   				String userId = rs.getString(1);
@@ -78,28 +80,26 @@ public class UserDataMapper {
   				String userNumber = rs.getString(5);
   				
   				if (userType.equals("S")) {
-  				
-	  				Student student = new Student(userId, userName, password, userNumber);
-	    
+
+  					Student student = loadFullStudent(userNumber);
 	  				studentList.add(student);
 	  				
-	  				
-	  				//Put the data in the identity map
+	  			//Put the data in the identity map
 	  				IdentityMap<Student> identityMap = IdentityMap.getInstance(student);
 	  				
 	  				//Put the student 
 	  				identityMap.put(userId, student);
+
 	  				
   				}
   				
   				if (userType.equals("T")) {
   	  				
-	  				Teacher teacher = new Teacher(userId, userName, password, userNumber);
+  					Teacher teacher = loadFullTeacher(userNumber);
 	    
 	  				teacherList.add(teacher);
 	  				
-	  				
-	  				//Put the data in the identity map
+	  			//Put the data in the identity map
 	  				IdentityMap<Teacher> identityMap = IdentityMap.getInstance(teacher);
 	  				
 	  				//Put the student 
@@ -175,27 +175,32 @@ public class UserDataMapper {
 	}
 	
 	//Load all of the information
-	public Student loadFullStudent(String userId) {
+	public Student loadFullStudent(String userNumber) {
 		
 		//String findUserSpecified = findUser + userId;
-		String findStudentFullSpecified = findStudentFull + userId; 
 		
 	    try {
 	    	
-	    	PreparedStatement stmt = DBConnection.prepare(findStudentFullSpecified);
+	    	
+	    	PreparedStatement stmt = DBConnection.prepare(findStudentFull);
+	    	
+	    	stmt.setString(1, userNumber);
+
 	    	
 	    	ResultSet rs = stmt.executeQuery();
-		
-				
-				String userName = rs.getString(5);
-				String password = rs.getString(3);
+	    	
+	    	rs.next();
+	    		
+	    		String userName = rs.getString(6);
+				String password = rs.getString(7);
 				String studentId = rs.getString(1);
-				//String userId = rs.getString(5);
+				int id = rs.getInt(5);
+				String userId = id+"";
+				
 				
 				houses house = convertHouse(rs.getString(2));
 				String firstName = rs.getString(3);
 				String lastName = rs.getString(4);
-			
 				Student student = new Student(userId, userName, password, studentId);
 				
 				//Set the new information
@@ -204,14 +209,15 @@ public class UserDataMapper {
 				student.setHouse(house);
 				student.setStudentId(studentId);
 				
-				//Update student in the Identity Map
-				//Get access to the singleton instance
-				IdentityMap<Student> identityMap = IdentityMap.getInstance(student);
-				
-				//Replace the student 
-				identityMap.put(userId, student);
-				
 				return student;
+				
+	    	
+	    	
+				
+				
+				
+				
+				
 				
 			
 					
@@ -223,33 +229,36 @@ public class UserDataMapper {
 	    
 	}
 	
-	public Teacher loadFullTeacher(String userId) {
+	public Teacher loadFullTeacher(String userNumber) {
 		
-		//String findUserSpecified = findUser + userId;
-		String findTeacherFullSpecified = findTeacherFull + userId; 
+
 		
 	    try {
+
+	    	PreparedStatement stmt = DBConnection.prepare(findTeacherFull);
 	    	
-	    	PreparedStatement stmt = DBConnection.prepare(findTeacherFullSpecified);
-	    	
+	    	stmt.setString(1, userNumber);
 	    	ResultSet rs = stmt.executeQuery();
-				
+	    	rs.next();
 				
 				String userName = rs.getString(7);
 				String password = rs.getString(8);
 				String teacherId = rs.getString(1);
-				//String userId = rs.getString(6);
-				
+				String userId = rs.getString(6);
+				System.out.println(userId);
 				houses house = convertHouse(rs.getString(2));
 				String firstName = rs.getString(3);
 				String lastName = rs.getString(4);
+				String title  = rs.getString(5);
 			
 				Teacher teacher = new Teacher(userId, userName, password, teacherId);
 				
 				//Set the new information
 				teacher.setFirstName(firstName);
+				
 				teacher.setLastName(lastName);
 				teacher.setHouse(house);
+				teacher.setTitle(title);
 				
 				//Update teacher in the Identity Map
 				//Get access to the singleton instance
@@ -345,11 +354,11 @@ public class UserDataMapper {
 		try {
 			PreparedStatement stmt = DBConnection.prepare(createUser);
 			
-			stmt.setNString(1, userName);
+			stmt.setString(1, userName);
 	    	
-	    	stmt.setNString(2, password);
-	    	stmt.setNString(3, Type);
-	    	stmt.setNString(4, userNumber);
+	    	stmt.setString(2, password);
+	    	stmt.setString(3, Type);
+	    	stmt.setString(4, userNumber);
 	    	
 	    	stmt.executeQuery();
 			
@@ -367,12 +376,12 @@ public class UserDataMapper {
 	    	
 	    	PreparedStatement stmt2 = DBConnection.prepare(createTeacher);
 	    	
-	    	stmt2.setNString(1, teacher.getTeacherId());
+	    	stmt2.setString(1, teacher.getTeacherId());
 	    	
-	    	stmt2.setNString(2, convertKey(teacher.getHouse()));
-	    	stmt2.setNString(3, teacher.getFirstName());
-	    	stmt2.setNString(4, teacher.getLastName());
-	    	stmt2.setNString(5, teacher.getTitle());
+	    	stmt2.setString(2, convertKey(teacher.getHouse()));
+	    	stmt2.setString(3, teacher.getFirstName());
+	    	stmt2.setString(4, teacher.getLastName());
+	    	stmt2.setString(5, teacher.getTitle());
 	    	
 	    	stmt2.executeQuery();
 							
@@ -388,7 +397,7 @@ public class UserDataMapper {
 	    	
 	    	PreparedStatement stmt1 = DBConnection.prepare(deleteTeacher);
 	    	
-	    	stmt1.setNString(1, teacherId);
+	    	stmt1.setString(1, teacherId);
 	    	
 	    	stmt1.executeQuery();
 			
@@ -411,11 +420,11 @@ public class UserDataMapper {
 				
 		    	PreparedStatement stmt = DBConnection.prepare(createStudent);
 		    	
-		    	stmt.setNString(1, student.getStudentId());
+		    	stmt.setString(1, student.getStudentId());
 		    	
-		    	stmt.setNString(2, convertKey(student.getHouse()));
-		    	stmt.setNString(3, student.getFirstName());
-		    	stmt.setNString(4, student.getLastName());
+		    	stmt.setString(2, convertKey(student.getHouse()));
+		    	stmt.setString(3, student.getFirstName());
+		    	stmt.setString(4, student.getLastName());
 		    	
 		    	stmt.executeQuery();
 								
@@ -431,7 +440,7 @@ public class UserDataMapper {
 	    	
 	    	PreparedStatement stmt1 = DBConnection.prepare(deleteStudent);
 	    	
-	    	stmt1.setNString(1, studentId);
+	    	stmt1.setString(1, studentId);
 	    	
 	    	stmt1.executeQuery();
 			

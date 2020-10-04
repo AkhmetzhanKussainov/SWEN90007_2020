@@ -16,7 +16,8 @@ public class Subject {
 	
 	public Subject(String subjectCode, String subjectName) {
 		
-		
+		this.subjectCode = subjectCode;
+		this.subjectName = subjectName;
 		enrolledStudents = new ArrayList<>();
 		appointedTeachers = new ArrayList<>();
 		exams = new ArrayList<>();

@@ -130,9 +130,12 @@ public class SubjectDataMapper {
 				String subjectId = rs.getString(1);
 				String name = rs.getString(2);
 				
+				
 				Subject subject = new Subject(subjectId, name);
 				
 				subjects.add(subject);
+				
+				System.out.println(subject.getCode());
 				
 				//identity map
 				IdentityMap<Subject> identityMap = IdentityMap.getInstance(subject);
@@ -156,10 +159,11 @@ public class SubjectDataMapper {
 		try {
 			    	
 			    	PreparedStatement stmt = DBConnection.prepare(findSubject);
-			    	stmt.setNString(1, id);
+			    	stmt.setString(1, id);
 			    	
 			    	ResultSet rs = stmt.executeQuery();
-		
+			    	rs.next();
+			    	
 					String subjectId = rs.getString(1);
 					String name = rs.getString(2);
 						
@@ -330,7 +334,7 @@ public class SubjectDataMapper {
 		    	PreparedStatement stmt = DBConnection.prepare(createSubject);
 		    	
 		    	stmt.setString(1, id);
-		    	stmt.setNString(2, name);
+		    	stmt.setString(2, name);
 		    	
 		    	stmt.executeQuery();
 
@@ -350,7 +354,7 @@ public class SubjectDataMapper {
 	    	PreparedStatement stmt = DBConnection.prepare(updateSubjectName);
 	    	
 	    	stmt.setString(1, name);
-	    	stmt.setNString(2, id);
+	    	stmt.setString(2, id);
 	    	
 	    	stmt.executeQuery();
 	    	
@@ -370,7 +374,7 @@ public class SubjectDataMapper {
 		    	
 		    	PreparedStatement stmt = DBConnection.prepare(deleteSubject);
 
-		    	stmt.setNString(1, id);
+		    	stmt.setString(1, id);
 		    	
 		    	stmt.executeQuery();
 		    	
@@ -395,10 +399,10 @@ public class SubjectDataMapper {
 	    	String studentID = studentN.getStudentId();
 	    	Subject instance = new Subject(null, null);
 	    	
-	    	stmt.setNString(1, getYear());
-	    	stmt.setNString(2, "2");
-	    	stmt.setNString(3, subjectID);
-	    	stmt.setNString(4, studentID);
+	    	stmt.setString(1, getYear());
+	    	stmt.setString(2, "2");
+	    	stmt.setString(3, subjectID);
+	    	stmt.setString(4, studentID);
 	    	
 	    	
 	    	stmt.executeQuery();
@@ -432,10 +436,10 @@ public class SubjectDataMapper {
 		    	
 		    	
 		    	
-		    	stmt.setNString(1, getYear());
-		    	stmt.setNString(2, "2");
-		    	stmt.setNString(3, subjectID);
-		    	stmt.setNString(4, teacherID);
+		    	stmt.setString(1, getYear());
+		    	stmt.setString(2, "2");
+		    	stmt.setString(3, subjectID);
+		    	stmt.setString(4, teacherID);
 		    	
 		    	stmt.executeQuery();
 		    	
@@ -462,8 +466,8 @@ public class SubjectDataMapper {
 	    	String studentID = student.getStudentId();
 	    	String subjectID = subject.getCode();
 	    	
-	    	stmt.setNString(1, studentID);
-	    	stmt.setNString(2, subjectID);
+	    	stmt.setString(1, studentID);
+	    	stmt.setString(2, subjectID);
 	    	
 	    	stmt.executeQuery();
 	    	
@@ -491,8 +495,8 @@ public class SubjectDataMapper {
 	    	String teacherID = teacher.getTeacherId();
 	    	String subjectID = subject.getCode();
 	    	
-	    	stmt.setNString(1, teacherID);
-	    	stmt.setNString(2, subjectID);
+	    	stmt.setString(1, teacherID);
+	    	stmt.setString(2, subjectID);
 	    	
 	    	stmt.executeQuery();
 	    	
@@ -519,7 +523,7 @@ public class SubjectDataMapper {
 		try {
 			PreparedStatement stmt = DBConnection.prepare(findPublishedExam);
 			String studentId = student.getStudentId();
-			stmt.setNString(1, studentId);
+			stmt.setString(1, studentId);
 			
 			ResultSet rs = stmt.executeQuery();
 			
@@ -551,7 +555,7 @@ public class SubjectDataMapper {
 	    	
 	    	PreparedStatement stmt = DBConnection.prepare(findExambyName);
 	    	
-	    	stmt.setNString(1, examName);
+	    	stmt.setString(1, examName);
 	    	
 	    	ResultSet rs = stmt.executeQuery();
 	    	
@@ -571,9 +575,9 @@ public class SubjectDataMapper {
 	    	
 	    	PreparedStatement stmt = DBConnection.prepare(findExambyInfo);
 	    	
-	    	stmt.setNString(1, year);
-	    	stmt.setNString(2, semester);
-	    	stmt.setNString(3, examType);
+	    	stmt.setString(1, year);
+	    	stmt.setString(2, semester);
+	    	stmt.setString(3, examType);
 	    	
 	    	ResultSet rs = stmt.executeQuery();
 	    	

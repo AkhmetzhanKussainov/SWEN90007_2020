@@ -29,14 +29,16 @@ tr:nth-child(odd) {
 </head>
 <body>
 <h3 align="center">User Information</h3>
+<h3 align="center">Student info:</h3>
 
 <div align="center">
 <%
 UserDataMapper um = new UserDataMapper();
   um.loadAllUsers();
            		 for (Student student : um.getAllStudents()) {
+           			
        		 %>
-       		 <h3 align="center">User info:</h3>
+       		 
        		 
        		 
        		  <table>
@@ -44,11 +46,17 @@ UserDataMapper um = new UserDataMapper();
     <th>User Name</th>
     <th>Password</th>
     <th>StudentId</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>House</th>
   </tr>
   <tr>
     <td><%= student.getUserName() %></td>
     <td><%= student.getPassword() %></td>
     <td><%= student.getStudentId() %></td>
+    <td><%= student.getFirstName() %></td>
+    <td><%= student.getLastName() %></td>
+    <td><%= student.getHouseAsString() %></td>
   </tr>
   
 </table> 
@@ -62,14 +70,14 @@ UserDataMapper um = new UserDataMapper();
           		  } // for loop for multiple choise question
         	%>
 </div>
-
+<h3 align="center">Teacher info:</h3>
 
 <div align="center">
 <%
 
            		 for (Teacher teacher : um.getAllTeachers()) {
        		 %>
-       		 <h3 align="center">Teacher info:</h3>
+       		 
        		 
        		 
        		  <table>
@@ -77,11 +85,19 @@ UserDataMapper um = new UserDataMapper();
     <th>User Name</th>
     <th>Password</th>
     <th>TeacherId</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>House</th>
+    <th>Title</th>
   </tr>
   <tr>
     <td><%= teacher.getUserName() %></td>
     <td><%= teacher.getPassword() %></td>
     <td><%= teacher.getTeacherId() %></td>
+        <td><%= teacher.getFirstName() %></td>
+    <td><%= teacher.getLastName() %></td>
+    <td><%= teacher.getHouseAsString() %></td>
+    <td><%= teacher.getTitle() %></td>
   </tr>
   
 </table> 
@@ -96,27 +112,28 @@ UserDataMapper um = new UserDataMapper();
         	%>
 </div>
 
+<h3 align="center">Subject info:</h3>
 
 <div align="center">
 <%
-
-           		 for (Student student : um.getAllStudents()) {
+SubjectDataMapper sm = new SubjectDataMapper();
+  
+           		 for (Subject subject : sm.loadAllSubject()) {
+           			 
+           			 
        		 %>
-       		 <h3 align="center">Lazy info:</h3>
+       		 
        		 
        		 
        		  <table>
   <tr>
-    <th>User Name</th>
-    <th>First Name</th>
-    <th>Last Name</th>
-    <th>House</th>
+    <th style="width:300px">Subject ID</th>
+    <th>Subject Name</th>
+
   </tr>
   <tr>
-    <td><%= student.getUserName() %></td>
-    <td><%= student.getFirstName() %></td>
-    <td><%= student.getLastName() %></td>
-    <td><%= student.getHouseAsString() %></td>
+    <td><%= subject.getCode() %></td>
+    <td><%= subject.getName() %></td>
   </tr>
   
 </table> 

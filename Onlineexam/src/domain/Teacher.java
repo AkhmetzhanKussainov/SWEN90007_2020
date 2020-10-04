@@ -1,5 +1,6 @@
 package domain;
 
+import datasource.UserDataMapper;
 import domain.User.houses;
 
 public class Teacher extends User {
@@ -22,6 +23,20 @@ public class Teacher extends User {
 		
 	}
 	
+	private void getInfo() {
+		
+		UserDataMapper dataMapper = new UserDataMapper();
+		
+		Teacher tempTeacher = dataMapper.loadFullTeacher(teacherId);
+		
+		house = tempTeacher.getHouse();
+		firstName = tempTeacher.getFirstName();
+		lastName = tempTeacher.getLastName();
+		
+	}
+	
+	
+	
 	public String getUserName() {
 		return username;
 	}
@@ -38,8 +53,16 @@ public class Teacher extends User {
 		return userId;
 	}
 	
-	public houses getHouse() {	
+	public houses getHouse() {
+		
+		if (house == null) {
+				
+			getInfo();
+			
+		}
+		
 		return house;
+		
 	}
 	
 	public String getFirstName() {
@@ -74,5 +97,12 @@ public class Teacher extends User {
 		this.title = title;
 	}
 	
+	public String getHouseAsString() {
+		
+		String houseAsString = getHouse().name();
+		
+		return houseAsString;
+		
+	}
 
 }

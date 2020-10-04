@@ -71,7 +71,7 @@ public class Student extends User {
 		
 		UserDataMapper dataMapper = new UserDataMapper();
 		
-		Student tempStudent = dataMapper.loadFullStudent(userId);
+		Student tempStudent = dataMapper.loadFullStudent(studentId);
 		
 		house = tempStudent.getHouse();
 		firstName = tempStudent.getFirstName();
