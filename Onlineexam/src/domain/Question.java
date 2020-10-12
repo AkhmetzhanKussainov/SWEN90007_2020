@@ -12,8 +12,8 @@ public abstract class Question {
 		A,
 		B,
 		C,
-		D
-		
+		D;
+
 	}
 	
 	public String getExamId() {

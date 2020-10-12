@@ -70,6 +70,8 @@ Subject subject = sm.loadSubject(request.getParameter("subjectCode"));
 <th>Published</th>
 <th>Closed</th>
 <th>Edit</th>
+<th>Questions</th>
+
 </tr>
 
 <%
@@ -89,6 +91,7 @@ for (Exam exam : es.getExams(request.getParameter("subjectCode"))) {
 <td><%= exam.getPublished() %></td>
 <td><%= exam.getClosed() %></td>
 <td><button data-subject-id="<%=subject.getCode()%>" data-year="<%=exam.getYear()%>" data-semester="<%=exam.getSemester()%>" data-exam-type="<%=exam.getExamType()%>" class="edit-exam">Edit</button></td>
+<td><button data-subject-id="<%=subject.getCode()%>" data-year="<%=exam.getYear()%>" data-semester="<%=exam.getSemester()%>" data-exam-type="<%=exam.getExamType()%>" class="edit-question">Edit</button></td>
 </tr>
 
   
@@ -124,7 +127,23 @@ function load(){
 			window.location = link
 		})
 	}
+	
+	var editQuestions = document.querySelectorAll(".edit-question");
+	console.log(editQuestions);
+	for (var i=0; i<editQuestions.length; i++){
+		editQuestions[i].addEventListener("click", function(e){
+			var link = `${document.location.origin}/Onlineexam/TeacherExamQuestions.jsp?`
+			var params = "subjectCode=" + e.target.getAttribute("data-subject-id") + 
+			"&year=" + e.target.getAttribute("data-year") + 
+			"&semester=" + e.target.getAttribute("data-semester") + 
+			"&examType=" + e.target.getAttribute("data-exam-type")
+			link = link + params
+			window.location = link
+		})
+	}
 }
+
+
 
 window.onload = load
 

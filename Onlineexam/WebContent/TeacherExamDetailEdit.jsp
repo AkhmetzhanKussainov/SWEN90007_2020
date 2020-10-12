@@ -27,7 +27,7 @@ tr:nth-child(odd) {
 </style>
 
 </head>
-<title>Teacher Exam Detail</title>
+<title>Teacher Exam Questions</title>
 </head>
 <body>
 <%
@@ -69,8 +69,18 @@ Exam e = es.getExam(subjectId, year, semester, examType);
 <br/>
 <label>Exam Type</label>
 <select disabled name="exam-type" value="<%= e.getExamType() %>">
-<option value="F">F</option>
-<option value="M">M</option>
+<option
+<% if (e.getExamType().equals("F")){
+				%>
+				selected="selected"
+			<% } %>
+ value="F">F</option>
+<option
+<% if (e.getExamType().equals("M")){
+				%>
+				selected="selected"
+			<% } %>
+ value="M">M</option>
 </select>
 
 <br/>

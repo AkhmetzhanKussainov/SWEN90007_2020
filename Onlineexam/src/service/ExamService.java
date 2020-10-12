@@ -46,7 +46,7 @@ public class ExamService {
 //				
     			java.util.Calendar cal = Calendar.getInstance();
     			Timestamp date = new Timestamp(cal.getTime().getTime());
-				Exam exam = new Exam("H101", "2020", "2", "F", "History of World", "T12", 80, "N", "N", date, date);
+				Exam exam = new Exam("DEF101", "2020", "2", "F", "History of World", "T12", 80, "N", "N", date, date);
 				Exam exam1 = new Exam("S101", "2021", "1", "F", "Subject of World", "T12", 80, "N", "N", date, date);
 				Exam exam2 = new Exam("J101", "2020", "1", "M", "World", "T12", 100, "N", "N", date, date);
 				Exam exam3 = new Exam("K101", "2020", "2", "M", "Keratin", "T12", 100, "N", "N", date, date);
