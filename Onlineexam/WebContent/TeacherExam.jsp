@@ -1,5 +1,6 @@
 <%@ page import="domain.*" %>
 <%@ page import="datasource.*" %>
+<%@ page import="service.*" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -40,12 +41,11 @@ tr:nth-child(odd) {
 <body>
 <%
 SubjectDataMapper sm = new SubjectDataMapper();
-ExamDataMapper em = new ExamDataMapper();
+/* ExamDataMapper em = new ExamDataMapper(); */
+ExamService es = new ExamService();
 
 Subject subject = sm.loadSubject(request.getParameter("subjectCode"));
 
-
-em.loadExams();
 
 
 %>
@@ -73,9 +73,8 @@ em.loadExams();
 </tr>
 
 <%
-for (Exam exam : em.loadExams()) {
+for (Exam exam : es.getExams(request.getParameter("subjectCode"))) {
 	System.out.println(exam.getSubjectId());
-	if (exam.getSubjectId().equals(request.getParameter("subjectCode"))){
 		
 		 %>
 		 
@@ -96,8 +95,7 @@ for (Exam exam : em.loadExams()) {
     
  
 <%
-	}
- 		  } // for loop for multiple choise question
+	} // for loop for multiple choise question
 	%>
 
 </table>

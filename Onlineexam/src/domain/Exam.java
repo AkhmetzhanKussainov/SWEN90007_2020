@@ -1,6 +1,6 @@
 package domain;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,16 +39,39 @@ public class Exam {
 
 	private String closed;
 
-	private Date startDate = null;
+	private Timestamp startDate = null;
 
-	private Date endDate = null;
+	private Timestamp endDate = null;
 
 	public void addQuestion(Question question) {
 
 		questionList.add(question);
 
 	}
+	
+	public Exam(String subjectId, String year, String semester, String examType, String examName,
+			String examCreator, int totalMarks, String published, String closed, Timestamp startDate, Timestamp endDate) {
 
+		this.subjectId = subjectId;
+//		this.examId = examId;
+		this.questionList = new ArrayList<>();
+		this.scriptbookList = new ArrayList<>();
+		this.studentList = new ArrayList<>();
+		this.setTotalMarks(totalMarks);
+		this.studentsTaking = 0;
+		this.subjectID = subjectId;
+		this.year = year;
+		this.semester = semester;
+		this.examType = examType;
+		this.examName = examName;
+		this.examCreator = examCreator;
+		this.published = published;
+		this.closed = closed;
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
+	
+	
 	public Exam(String subjectId, String year, String semester, String examType, String examName,
 			String examCreator, int totalMarks, String published, String closed) {
 
@@ -68,9 +91,10 @@ public class Exam {
 		this.published = published;
 		this.closed = closed;
 	}
+	
 
 	public Exam(String subjectId, String year, String semester, String examType, String examName, String examCreator,
-			int totalMarks, Date startDate, Date endDate) {
+			int totalMarks, Timestamp startDate, Timestamp endDate) {
 
 		this.questionList = new ArrayList<>();
 		this.scriptbookList = new ArrayList<>();
@@ -160,19 +184,27 @@ public class Exam {
 		return this.questionList;
 	}
 
-	public Date getStartDate() {
+	public Timestamp getStartDate() {
 		return startDate;
 	}
+	
+	public String getStartDateString() {
+		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(startDate);
+	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(Timestamp startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public Timestamp getEndDate() {
 		return endDate;
 	}
+	
+	public String getEndDateString() {
+		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(endDate);
+	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(Timestamp endDate) {
 		this.endDate = endDate;
 	}
 

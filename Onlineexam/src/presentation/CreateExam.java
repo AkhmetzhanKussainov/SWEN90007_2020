@@ -1,6 +1,10 @@
 package presentation;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,6 +40,15 @@ public class CreateExam extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		try {
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm"); 
+		Date startDateRaw = format.parse(request.getParameter("start-time"));  
+		Timestamp startTimestamp = new java.sql.Timestamp(startDateRaw.getTime());
+		
+		Date endDateRaw = format.parse(request.getParameter("start-time"));  
+		Timestamp endTimestamp = new java.sql.Timestamp(endDateRaw.getTime());
+		
 		String year = request.getParameter("year");
 		String semester = request.getParameter("semester");
 		String examName = request.getParameter("exam-name");
@@ -44,8 +57,8 @@ public class CreateExam extends HttpServlet {
 		String subjectId = request.getParameter("subject-id");
 		String published = "N";
 		String closed = "N";
-		String startDate = request.getParameter("start-time");
-		String endDate = request.getParameter("end-time");
+		Timestamp startDate = startTimestamp;
+		Timestamp endDate = endTimestamp;
 		HttpSession session = request.getSession();
 		
 		String user_id = (String)session.getAttribute("userid");
@@ -64,27 +77,32 @@ public class CreateExam extends HttpServlet {
 		
 		System.out.println(examCreator);
 		
-		ExamDataMapper em = new ExamDataMapper();
+//		ExamDataMapper em = new ExamDataMapper();
 		
-		Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed);
+		Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed, startDate, endDate);
 		
+		System.out.println("---");
 		System.out.println(exam);
+		System.out.println(exam.getExamName());
+		System.out.println("---");
+		
+		String status = "Success";
 			
-		String status = em.publishExam(exam);
+//		String status = em.publishExam(exam);
 //		String status = "Failure";
-		System.out.println(status);
+//		System.out.println(status);
 		if (status.equals("Success")){
 			response.sendRedirect("TeacherExam.jsp" + "?subjectCode=" + subjectId);
 			return;
 		}
 		else {
 			response.sendRedirect("TeacherExamDetail.jsp" + "?subjectCode=" + subjectId);
-//			response.sendRedirect("asdad.jsp");
 			return;
 		}
-	
-		
-		
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 	}
 

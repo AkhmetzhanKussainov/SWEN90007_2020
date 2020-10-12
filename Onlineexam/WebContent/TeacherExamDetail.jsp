@@ -1,5 +1,6 @@
 <%@ page import="domain.*" %>
 <%@ page import="datasource.*" %>
+<%@ page import="service.*" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -31,12 +32,11 @@ tr:nth-child(odd) {
 <body>
 <%
 SubjectDataMapper sm = new SubjectDataMapper();
-ExamDataMapper em = new ExamDataMapper();
+/* ExamDataMapper em = new ExamDataMapper(); */
+ExamService es = new ExamService();
 
 Subject subject = sm.loadSubject(request.getParameter("subjectCode"));
 
-
-em.loadExams();
 
 
 %>

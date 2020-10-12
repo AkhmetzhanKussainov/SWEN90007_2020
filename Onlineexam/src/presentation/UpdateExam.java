@@ -1,5 +1,8 @@
 package presentation;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +19,7 @@ import domain.Teacher;
 /**
  * Servlet implementation class CreateExam
  */
-@WebServlet("/CreateExam")
+@WebServlet("/UpdateExam")
 public class UpdateExam extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -36,44 +39,67 @@ public class UpdateExam extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String year = request.getParameter("year");
-		String semester = request.getParameter("semester");
-		String examName = request.getParameter("exam-name");
-		String examType = request.getParameter("exam-type");
-		Integer totalMarks = Integer.parseInt(request.getParameter("total-marks"));
-		String subjectId = request.getParameter("subject-id");
-		String startDate = request.getParameter("start-time");
-		String endDate = request.getParameter("end-time");
-		String examCreator = request.getParameter("exam-creator");
-		String published = request.getParameter("published");
-		String closed = request.getParameter("closed");
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm"); 
+			Date startDateRaw = format.parse(request.getParameter("start-time"));  
+			Timestamp startTimestamp = new java.sql.Timestamp(startDateRaw.getTime());
+			
+			Date endDateRaw = format.parse(request.getParameter("start-time"));  
+			Timestamp endTimestamp = new java.sql.Timestamp(endDateRaw.getTime());
 		
 			
-		ExamDataMapper em = new ExamDataMapper();
-		
-		Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed);
-		
-		System.out.println(exam);
+			String year = request.getParameter("year");
+			String semester = request.getParameter("semester");
+			String examName = request.getParameter("exam-name");
+			String examType = request.getParameter("exam-type");
+			Integer totalMarks = Integer.parseInt(request.getParameter("total-marks"));
+			String subjectId = request.getParameter("subject-id");
+			Timestamp startDate = startTimestamp;
+			Timestamp endDate = endTimestamp;
+			String examCreator = request.getParameter("exam-creator");
+			String published = request.getParameter("published");
+			String closed = request.getParameter("closed");
 			
-		String status = em.changeExam(exam);
-//		String status = "Failure";
-		System.out.println(status);
-		if (status.equals("Success")){
-			response.sendRedirect("TeacherExam.jsp" + "?subjectCode=" + subjectId);
-			return;
+			System.out.println(startDate);
+			System.out.println(endDate);
+			
+			ExamDataMapper em = new ExamDataMapper();
+			
+			Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed, startDate, endDate);
+			
+			System.out.println(exam);
+			System.out.println(exam.getExamName());
+			System.out.println(exam.getTotalMarks());
+			System.out.println(exam.getPublished());
+			System.out.println(exam.getClosed());
+			System.out.println(exam.getStartDateString());
+			System.out.println(exam.getEndDateString());
+			
+			
+				
+	//		String status = em.changeExam(exam);
+			String status = "Success";
+			System.out.println(status);
+			if (status.equals("Success")){
+				response.sendRedirect("TeacherExam.jsp" + "?subjectCode=" + subjectId);
+				return;
+			}
+			else {
+				response.sendRedirect("TeacherExamDetailEdit.jsp" + "?subjectCode=" + subjectId +
+						"&year=" + year +
+						"&semester" + semester +
+						"&examType=" + examType);
+	//			response.sendRedirect("asdad.jsp");
+				return;
+			}
+			
+			
 		}
-		else {
-			response.sendRedirect("TeacherExamDetailEdit.jsp" + "?subjectCode=" + subjectId +
-					"&year=" + year +
-					"&semester" + semester +
-					"&examType=" + examType);
-//			response.sendRedirect("asdad.jsp");
-			return;
-		}
-		
-		
+	catch(Exception e) {
+		System.out.println(e.getMessage());
 	}
 
+}
 }
 
 

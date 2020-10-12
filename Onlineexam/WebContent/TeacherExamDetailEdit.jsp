@@ -1,5 +1,6 @@
 <%@ page import="domain.*" %>
 <%@ page import="datasource.*" %>
+<%@ page import="service.*" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -36,25 +37,14 @@ String semester = request.getParameter("semester");
 String examType = request.getParameter("examType");
 
 SubjectDataMapper sm = new SubjectDataMapper();
-ExamDataMapper em = new ExamDataMapper();
+/* ExamDataMapper em = new ExamDataMapper(); */
+
+ExamService es = new ExamService();
 
 Subject subject = sm.loadSubject(request.getParameter("subjectCode"));
 
 
-em.loadExams();
-
-Exam exam = null;
-
-for (Exam e : em.loadExams()) {
-	if (e.getSubjectId().equals(subjectId) && 
-			e.getYear().equals(year) &&
-			e.getSemester().equals(semester) &&
-			e.getExamType().equals(examType)){
-		exam = e;
-		break;
-		
-	}
-}
+Exam e = es.getExam(subjectId, year, semester, examType);
 
 
 
@@ -74,11 +64,11 @@ for (Exam e : em.loadExams()) {
 <br/>
 <br/>
 <label>Exam Name</label>
-<input required type="text" name="exam-name" value="<%= exam.getExamName() %>"/>
+<input required type="text" name="exam-name" value="<%= e.getExamName() %>"/>
 <br/>
 <br/>
 <label>Exam Type</label>
-<select disabled name="exam-type" value="<%= exam.getExamType() %>">
+<select disabled name="exam-type" value="<%= e.getExamType() %>">
 <option value="F">F</option>
 <option value="M">M</option>
 </select>
@@ -86,33 +76,33 @@ for (Exam e : em.loadExams()) {
 <br/>
 <br/>
 <label>Total Marks</label>
-<input required required type="number" name="total-marks" value="<%= exam.getTotalMarks() %>"/>
+<input required required type="number" name="total-marks" value="<%= e.getTotalMarks() %>"/>
 <br/>
 <br/>
 <label>Published</label>
-<select name="published" value="<%= exam.getPublished() %>">
+<select name="published" value="<%= e.getPublished() %>">
 <option value="N">N</option>
 <option value="Y">Y</option>
 </select>
 <br/>
 <br/>
 <label>Closed</label>
-<select name="closed" value="<%= exam.getClosed()%>">
+<select name="closed" value="<%= e.getClosed()%>">
 <option value="N">N</option>
 <option value="Y">Y</option>
 </select>
 <br/>
 <br/>
 <label>Start Time</label>
-<input type="datetime-local" name="start-time"/>
+<input type="datetime-local" name="start-time" value="<%= e.getStartDateString() %>" />
 <br/>
 <br/>
 <label>End Time</label>
-<input type="datetime-local" name="end-time"/>
+<input type="datetime-local" name="end-time" value="<%= e.getEndDateString() %>"/>
 <br/>
 <br/>
 <input type="hidden" name="subject-id" value="<%= subject.getCode()%>"/>
-<input type="hidden" name="exam-creator" value="<%= exam.getExamCreator()%>"/>
+<input type="hidden" name="exam-creator" value="<%= e.getExamCreator()%>"/>
 <input type="submit" value="Add Exam"/>
 
 </form>
