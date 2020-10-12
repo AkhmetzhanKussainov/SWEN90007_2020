@@ -61,11 +61,35 @@ public class QuestionService {
 	    
 	}
 	
-	public List<ShortQuestion> getAllShortQuestions() {
+	public List<ShortQuestion> getAllShortQuestions(String subjectCode, String semester, String year, String examType) {
 	    
+		List<ShortQuestion> shortQuestions = new ArrayList<>();
+		
+		ShortQuestion shortq1 = new ShortQuestion("1", "DEF101", "2020", "2", "M", "What is life?", 10);
+		ShortQuestion shortq2 = new ShortQuestion("2", "DEF101", "2020", "2", "M", "What", 10);
+		ShortQuestion shortq3 = new ShortQuestion("3", "DEF101", "2020", "2", "M", "Why", 10);
+		ShortQuestion shortq4 = new ShortQuestion("4", "DEF101", "2020", "2", "M", "Done", 10);
+//		MultipleQuestion(String id, String subjectCode, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC, String ansD, choice correctAnswer, int possibleMark, int answerNumber
+		
+		
+		shortQuestions.add(shortq1);
+		shortQuestions.add(shortq2);
+		shortQuestions.add(shortq3);
+		shortQuestions.add(shortq4);
+		
 	    return shortQuestions;
 	    
 	}
+	
+	public ShortQuestion getShortQestion(String Id,String subjectCode, String semester, String year, String examType) {
+	
+		
+		ShortQuestion shortq = new ShortQuestion(Id, subjectCode, year, semester, examType, "What is this?", 10);
+		
+	    return shortq;
+	    
+	}
+	
 	
 	
 	public void updateUow(Question q) {
