@@ -41,6 +41,19 @@ public class Exam {
 	
 	private Date endDate = null;
 	
+	private String published = null;
+	
+	public String getPublished() {
+		return published;
+	}
+
+	public void setPublished(String published) {
+		this.published = published;
+	}
+
+
+	private String closed = null;
+	
 	
 	/*public void addQuestion(Question question) {
 		
@@ -48,6 +61,22 @@ public class Exam {
 		
 	}*/
 	
+	public String getExamCreator() {
+		return examCreator;
+	}
+
+	public void setExamCreator(String examCreator) {
+		this.examCreator = examCreator;
+	}
+
+	public String getClosed() {
+		return closed;
+	}
+
+	public void setClosed(String closed) {
+		this.closed = closed;
+	}
+
 	public void addMultipleQuestion(MultipleQuestion q)
 	{
 		this.multipleQuestionList.add(q);
@@ -75,7 +104,7 @@ public class Exam {
 		this.examCreator = examCreator;
 	}
 	
-	public Exam(String subjectId, String year, String semester, String examType, String examName, String examCreator, int totalMarks, Date startDate, Date endDate) {
+	/*public Exam(String subjectId, String year, String semester, String examType, String examName, String examCreator, int totalMarks, Date startDate, Date endDate) {
 		
 		//this.questionList = new ArrayList<>();
 		this.multipleQuestionList = new ArrayList<>();
@@ -100,7 +129,29 @@ public class Exam {
 			this.endDate = null;
 		}
 
+	}*/
+	
+	public Exam(String subjectId, String year, String semester, String examType, String examName, String examCreator, Integer totalMarks, String published, String closed) {
+		
+		//this.questionList = new ArrayList<>();
+		this.multipleQuestionList = new ArrayList<>();
+		this.shortQuestionList = new ArrayList<>();
+		this.scriptbookList = new ArrayList<>();
+		this.studentList = new ArrayList<>();
+		this.setTotalMarks(totalMarks);	
+		this.studentsTaking = 0;
+		this.subjectID = subjectId;
+		this.year = year;
+		this.semester= semester;
+		this.examType = examType;
+		this.examName = examName;
+		this.examCreator = examCreator;
+		this.published = published;
+		this.closed = closed;
 	}
+	
+	
+	
 	
 	public void addScriptbook(Scriptbook scriptbook) {
 		
@@ -131,6 +182,11 @@ public class Exam {
 	} 
 	
 	public String getSubjectID()
+	{
+		return this.subjectID;
+	}
+	
+	public String getSubjectId()
 	{
 		return this.subjectID;
 	}

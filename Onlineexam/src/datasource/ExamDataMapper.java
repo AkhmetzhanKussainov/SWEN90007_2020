@@ -32,7 +32,7 @@ public class ExamDataMapper {
     		"SELECT * from multipleQuestion";
 	
     private static final String changeMultiMark =
-			"UPDATE multipleQuestion SET marks = ? where subjectId=?,year=?,semester=?,examType=?, questionId=?, studentNumber = ? ";
+			"UPDATE multipleAttempt SET marks = ? where subjectId=? AND year=? and semester = ? and examType = ? and questionId=? and studentNumber = ? ";
 	
     private static final String findAllShortStatement =
 			"SELECT * from shortQuestion";
@@ -47,40 +47,40 @@ public class ExamDataMapper {
     	    "select * from scriptbooks where subjectId=?,year=?,semester=?,examType=?";
     		
     private static final String changeShortMark =
-			"UPDATE shortQuestion SET marks = ? where subjectId=?,year=?,semester=?,examType=?, questionId=?, studentNumber = ? ";
+			"UPDATE shortAttempt SET marks = ? where subjectId=? AND year=? and semester = ? and examType = ? and questionId=? and studentNumber = ? ";
     
     private static final String changeExam =
-    		"UPDATE exams SET examName = ? , examCreator = ?, totalMarks=?, startTime =?, endTime=? where subjectId = ?, year=?, semester=? , examType=?";
+    		"UPDATE exams SET examName = ? , examCreator = ?, totalMarks=?, startTime =?, endTime=? where subjectId=? AND year=? and semester = ? and examType = ?";
     
     private static final String createExam = 
     		"INSERT into exams (subjectId, year, semester, examType, examName, examCreator, published, closed, totalMarks, startTime, endTime)"
-    		+ "VALUES (?,?,?,?,?,?,'T','F',?,?,?)";
+    		+ "VALUES (?,?,?,?,?,?,'F','F',?,?,?)";
     
     private static final String deleteExam = 
-    		"DELETE from exams where subjectId=? , year = ? , semester = ? , examType = ?";
+    		"DELETE from exams where subjectId=? AND year=? and semester = ? and examType = ?";
     
     /*private static final String findExam =
     		"SELECT * from exams where examId=?";*/
     
     private static final String closeExam =
-    		"UPDATE exams SET closed = 'T' where subjectId=?, year=?, semester = ?, examType = ?";
+    		"UPDATE exams SET closed = 'T' where subjectId=? AND year=? and semester = ? and examType = ?";
     
     private static final String addScriptbook =
     		"INSERT into scriptbooks (subjectId,year,semester,examType,studentNumber, scriptTotalMarks, marked)"
     		+ "VALUES (?,?,?,?,?,?,?)";
     
     private static final String deleteMultipleStatement =
-    		"DELETE from multipleQuestion where subjectId=? , year = ? , semester = ? , examType = ?";
+    		"DELETE from multipleQuestion where subjectId=? AND year=? and semester = ? and examType = ?";
     
     private static final String deleteShortStatement = 
-    		"DELETE from shortQuestion where subjectId=? , year = ? , semester = ? , examType = ?";
+    		"DELETE from shortQuestion where subjectId=? AND year=? and semester = ? and examType = ?";
     
     private static final String addShortStatement =
     		"INSERT into shortQuestion (questionId, subjectId, year, semester, examType, questionText, possibleMarks)"
     		+ "VALUES (?,?,?,?,?,?,?)";
     
     private static final String addMultipleStatement =
-    		"INSERT into shortQuestion (questionId, subjectId, year, semester, examType, questionText, ansA, ansB, ansC, ansD, correctAnswer, possibleMarks, answerNumber)"
+    		"INSERT into multipleQuestion (questionId, subjectId, year, semester, examType, questionText, ansA, ansB, ansC, ansD, correctAnswer, possibleMarks, answerNumber)"
     	    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
     
     private static final String findScriptBookByExamStudent =
@@ -92,7 +92,7 @@ public class ExamDataMapper {
     		"SELECT * from multipleAttempt where subjectId=?,year=?,semester=?,examType=?, studentNumber=?";
     
     private static final String submittedScriptbook =
-    		"UPDATE scriptbooks SET submitted = TRUE where subjectId=?,year=?,semester=?,examType=?, studentNumber=?";
+    		"UPDATE scriptbooks SET submitted = TRUE where subjectId=? AND year=? and semester = ? and examType = ? and studentNumber=?";
     
     private static final String submitShortAttempt =
     		"INSERT into shortAttempt (questionId, subjectId, year, semester, examType, studentNumber, attemptAns, mark, marked)"
@@ -568,7 +568,7 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 	
 	
 	//function to change the exam related information (NOT FOR UPDATING QUESTIONS)
-	public void changeExam(Exam updatedExam)
+	public String changeExam(Exam updatedExam)
 	{
 		try
 		{
@@ -612,25 +612,22 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 				
 				System.out.println(statement);
 				
-				if(statement.execute())
-					{
-						System.out.println("Successfully updated!");
-					}else
-					{
-						System.out.println("Error while updating!");
-					};
+				statement.execute();
+				return new String("Success");
 			}else
 			{
 				System.out.println("Cannot edit, One of the students has already taken the exam");
+				return new String("Failure");
 			}
 		
 		}catch(SQLException e)
 		{
 			e.printStackTrace();
+			return new String("Failure");
 		}
 	}
 	
-	public void publishExam(Exam newExam)
+	public String publishExam(Exam newExam)
 	{
 		try
 		{
@@ -669,9 +666,11 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 			System.out.println(statement);
 			
 			statement.execute();
+			return new String("Success");
 		}catch(SQLException e)
 		{
 			e.printStackTrace();
+			return new String("Falure");
 		}
 	}
 	

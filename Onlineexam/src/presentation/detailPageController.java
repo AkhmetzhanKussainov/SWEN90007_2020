@@ -43,7 +43,7 @@ public class detailPageController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	/*protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// get data according to name tag in submitted form.
 				String qtype = request.getParameter("qtype");
 				
@@ -51,19 +51,19 @@ public class detailPageController extends HttpServlet {
 				if(qtype.equals("multi")) {
 					String id = request.getParameter("id");
 					int mark = Integer.parseInt(request.getParameter("mark"));
-					MultipleQuestion mq = new MultipleQuestion(id, null, null, null, null, null, null, null, mark, 0);
-					uowService.updateUow(mq);
+					/*MultipleQuestion mq = new MultipleQuestion(id, null, null, null, null, null, null, null, mark, 0);
+					uowService.updateUow(mq);*/
 				} else if(qtype.equals("short")) {
 					String id = request.getParameter("id");
-					int mark = Integer.parseInt(request.getParameter("mark"));
+					/*int mark = Integer.parseInt(request.getParameter("mark"));
 					ShortQuestion sq = new ShortQuestion(id, null, null, mark);
-					uowService.updateUow(sq);
+					uowService.updateUow(sq);*/
 				} else if(qtype.equals("commit")) {
 					uowService.commitUow();
 				}
 		doGet(request,response);
 		
 		
-	}*/
+	}
 
 }
