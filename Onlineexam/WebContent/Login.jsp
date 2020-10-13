@@ -39,6 +39,10 @@ if(session.getAttribute("usertype") != null){
 	else if (session.getAttribute("usertype").equals("T")){
 		response.sendRedirect("TeacherSubjectDisplay.jsp");	
 	}
+	else if (session.getAttribute("usertype").equals("A")){
+		response.sendRedirect("Admin.jsp");	
+	}
+	
 }
 
 %>

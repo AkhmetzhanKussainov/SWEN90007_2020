@@ -107,6 +107,20 @@ public class UserDataMapper {
 	  				
   				}
   				
+//  					if (userType.equals("A")) {
+//  	  				
+//	  				Admin admin = new Admin(userId, userName, password, userNumber);
+//	    
+//	  				adminList.add(admin);
+//	  				
+//	  				
+//	  				//Put the data in the identity map
+//	  				IdentityMap<Teacher> identityMap = IdentityMap.getInstance(admin);
+//	  				
+//	  				//Put the student 
+//	  				identityMap.put(userId, admin);
+//	  				
+//  				}
   				
   			}
   			

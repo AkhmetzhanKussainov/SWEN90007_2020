@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import datasource.UserDataMapper;
 import domain.Student;
+import domain.Admin;
 import domain.User;
 import domain.Teacher;
 
@@ -70,6 +71,20 @@ public class Login extends HttpServlet {
 				}
 			}
 		}
+		
+//		for (Admin admin : um.getAllAdmins()) {
+//			if (admin.getUserName().equals(username)) {
+//				if (admin.getPassword().equals(password)) {
+//					HttpSession session = request.getSession();
+//					session.setAttribute("username", username);
+//					session.setAttribute("usertype", "A");
+//					session.setAttribute("userid", admin.getUserId());
+//					response.sendRedirect("TeacherSubjectDisplay.jsp");
+//					return;
+//				}
+//			}
+//		}
+		
 		response.sendRedirect("Login.jsp");
 		
 	}
