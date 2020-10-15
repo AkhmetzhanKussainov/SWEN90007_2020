@@ -12,6 +12,7 @@ import java.util.List;
 
 import datasource.DBConnection;
 import datasource.ExamDataMapper;
+import datasource.SubjectDataMapper;
 import domain.Exam;
 import domain.MultipleQuestion;
 import domain.Scriptbook;
@@ -32,7 +33,7 @@ public class ExamService {
     
     	try {
 	    	
-				
+				SubjectDataMapper sm = new SubjectDataMapper();
 //				String examId = rs.getString(1);
 //				String subjectId = "H101";
 //				String examName = "History of the World";
@@ -45,7 +46,9 @@ public class ExamService {
 //				String closed = "N";
 //				
     			java.util.Calendar cal = Calendar.getInstance();
-    			Timestamp date = new Timestamp(cal.getTime().getTime());
+    			//Timestamp date = new Timestamp(cal.getTime().getTime());
+    			exams = sm.loadAllExamBySubject(subjectCode);
+    			/*String date = null;
 				Exam exam = new Exam("DEF101", "2020", "2", "F", "History of World", "T12", 80, "N", "N", date, date);
 				Exam exam1 = new Exam("S101", "2021", "1", "F", "Subject of World", "T12", 80, "N", "N", date, date);
 				Exam exam2 = new Exam("J101", "2020", "1", "M", "World", "T12", 100, "N", "N", date, date);
@@ -56,7 +59,7 @@ public class ExamService {
 				exams.add(exam2);
 				exams.add(exam3);
 				
-				System.out.println(date.toString());
+				System.out.println(date.toString());*/
 			
 					
 					
@@ -72,8 +75,10 @@ public class ExamService {
 	public Exam getExam(String subjectCode, String year, String semester, String examType) {
     	
 		java.util.Calendar cal = Calendar.getInstance();
-		Timestamp date = new Timestamp(cal.getTime().getTime());
-		Exam exam = new Exam("H101", "2020", "2", "F", "History of World", "T12", 80, "N", "N", date, date);
+		//Timestamp date = new Timestamp(cal.getTime().getTime());
+		ExamDataMapper em = new ExamDataMapper();
+		Exam exam = em.loadExam(subjectCode, year, semester, examType);
+				//new Exam("H101", "2020", "2", "F", "History of World", "T12", 80, "N", "N", null, null);
     
     	try {
 	    					

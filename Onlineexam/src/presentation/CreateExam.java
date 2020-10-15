@@ -77,9 +77,10 @@ public class CreateExam extends HttpServlet {
 		
 		System.out.println(examCreator);
 		
-//		ExamDataMapper em = new ExamDataMapper();
+		ExamDataMapper em = new ExamDataMapper();
 		
-		Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed, startDate, endDate);
+		Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed,null,null);
+		em.publishExam(exam);
 		
 		System.out.println("---");
 		System.out.println(exam);

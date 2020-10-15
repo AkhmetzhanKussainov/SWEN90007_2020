@@ -35,10 +35,10 @@ public class QuestionService {
 	    
 		List<MultipleQuestion> multipleQuestions = new ArrayList<>();
 		
-		MultipleQuestion multiq1 = new MultipleQuestion("1", "DEF101", "2020", "2", "M", "What is life?", "None", "Null", "None", "All the above", choice.D, 5, 4);
-		MultipleQuestion multiq2 = new MultipleQuestion("2", "DEF101", "2020", "2", "M", "Why?", "None", "Null", "None", "All the above", choice.D, 5, 4);
-		MultipleQuestion multiq3 = new MultipleQuestion("3", "DEF101", "2020", "2", "M", "What?", "None", "Null", "None", "All the above", choice.D, 5, 4);
-		MultipleQuestion multiq4 = new MultipleQuestion("4", "DEF101", "2020", "2", "M", "How", "None", "Null", "None", "All the above", choice.D, 5, 4);
+		MultipleQuestion multiq1 = new MultipleQuestion("1", "DEF101", "2020", "2", "M", "What is life?", "None", "Null", "None", "All the above", null, 5, 4);
+		MultipleQuestion multiq2 = new MultipleQuestion("2", "DEF101", "2020", "2", "M", "Why?", "None", "Null", "None", "All the above", null, 5, 4);
+		MultipleQuestion multiq3 = new MultipleQuestion("3", "DEF101", "2020", "2", "M", "What?", "None", "Null", "None", "All the above", null, 5, 4);
+		MultipleQuestion multiq4 = new MultipleQuestion("4", "DEF101", "2020", "2", "M", "How", "None", "Null", "None", "All the above", null, 5, 4);
 //		MultipleQuestion(String id, String subjectCode, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC, String ansD, choice correctAnswer, int possibleMark, int answerNumber
 		
 		
@@ -55,7 +55,7 @@ public class QuestionService {
 	public MultipleQuestion getMultipleQuestion(String Id,String subjectCode, String semester, String year, String examType) {
 	    
 		
-		MultipleQuestion multiq1 = new MultipleQuestion(Id, subjectCode, year, semester, examType, "What is life?", "None", "Null", "None", "All the above", choice.D, 5, 4);
+		MultipleQuestion multiq1 = new MultipleQuestion(Id, subjectCode, year, semester, examType, "What is life?", "None", "Null", "None", "All the above", null, 5, 4);
 		
 	    return multiq1;
 	    

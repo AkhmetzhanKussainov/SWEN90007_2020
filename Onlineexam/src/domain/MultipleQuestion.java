@@ -12,58 +12,26 @@ public class MultipleQuestion extends Question {
     private String ansB;
     private String ansC;
     private String ansD;
-    private String subjectCode;
-    private String year;
-    private String semester;
-    private String examType;
-    private choice correctAnswer;
+    private String correctAnswer;
     private String examId;
     private int answerNumber;
     
-public MultipleQuestion(String id, String subjectCode, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC, String ansD, choice correctAnswer, int possibleMark, int answerNumber){
+    public MultipleQuestion(String id, String subjectId, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC,String ansD, String correctAnswer,int possibleMark, int answerNumber){
     	
     	this.id = id;
-    	
-    	this.subjectCode = subjectCode;
+    	this.subjectId = subjectId;
     	this.year = year;
     	this.semester = semester;
     	this.examType = examType;
-    	
     	this.questionText = questionText;
     	this.ansA = ansA;
     	this.ansB = ansB;
     	this.ansC = ansC;
     	this.ansD = ansD;
     	
-    	this.correctAnswer = correctAnswer;
-    	
-    	this.possibleMark = possibleMark;
-    	
-    	
-    	
+    	this.possibleMark= possibleMark;
     	this.answerNumber = answerNumber;
-    	
-    }
-    
-    public MultipleQuestion(String id, String examId, String questionText, String ansA, String ansB, String ansC, String ansD, choice correctAnswer, int possibleMark, int answerNumber){
-    	
-    	this.id = id;
-    	
-    	this.examId = examId;
-    	
-    	this.questionText = questionText;
-    	this.ansA = ansA;
-    	this.ansB = ansB;
-    	this.ansC = ansC;
-    	this.ansD = ansD;
-    	
     	this.correctAnswer = correctAnswer;
-    	
-    	this.possibleMark = possibleMark;
-    	
-    	
-    	
-    	this.answerNumber = answerNumber;
     	
     } 
     
@@ -108,7 +76,7 @@ public MultipleQuestion(String id, String subjectCode, String year, String semes
 	}
 	
 	public String getCorrectAnswer() {
-		return correctAnswer.toString();
+		return this.correctAnswer;
 	}
 
 	public String getAnsA() {
@@ -122,7 +90,6 @@ public MultipleQuestion(String id, String subjectCode, String year, String semes
 	public String getAnsB() {
 		return ansB;
 	}
-	
 
 	public void setAnsB(String ansB) {
 		this.ansB = ansB;
@@ -161,8 +128,10 @@ public MultipleQuestion(String id, String subjectCode, String year, String semes
 	}
 
 	public void setCorrectAnswer(choice correctAnswer) {
-		this.correctAnswer = correctAnswer;
+		this.correctAnswer = correctAnswer.toString();
 	}
+	
+	
 	
 	
 }

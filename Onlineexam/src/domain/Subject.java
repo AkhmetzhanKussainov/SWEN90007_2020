@@ -20,8 +20,7 @@ public class Subject {
 		enrolledStudents = new ArrayList<>();
 		appointedTeachers = new ArrayList<>();
 		exams = new ArrayList<>();
-		this.subjectCode = subjectCode;
-		this.subjectName = subjectName;
+		  
 		
 	}
 	
