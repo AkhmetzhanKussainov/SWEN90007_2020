@@ -38,6 +38,12 @@ public class Attempt {
 		
 	}
 	
+	public String getAttemptedAns() {
+		
+		return attemptAns;
+		
+	}
+	
 	public int getMark() {
 		
 		return mark;

@@ -57,6 +57,7 @@ Subject subject = sm.loadSubject(request.getParameter("subjectCode"));
 <th>Total Marks</th>
 <th>Published</th>
 <th>Closed</th>
+<th>Attempt</th>
 </tr>
 
 <%
@@ -75,6 +76,13 @@ for (Exam exam : es.getExams(request.getParameter("subjectCode"))) {
 <td><%= exam.getTotalMarks() %></td>
 <td><%= exam.getPublished() %></td>
 <td><%= exam.getClosed() %></td>
+<td>
+<% if(exam.getPublished().equals("Y") && exam.getClosed().equals("N")) {
+	%>
+<button data-subject-id="<%=subject.getCode()%>" data-year="<%=exam.getYear()%>" data-semester="<%=exam.getSemester()%>" data-exam-type="<%=exam.getExamType()%>" class="attempt-exam">Attempt</button>
+<% } %>
+</td>
+
 </tr>
 
       
@@ -89,4 +97,28 @@ for (Exam exam : es.getExams(request.getParameter("subjectCode"))) {
 
 
 </body>
+<script>
+function load(){
+	
+	var attemptButtons = document.querySelectorAll(".attempt-exam");
+	console.log(attemptButtons);
+	for (var i=0; i<attemptButtons.length; i++){
+		attemptButtons[i].addEventListener("click", function(e){
+			var link = `${document.location.origin}/Onlineexam/StudentExamScriptBook.jsp?`
+			var params = "subjectCode=" + e.target.getAttribute("data-subject-id") + 
+			"&year=" + e.target.getAttribute("data-year") + 
+			"&semester=" + e.target.getAttribute("data-semester") + 
+			"&examType=" + e.target.getAttribute("data-exam-type")
+			link = link + params
+			window.location = link
+		})
+	}
+}
+
+
+
+window.onload = load
+
+</script>
+
 </html>
