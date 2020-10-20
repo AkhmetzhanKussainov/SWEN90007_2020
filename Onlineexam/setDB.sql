@@ -208,7 +208,18 @@ CREATE TABLE enrollments(
 );			
 	
 
+CREATE TABLE locks{
 
+	id SERIAL PRIMARY KEY,
+	objectID  VARCHAR(10),
+	teacherNumber VARCHAR(10),
+	lockType VARCHAR(20),
+	
+	CONSTRAINT fk_teacherNumber
+		FOREIGN KEY(teacherNumber)
+			REFERENCES teachers(teacherNumber)	
+			ON DELETE CASCADE
+}
 
 
 
