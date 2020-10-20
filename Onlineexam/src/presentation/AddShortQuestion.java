@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import datasource.ExamDataMapper;
+import domain.Exam;
 import domain.ShortQuestion;
 
 /**
@@ -43,8 +45,10 @@ public class AddShortQuestion extends HttpServlet {
 		int marks = Integer.parseInt(request.getParameter("possible-mark"));
 		
 		//MultipleQuestion(String id, String subjectCode, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC, String ansD, choice correctAnswer, int possibleMark, int answerNumber)
-		
+		ExamDataMapper em = new ExamDataMapper();
 		ShortQuestion ms = new ShortQuestion("99", subjectCode, year, semester, examType, questionText, marks);
+		Exam exam = new Exam(subjectCode,year,semester,examType,null,null,0);
+		em.addShortQuestions(exam, ms);
 		
 		System.out.println("--");
 		System.out.println(ms);
