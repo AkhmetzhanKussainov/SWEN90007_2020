@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import datasource.ExamDataMapper;
 import domain.MultipleQuestion;
 import domain.Question.choice;
 
@@ -41,6 +42,8 @@ public class DeleteQuestion extends HttpServlet {
 		String semester = request.getParameter("semester");
 		String examType = request.getParameter("examType");
 		String baseURL = request.getParameter("url");
+		
+		ExamDataMapper em = new ExamDataMapper();
 		
 		//MultipleQuestion(String id, String subjectCode, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC, String ansD, choice correctAnswer, int possibleMark, int answerNumber)
 		
