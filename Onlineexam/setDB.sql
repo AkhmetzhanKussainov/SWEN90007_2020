@@ -272,9 +272,6 @@ INSERT INTO students
 VALUES ('S13', 'S','Draco', 'Malfoy');	
 	
 
-
-
-
 INSERT INTO teachers
 VALUES ('T12', 'S','Severus', 'Snape','Professor of Potions');
 

@@ -42,7 +42,10 @@ public class Login extends HttpServlet {
 		// TODO Auto-generated method stub
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		String usertype = "S";
+		
+		//String usertype = "S";
+		//System.out.println("Username: "+username);
+		//System.out.println("Password: "+password);
 		
 		UserDataMapper um = new UserDataMapper();
 		um.loadAllUsers(); 
@@ -72,18 +75,18 @@ public class Login extends HttpServlet {
 			}
 		}
 		
-//		for (Admin admin : um.getAllAdmins()) {
-//			if (admin.getUserName().equals(username)) {
-//				if (admin.getPassword().equals(password)) {
-//					HttpSession session = request.getSession();
-//					session.setAttribute("username", username);
-//					session.setAttribute("usertype", "A");
-//					session.setAttribute("userid", admin.getUserId());
-//					response.sendRedirect("TeacherSubjectDisplay.jsp");
-//					return;
-//				}
-//			}
-//		}
+		for (Admin admin : um.getAllAdmins()) {
+			if (admin.getUserName().equals(username)) {
+				if (admin.getPassword().equals(password)) {
+					HttpSession session = request.getSession();
+					session.setAttribute("username", username);
+					session.setAttribute("usertype", "A");
+					session.setAttribute("userid", admin.getUserId());
+					response.sendRedirect("Admin.jsp");
+					return;
+				}
+			}
+		}
 		
 		response.sendRedirect("Login.jsp");
 		

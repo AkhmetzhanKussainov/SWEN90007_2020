@@ -107,20 +107,16 @@ public class UserDataMapper {
 	  				
   				}
   				
-//  					if (userType.equals("A")) {
-//  	  				
-//	  				Admin admin = new Admin(userId, userName, password, userNumber);
-//	    
-//	  				adminList.add(admin);
-//	  				
-//	  				
-//	  				//Put the data in the identity map
-//	  				IdentityMap<Teacher> identityMap = IdentityMap.getInstance(admin);
-//	  				
-//	  				//Put the student 
-//	  				identityMap.put(userId, admin);
-//	  				
-//  				}
+  				if(userType.equals("A"))
+  				{
+  					Admin admin = new Admin(userId, userName, password, userNumber);
+  					adminList.add(admin);
+  					
+  					IdentityMap<Admin> identityMap = IdentityMap.getInstance(admin);
+  					
+  					identityMap.put(userId, admin);
+  				}
+  				
   				
   			}
   			
@@ -143,6 +139,11 @@ public class UserDataMapper {
 		
 		return teacherList;
 		
+	}
+	
+	public List<Admin> getAllAdmins()
+	{
+		return adminList;
 	}
 	
 	private houses convertHouse(String houseKey) {
@@ -250,15 +251,14 @@ public class UserDataMapper {
 	    	ResultSet rs = stmt.executeQuery();
 	    	while(rs.next()) {
 				
-				
+
 				String userName = rs.getString(7);
 				String password = rs.getString(8);
 				String teacherId = rs.getString(1);
-				//String userId = rs.getString(6);
-				
 				houses house = convertHouse(rs.getString(2));
 				String firstName = rs.getString(3);
 				String lastName = rs.getString(4);
+				String title = rs.getString(5);
 			
 				Teacher teacher = new Teacher(userId, userName, password, teacherId);
 				
@@ -266,6 +266,7 @@ public class UserDataMapper {
 				teacher.setFirstName(firstName);
 				teacher.setLastName(lastName);
 				teacher.setHouse(house);
+				teacher.setTitle(title);
 				
 				//Update teacher in the Identity Map
 				//Get access to the singleton instance

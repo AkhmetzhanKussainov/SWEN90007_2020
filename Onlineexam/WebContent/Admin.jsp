@@ -96,7 +96,7 @@ UserDataMapper um = new UserDataMapper();
     <td><%= teacher.getTeacherId() %></td>
         <td><%= teacher.getFirstName() %></td>
     <td><%= teacher.getLastName() %></td>
-    <%-- <td><%= teacher.getHouseAsString() %></td> --%>
+    <td><%= teacher.getHouseAsString() %></td>
     <td><%= teacher.getTitle() %></td>
   </tr>
   
@@ -146,6 +146,12 @@ SubjectDataMapper sm = new SubjectDataMapper();
         <%
           		  } // for loop for multiple choise question
         	%>
+        	
+<br/>
+<form action="Logout" method="post">
+	<input type="submit" value="Logout"/>
+</form>
+        	
 </div>
 
 
