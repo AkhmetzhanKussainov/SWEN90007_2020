@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import service.QuestionService;
 
 /**
  * Servlet implementation class AddQuestion
@@ -30,6 +31,7 @@ public class AddQuestion extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		QuestionService qs = new QuestionService();
 		String subjectCode = request.getParameter("subjectCode");
 		String year = request.getParameter("year");
 		String semester = request.getParameter("semester");
@@ -54,6 +56,8 @@ public class AddQuestion extends HttpServlet {
 		System.out.println(ms.getCorrectAnswer());
 		System.out.println("--");
 		
+		Boolean realStatus = qs.addMultipleQuestion(ms);
+		
 		String status = "Success";
 		
 		if (status.equals("Success")){
@@ -61,5 +65,6 @@ public class AddQuestion extends HttpServlet {
 			return;
 		}
 	}
+	
 
 }

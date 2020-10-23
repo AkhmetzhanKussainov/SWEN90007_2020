@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import service.QuestionService;
 
 import domain.MultipleQuestion;
 import domain.Question.choice;
@@ -35,6 +36,7 @@ public class DeleteQuestion extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		QuestionService qs = new QuestionService();
 		String questionId = request.getParameter("question-id");
 		String subjectCode = request.getParameter("subjectCode");
 		String year = request.getParameter("year");
@@ -47,6 +49,8 @@ public class DeleteQuestion extends HttpServlet {
 		System.out.println("--");
 		System.out.println("delete " + questionId);
 		System.out.println("--");
+		
+		Boolean realStatus = qs.deleteMultipleQuestion(questionId);
 		
 		String status = "Success";
 		

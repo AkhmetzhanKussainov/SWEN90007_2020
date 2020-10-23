@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import service.QuestionService;
 
 import domain.ShortQuestion;
 
@@ -34,6 +35,7 @@ public class AddShortQuestion extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		QuestionService qs = new QuestionService();
 		String subjectCode = request.getParameter("subjectCode");
 		String year = request.getParameter("year");
 		String semester = request.getParameter("semester");
@@ -51,6 +53,8 @@ public class AddShortQuestion extends HttpServlet {
 		System.out.println(ms.getQuestionText());
 		System.out.println(ms.getPossibleMark());
 		System.out.println("--");
+		
+		Boolean realStatus = qs.addShortQuestion(ms);
 		
 		String status = "Success";
 		

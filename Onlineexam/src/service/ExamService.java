@@ -89,6 +89,30 @@ public class ExamService {
     	return exam;
     }
 	
+	public Boolean createExam(Exam exam) {
+		try {
+			// try creating exam from data mappper
+			return true;
+		} catch (Exception e) {
+			//
+			System.out.println(e);
+			return false;
+	
+		}
+	}
+	
+	public Boolean updateExam(Exam exam) {
+		try {
+			// try update exam from data mappper
+			return true;
+		} catch (Exception e) {
+			//
+			System.out.println(e);
+			return false;
+	
+		}
+	}
+	
 	
 	
 	// on creation - log Exam object

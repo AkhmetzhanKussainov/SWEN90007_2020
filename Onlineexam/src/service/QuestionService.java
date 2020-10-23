@@ -100,5 +100,76 @@ public class QuestionService {
 		QuestionUow.commitAll();
 	}
 
+	public Boolean addMultipleQuestion(MultipleQuestion mq) {
+		try {
+			// try creating mq from data mappper
+			return true;
+		} catch (Exception e) {
+			//
+			System.out.println(e);
+			return false;
+	
+		}
+	}
+	
+	public Boolean addShortQuestion(ShortQuestion sq) {
+		try {
+			// try creating sq from data mappper
+			return true;
+		} catch (Exception e) {
+			//
+			System.out.println(e);
+			return false;
+	
+		}
+	}
+	
+	public Boolean updateShortQuestion(ShortQuestion sq) {
+		try {
+			// try updating sq from data mappper
+			return true;
+		} catch (Exception e) {
+			//
+			System.out.println(e);
+			return false;
+	
+		}
+	}
+	
+	public Boolean updateMultipleQuestion(MultipleQuestion mq) {
+		try {
+			// try updating mq from data mappper
+			return true;
+		} catch (Exception e) {
+			//
+			System.out.println(e);
+			return false;
+	
+		}
+	}
+	
+	public Boolean deleteMultipleQuestion(String questionID) {
+		try {
+			// try deleting mq from data mappper
+			return true;
+		} catch (Exception e) {
+			//
+			System.out.println(e);
+			return false;
+	
+		}
+	}
+	
+	public Boolean deleteShortQuestion(String questionID) {
+		try {
+			// try deleting sq from data mappper
+			return true;
+		} catch (Exception e) {
+			//
+			System.out.println(e);
+			return false;
+	
+		}
+	}
 
 }

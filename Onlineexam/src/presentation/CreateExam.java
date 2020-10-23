@@ -16,6 +16,7 @@ import datasource.ExamDataMapper;
 import datasource.UserDataMapper;
 import domain.Exam;
 import domain.Teacher;
+import service.ExamService;
 
 /**
  * Servlet implementation class CreateExam
@@ -42,6 +43,7 @@ public class CreateExam extends HttpServlet {
 		// TODO Auto-generated method stub
 		try {
 		
+		ExamService es = new ExamService();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm"); 
 		Date startDateRaw = format.parse(request.getParameter("start-time"));  
 		Timestamp startTimestamp = new java.sql.Timestamp(startDateRaw.getTime());
@@ -86,12 +88,19 @@ public class CreateExam extends HttpServlet {
 		System.out.println(exam.getExamName());
 		System.out.println("---");
 		
+		
+		Boolean realStatus = es.createExam(exam);
+		
 		String status = "Success";
 			
 //		String status = em.publishExam(exam);
 //		String status = "Failure";
 //		System.out.println(status);
+		
+		
+		
 		if (status.equals("Success")){
+			
 			response.sendRedirect("TeacherExam.jsp" + "?subjectCode=" + subjectId);
 			return;
 		}
