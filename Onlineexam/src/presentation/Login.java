@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import Security.AuthenticationEnforcer;
 import datasource.UserDataMapper;
 import domain.Student;
 import domain.Admin;
@@ -39,56 +41,42 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
 		
-		//String usertype = "S";
-		//System.out.println("Username: "+username);
-		//System.out.println("Password: "+password);
+		//Give the Session to the authenticator enforcer
 		
-		UserDataMapper um = new UserDataMapper();
-		um.loadAllUsers(); 
-		for (Student student : um.getAllStudents()) {
-			if (student.getUserName().equals(username)) {
-				if (student.getPassword().equals(password)) {
-					HttpSession session = request.getSession();
-					session.setAttribute("username", username);
-					session.setAttribute("usertype", "S");
-					session.setAttribute("userid", student.getUserId());
+		//If the authenticator returns true
+		if (AuthenticationEnforcer.checkAuthentication(request)) { 
+		//
+			//Get the Session
+			HttpSession session = request.getSession();
+			
+			String userType = (String) session.getAttribute("usertype");
+			
+			switch (userType) {
+				case "S":
 					response.sendRedirect("StudentSubjectDisplay.jsp");
-					return;
-				}
-			}
-		}
-		
-		for (Teacher teacher : um.getAllTeachers()) {
-			if (teacher.getUserName().equals(username)) {
-				if (teacher.getPassword().equals(password)) {
-					HttpSession session = request.getSession();
-					session.setAttribute("username", username);
-					session.setAttribute("usertype", "T");
-					session.setAttribute("userid", teacher.getUserId());
+					break;
+				case "T":	
 					response.sendRedirect("TeacherSubjectDisplay.jsp");
-					return;
-				}
-			}
-		}
-		
-		for (Admin admin : um.getAllAdmins()) {
-			if (admin.getUserName().equals(username)) {
-				if (admin.getPassword().equals(password)) {
-					HttpSession session = request.getSession();
-					session.setAttribute("username", username);
-					session.setAttribute("usertype", "A");
-					session.setAttribute("userid", admin.getUserId());
+					break;
+				case "A":	
 					response.sendRedirect("Admin.jsp");
-					return;
-				}
+					break;
+				default:
+					//Hasn't found a valid user type
+					System.out.println("This usertype not implemented by system");
+					response.sendRedirect("Login.jsp");
 			}
 		}
 		
-		response.sendRedirect("Login.jsp");
+		else {
+			//Incorrect username or password
+			System.out.println("Incorrect username or password");
+			response.sendRedirect("Login.jsp");
+			
+		}
+		
+		
 		
 	}
 
