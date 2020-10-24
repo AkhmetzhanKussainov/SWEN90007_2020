@@ -28,10 +28,24 @@ tr:nth-child(odd) {
 
 </head>
 <body>
-<h3 align="center">User Information</h3>
+
+<h1 align="center">Administration Information</h1>
+
+<h4>Hi ${username}, Logging in was successful.</h4> 
+
 <h3 align="center">Student info:</h3>
 
 <div align="center">
+<br/>
+<table>
+  <tr>
+    <th>User Name</th>
+    <th>Password</th>
+    <th>StudentId</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>House</th>
+  </tr>
 <%
 UserDataMapper um = new UserDataMapper();
   um.loadAllUsers();
@@ -41,15 +55,7 @@ UserDataMapper um = new UserDataMapper();
        		 
        		 
        		 
-       		  <table>
-  <tr>
-    <th>User Name</th>
-    <th>Password</th>
-    <th>StudentId</th>
-    <th>First Name</th>
-    <th>Last Name</th>
-    <th>House</th>
-  </tr>
+       		  
   <tr>
     <td><%= student.getUserName() %></td>
     <td><%= student.getPassword() %></td>
@@ -59,7 +65,7 @@ UserDataMapper um = new UserDataMapper();
     <td><%= student.getHouseAsString() %></td>
   </tr>
   
-</table> 
+
        		 
             
                 
@@ -69,18 +75,11 @@ UserDataMapper um = new UserDataMapper();
         <%
           		  } // for loop for multiple choise question
         	%>
+        	</table> 
 </div>
 <h3 align="center">Teacher info:</h3>
-
-<div align="center">
-<%
-
-           		 for (Teacher teacher : um.getAllTeachers()) {
-       		 %>
-       		 
-       		 
-       		 
-       		  <table>
+<br/>
+<table>
   <tr>
     <th>User Name</th>
     <th>Password</th>
@@ -90,6 +89,16 @@ UserDataMapper um = new UserDataMapper();
     <th>House</th>
     <th>Title</th>
   </tr>
+
+<div align="center">
+<%
+
+           		 for (Teacher teacher : um.getAllTeachers()) {
+       		 %>
+       		 
+       		 
+       		 
+       		  
   <tr>
     <td><%= teacher.getUserName() %></td>
     <td><%= teacher.getPassword() %></td>
@@ -100,7 +109,7 @@ UserDataMapper um = new UserDataMapper();
     <td><%= teacher.getTitle() %></td>
   </tr>
   
-</table> 
+
        		 
             
                 
@@ -110,10 +119,11 @@ UserDataMapper um = new UserDataMapper();
         <%
           		  } // for loop for multiple choise question
         	%>
+        	</table> 
 </div>
 
 <h3 align="center">Subject info:</h3>
-
+<br/>
 <div align="center">
 
 <form action="CreateSubject" method="post">
@@ -121,6 +131,12 @@ UserDataMapper um = new UserDataMapper();
 </form>
 <br/>
 
+<table>
+  <tr>
+    <th style="width:300px">Subject ID</th>
+    <th>Subject Name</th>
+
+  </tr>
 <%
 SubjectDataMapper sm = new SubjectDataMapper();
 
@@ -133,18 +149,12 @@ SubjectDataMapper sm = new SubjectDataMapper();
        		 
        		 
        		 
-       		  <table>
-  <tr>
-    <th style="width:300px">Subject ID</th>
-    <th>Subject Name</th>
-
-  </tr>
+       		  
   <tr>
     <td><%= subject.getCode() %></td>
     <td><%= subject.getName() %></td>
   </tr>
   
-</table> 
        		 
             
                 
@@ -154,6 +164,7 @@ SubjectDataMapper sm = new SubjectDataMapper();
         <%
           		  } // for loop for multiple choise question
         	%>
+        	</table> 
         	
 <br/>
 <form action="Logout" method="post">

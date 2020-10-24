@@ -22,8 +22,16 @@ public class AuthorizationProvider {
 			
 			Map<String, List<String>> permissions = pc.getPermissions();
 			
+			System.out.println(permissions);
+			
+			System.out.println(userClass);
+			
 			List<String> userPermissions = permissions.get(userClass);
-					
+			
+			System.out.println(userPermissions);
+
+			System.out.println(action);
+			
 			if (userPermissions.contains(action)) {
 				
 				return true;

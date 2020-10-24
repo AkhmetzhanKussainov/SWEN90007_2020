@@ -13,9 +13,18 @@ public class AuthorizationEnforcer {
 
 	public static boolean checkAuthorization(HttpServletRequest request) {
 		
-		String action = request.getParameter("action");
+		System.out.println("Checking Authorization");
 		
-		String user = request.getParameter("usertype");
+		HttpSession session = request.getSession();
+		
+		//String action = request.getParameter("action");
+		
+		//Replace this code later
+		String action = "Create Subject";
+		
+		System.out.println(action);
+		
+		String user = (String) session.getAttribute("usertype");
 		
 		return AuthorizationProvider.checkPermitted(user, action);
 		
