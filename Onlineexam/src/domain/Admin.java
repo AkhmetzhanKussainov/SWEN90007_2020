@@ -12,9 +12,7 @@ public class Admin {
 	private String password;
 	
 	public Admin(String userId, String username, String password, String adminId) {
-		
-		//Lazy initialization
-		
+			
 		this.password = password;
 		this.userId = userId;
 		this.username = username;

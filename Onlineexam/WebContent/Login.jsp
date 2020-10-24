@@ -42,7 +42,9 @@ if(session.getAttribute("usertype") != null){
 	else if (session.getAttribute("usertype").equals("A")){
 		response.sendRedirect("Admin.jsp");	
 	}
-	
+	else if (session.getAttribute("usertype").equals("H")){
+		response.sendRedirect("Admin.jsp");	
+	}
 }
 
 %>

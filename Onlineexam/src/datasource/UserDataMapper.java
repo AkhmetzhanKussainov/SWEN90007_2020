@@ -51,12 +51,14 @@ public class UserDataMapper {
 	private List<Student> studentList;
     private List<Teacher> teacherList;
     private List<Admin> adminList;
+    private List<Headmaster> headmasterList;
 	
 	public UserDataMapper() {
 		
 		studentList = new ArrayList<>();
 	    teacherList = new ArrayList<>();
 	    adminList = new ArrayList<>();
+	    headmasterList = new ArrayList<>();
 		
 		
 	}	
@@ -117,6 +119,16 @@ public class UserDataMapper {
   					identityMap.put(userId, admin);
   				}
   				
+  				if(userType.equals("H"))
+  				{
+  					Headmaster headmaster = new Headmaster(userId, userName, password, userNumber);
+  					headmasterList.add(headmaster);
+  					
+  					IdentityMap<Headmaster> identityMap = IdentityMap.getInstance(headmaster);
+  					
+  					identityMap.put(userId, headmaster);
+  				}
+  				
   				
   			}
   			
@@ -144,6 +156,11 @@ public class UserDataMapper {
 	public List<Admin> getAllAdmins()
 	{
 		return adminList;
+	}
+	
+	public List<Headmaster> getAllHeadmasters()
+	{
+		return headmasterList;
 	}
 	
 	private houses convertHouse(String houseKey) {

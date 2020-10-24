@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 import datasource.UserDataMapper;
 import domain.Student;
 import domain.Admin;
+import domain.Headmaster;
 import domain.User;
 import domain.Teacher;
 
@@ -65,6 +66,7 @@ public class AuthenticationEnforcer {
 		
 		//Match for Headmasters
 		for (Headmaster headmaster : um.getAllHeadmasters()) {
+			
 			if (headmaster.getUserName().equals(username)) {
 				if (headmaster.getPassword().equals(password)) {
 					
