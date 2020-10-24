@@ -47,8 +47,8 @@ public class SubjectDataMapper {
 	
 	
 	private static final String createSubject = 
-			"INSERT INTO subjects "
-			+ "VALUES ('?', '?')";
+			"INSERT INTO subjects (subjectId, subjectName) "
+			+ "VALUES (?, ?)";
 	
 	private static final String updateSubjectName = 
 			"UPDATE subjects SET subjectName = ? WHERE subjectId = ?";
@@ -328,21 +328,34 @@ public class SubjectDataMapper {
     
 	
     public void createSubject(String id, String name) {
+    	
+    System.out.println("Says created subject");	
+    	
 	try {
 		    	
 		    	PreparedStatement stmt = DBConnection.prepare(createSubject);
 		    	
-		    	stmt.setString(1, id);
-		    	stmt.setNString(2, name);
+		    	//System.out.println(stmt);
 		    	
-		    	stmt.executeQuery();
+		    	stmt.setString(1, id);
+		    	stmt.setString(2, name);
+
+		    	System.out.println(stmt);
+		    	
+		    	//System.out.println("execute");
+		    	
+		    	stmt.executeUpdate();
 
 		    	Subject subject = new Subject(id,name);
 		    	
 		    	IdentityMap<Subject> identityMap = IdentityMap.getInstance(subject);
 				identityMap.put(id, subject);
+				
 								
 			} catch (SQLException e) {
+				
+				System.out.println("Error");		
+				System.out.println(e);
 		
 		}
     }
@@ -586,7 +599,8 @@ public class SubjectDataMapper {
 				return true;
 					
 		} catch (SQLException e) {
-	
+			
+			
 		}		
 		
 	    return false;

@@ -61,6 +61,15 @@ CREATE TABLE administrators(
 
 );
 
+CREATE TABLE headmasters(
+	adminNumber VARCHAR(10) PRIMARY KEY,
+	
+	CONSTRAINT fk_adminId
+		FOREIGN KEY(adminNumber)
+			REFERENCES users(userNumber)
+			ON DELETE CASCADE
+
+);
 
 
 CREATE TABLE subjects(
@@ -257,6 +266,9 @@ VALUES ('DracoM', 'ih8harry2', 'S', 'S13');
 
 INSERT INTO users (userName, userPassword, userType, userNumber)
 VALUES ('Dobby', 'iluvharry', 'A', 'A1');
+
+INSERT INTO users (userName, userPassword, userType, userNumber)
+VALUES ('Dumb', 'Light', 'H', 'A2');
 
 INSERT INTO students
 VALUES ('S10', 'G','Harry', 'Potter');

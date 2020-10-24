@@ -7,12 +7,6 @@
 			<attribute name="owner.project.facets" value="#system#;jst.web"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 14.0.2 [14.0.2]">
-		<attributes>
-			<attribute name="module" value="true"/>
-			<attribute name="owner.project.facets" value="java"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="/Users/robertsharp/Desktop/2020sem2/enterprise/tomcat/apache-tomcat-9.0.37/lib/servlet-api.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -23,6 +17,11 @@
 	<classpathentry kind="lib" path="/Users/robertsharp/Desktop/2020sem2/enterprise/postgres/postgresql-42.2.14.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 14.0.2 [14.0.2]">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="build/classes"/>

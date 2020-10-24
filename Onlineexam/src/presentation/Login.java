@@ -1,6 +1,7 @@
 package presentation;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -62,6 +63,9 @@ public class Login extends HttpServlet {
 				case "A":	
 					response.sendRedirect("Admin.jsp");
 					break;
+				case "H":	
+					response.sendRedirect("Admin.jsp");
+					break;	
 				default:
 					//Hasn't found a valid user type
 					System.out.println("This usertype not implemented by system");
@@ -71,8 +75,11 @@ public class Login extends HttpServlet {
 		
 		else {
 			//Incorrect username or password
+			
 			System.out.println("Incorrect username or password");
-			response.sendRedirect("Login.jsp");
+			
+			response.sendRedirect("LoginError.jsp");
+			
 			
 		}
 		

@@ -63,6 +63,20 @@ public class AuthenticationEnforcer {
 			}
 		}
 		
+		//Match for Headmasters
+		for (Headmaster headmaster : um.getAllHeadmasters()) {
+			if (headmaster.getUserName().equals(username)) {
+				if (headmaster.getPassword().equals(password)) {
+					
+					session.setAttribute("username", username);
+					session.setAttribute("usertype", "H");
+					session.setAttribute("userid", headmaster.getUserId());
+					
+					return true;
+				}
+			}
+		}
+		
 		return false;
 	}
 }

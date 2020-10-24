@@ -115,8 +115,16 @@ UserDataMapper um = new UserDataMapper();
 <h3 align="center">Subject info:</h3>
 
 <div align="center">
+
+<form action="CreateSubject" method="post">
+<input type="submit" value="Create New Subject"/>
+</form>
+<br/>
+
 <%
 SubjectDataMapper sm = new SubjectDataMapper();
+
+
   
            		 for (Subject subject : sm.loadAllSubject()) {
            			 
