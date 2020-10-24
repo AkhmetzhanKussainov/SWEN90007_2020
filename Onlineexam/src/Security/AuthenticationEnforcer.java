@@ -11,6 +11,18 @@ import domain.User;
 import domain.Teacher;
 
 public class AuthenticationEnforcer {
+	
+	public static boolean checkLoggedIn(HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		
+		Object username  = session.getAttribute("username");
+		
+		if (username == null) {return false;}
+		
+		return true;
+		
+	}
 
 	public static boolean checkAuthentication(HttpServletRequest request) {
 		

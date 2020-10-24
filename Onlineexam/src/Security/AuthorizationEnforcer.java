@@ -15,7 +15,15 @@ public class AuthorizationEnforcer {
 		
 		System.out.println("Checking Authorization");
 		
+		
 		HttpSession session = request.getSession();
+		
+		//Verify logged in
+		if (!AuthenticationEnforcer.checkLoggedIn(request)) {
+			
+			return false;
+			
+		}
 		
 		String action = (String) request.getAttribute("action");
 		
