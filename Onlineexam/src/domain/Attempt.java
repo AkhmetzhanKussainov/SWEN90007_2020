@@ -38,12 +38,6 @@ public class Attempt {
 		
 	}
 	
-	public String getAttemptedAns() {
-		
-		return attemptAns;
-		
-	}
-	
 	public int getMark() {
 		
 		return mark;
@@ -67,6 +61,84 @@ public class Attempt {
 		
 		return mark;
 		
+	}
+
+
+
+	public String getSubjectId() {
+		return subjectId;
+	}
+
+
+
+	public void setSubjectId(String subjectId) {
+		this.subjectId = subjectId;
+	}
+
+
+
+	public String getYear() {
+		return year;
+	}
+
+
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+
+
+	public String getSemester() {
+		return semester;
+	}
+
+
+
+	public void setSemester(String semester) {
+		this.semester = semester;
+	}
+
+
+
+	public String getExamType() {
+		return examType;
+	}
+
+
+
+	public void setExamType(String examType) {
+		this.examType = examType;
+	}
+
+
+
+	public String getStudentNumber() {
+		return studentNumber;
+	}
+
+
+
+	public void setStudentNumber(String studentNumber) {
+		this.studentNumber = studentNumber;
+	}
+
+
+
+	public String getAttemptAns() {
+		return attemptAns;
+	}
+
+
+
+	public void setAttemptAns(String attemptAns) {
+		this.attemptAns = attemptAns;
+	}
+
+
+
+	public void setMarked(boolean marked) {
+		this.marked = marked;
 	}
 	
 }

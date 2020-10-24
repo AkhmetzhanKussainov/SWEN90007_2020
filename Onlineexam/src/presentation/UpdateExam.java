@@ -65,15 +65,17 @@ public class UpdateExam extends HttpServlet {
 			
 			ExamDataMapper em = new ExamDataMapper();
 			
-			Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed, startDate, endDate);
+			Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed, null, null);
+			
+			em.changeExam(exam);
 			
 			System.out.println(exam);
 			System.out.println(exam.getExamName());
 			System.out.println(exam.getTotalMarks());
 			System.out.println(exam.getPublished());
 			System.out.println(exam.getClosed());
-			System.out.println(exam.getStartDateString());
-			System.out.println(exam.getEndDateString());
+			/*System.out.println(exam.getStartDateString());
+			System.out.println(exam.getEndDateString());*/
 			
 			
 				

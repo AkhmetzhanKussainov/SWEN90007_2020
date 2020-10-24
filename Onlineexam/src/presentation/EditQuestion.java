@@ -47,7 +47,8 @@ public class EditQuestion extends HttpServlet {
 		String ansD = request.getParameter("choice-d");
 		String baseURL = request.getParameter("url");
 		int marks = Integer.parseInt(request.getParameter("possible-mark"));
-		choice answer = choice.valueOf(request.getParameter("answer"));
+		String answer = request.getParameter("answer");
+		//choice answer = choice.valueOf(request.getParameter("answer"));
 		
 		//MultipleQuestion(String id, String subjectCode, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC, String ansD, choice correctAnswer, int possibleMark, int answerNumber)
 		

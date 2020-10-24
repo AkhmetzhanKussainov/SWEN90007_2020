@@ -3,6 +3,8 @@ package domain;
 import domain.Question.choice;
 
 public class MultipleAttempt extends Attempt {
+	
+	
 
 	public MultipleAttempt(String questionId, String subjectId, String year, String semester, String examType,
 			String studentNumber, String attemptedAns) {

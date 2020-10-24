@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import domain.Exam;
+import service.QuestionService;
+
 /**
  * Servlet implementation class DeleteShortQuestion
  */
@@ -38,6 +41,10 @@ public class DeleteShortQuestion extends HttpServlet {
 		String semester = request.getParameter("semester");
 		String examType = request.getParameter("examType");
 		String baseURL = request.getParameter("url");
+		
+		QuestionService qs = new QuestionService();
+		Exam exam = new Exam(subjectCode,year,semester,examType);
+		qs.deleteShortQuestion(exam, questionId);
 		
 		//MultipleQuestion(String id, String subjectCode, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC, String ansD, choice correctAnswer, int possibleMark, int answerNumber)
 		

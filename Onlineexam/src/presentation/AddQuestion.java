@@ -1,6 +1,9 @@
 package presentation;
 
 import domain.Question.choice;
+import service.ExamService;
+import service.QuestionService;
+import domain.Exam;
 import domain.MultipleQuestion;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,6 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import datasource.ExamDataMapper;
 
 /**
  * Servlet implementation class AddQuestion
@@ -41,11 +46,17 @@ public class AddQuestion extends HttpServlet {
 		String ansD = request.getParameter("choice-d");
 		String baseURL = request.getParameter("url");
 		int marks = Integer.parseInt(request.getParameter("possible-mark"));
-		choice answer = choice.valueOf(request.getParameter("answer"));
+		String answer = request.getParameter("answer");
+		
+		QuestionService es = new QuestionService();
+		//choice answer = choice.valueOf(request.getParameter("answer"));
+		//int answer = 2;
 		
 		//MultipleQuestion(String id, String subjectCode, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC, String ansD, choice correctAnswer, int possibleMark, int answerNumber)
-		
+		// MultipleQuestion(String id, String subjectId, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC,String ansD, String correctAnswer,int possibleMark, int answerNumber)
 		MultipleQuestion ms = new MultipleQuestion("99", subjectCode, year, semester, examType, questionText, ansA, ansB, ansC, ansD, answer, marks, 2);
+		Exam exam = new Exam(subjectCode,year,semester,examType,null,null,0);
+		es.addMultipleQuestion(exam, ms);
 		
 		System.out.println("--");
 		System.out.println(ms);

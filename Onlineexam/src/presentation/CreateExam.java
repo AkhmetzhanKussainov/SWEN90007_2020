@@ -16,6 +16,7 @@ import datasource.ExamDataMapper;
 import datasource.UserDataMapper;
 import domain.Exam;
 import domain.Teacher;
+import service.ExamService;
 
 /**
  * Servlet implementation class CreateExam
@@ -42,6 +43,7 @@ public class CreateExam extends HttpServlet {
 		// TODO Auto-generated method stub
 		try {
 		
+		ExamService es = new ExamService();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm"); 
 		Date startDateRaw = format.parse(request.getParameter("start-time"));  
 		Timestamp startTimestamp = new java.sql.Timestamp(startDateRaw.getTime());
@@ -77,9 +79,10 @@ public class CreateExam extends HttpServlet {
 		
 		System.out.println(examCreator);
 		
-//		ExamDataMapper em = new ExamDataMapper();
+		//ExamDataMapper em = new ExamDataMapper();
 		
-		Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed, startDate, endDate);
+		Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed,null,null);
+		es.addExam(exam);
 		
 		System.out.println("---");
 		System.out.println(exam);

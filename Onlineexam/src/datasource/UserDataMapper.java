@@ -107,20 +107,16 @@ public class UserDataMapper {
 	  				
   				}
   				
-//  					if (userType.equals("A")) {
-//  	  				
-//	  				Admin admin = new Admin(userId, userName, password, userNumber);
-//	    
-//	  				adminList.add(admin);
-//	  				
-//	  				
-//	  				//Put the data in the identity map
-//	  				IdentityMap<Teacher> identityMap = IdentityMap.getInstance(admin);
-//	  				
-//	  				//Put the student 
-//	  				identityMap.put(userId, admin);
-//	  				
-//  				}
+  				if(userType.equals("A"))
+  				{
+  					Admin admin = new Admin(userId, userName, password,userNumber);
+  					adminList.add(admin);
+  					
+  					IdentityMap<Admin> identityMap = IdentityMap.getInstance(admin);
+  					
+  					identityMap.put(userId, admin);
+  				}
+  				
   				
   			}
   			
@@ -143,6 +139,11 @@ public class UserDataMapper {
 		
 		return teacherList;
 		
+	}
+	
+	public List<Admin> getAllAdmins()
+	{
+		return adminList;
 	}
 	
 	private houses convertHouse(String houseKey) {
