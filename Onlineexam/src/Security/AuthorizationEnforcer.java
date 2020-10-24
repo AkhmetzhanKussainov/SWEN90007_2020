@@ -17,12 +17,9 @@ public class AuthorizationEnforcer {
 		
 		HttpSession session = request.getSession();
 		
-		//String action = request.getParameter("action");
+		String action = (String) request.getAttribute("action");
 		
-		//Replace this code later
-		String action = "Create Subject";
-		
-		System.out.println(action);
+		System.out.println("Action to be authorised: " + action);
 		
 		String user = (String) session.getAttribute("usertype");
 		
