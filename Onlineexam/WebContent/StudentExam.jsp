@@ -32,13 +32,23 @@ tr:nth-child(odd) {
 </head>
 <body>
 <%
+String subjectId = request.getParameter("subjectCode");
+String year = request.getParameter("year");
+String semester = request.getParameter("semester");
+String examType = request.getParameter("examType");
 SubjectDataMapper sm = new SubjectDataMapper();
 
 ExamService es = new ExamService();
+
+ScriptbookService sbs= new ScriptbookService();
 /* ExamDataMapper em = new ExamDataMapper(); */
 
 Subject subject = sm.loadSubject(request.getParameter("subjectCode"));
 
+UserDataMapper um = new UserDataMapper();
+Exam e = es.getExam(subjectId, year, semester, examType);
+String student_id = (String)session.getAttribute("userid");
+Student student_obj = um.loadFullStudent(student_id);
 
 /* em.loadExams(); */
 
@@ -58,6 +68,7 @@ Subject subject = sm.loadSubject(request.getParameter("subjectCode"));
 <th>Published</th>
 <th>Closed</th>
 <th>Attempt</th>
+
 </tr>
 
 <%
@@ -84,8 +95,47 @@ for (Exam exam : es.getExams(request.getParameter("subjectCode"))) {
 </td>
 
 </tr>
-
       
+    
+ 
+<%
+	} // for loop for multiple choise question
+	%>
+
+</table>
+<br/>
+<h2>Results</h2>
+
+<table>
+<tr>
+<!-- <th>Exam Id</th> -->
+
+<th>Year</th>
+<th>Semester</th>
+<th>Exam Type</th>
+<th>Marks Obtained</th>
+<th>Scriptbook</th>
+</tr>
+
+<%
+for (Scriptbook sb : sbs.getMarkedExamScriptbooksByStudent(request.getParameter("subjectCode"), request.getParameter("year"), request.getParameter("semester"), request.getParameter("examType"), student_obj.getStudentId())) {
+		
+		 %>
+		 
+		
+<tr>
+<%-- <td><%= exam.getExamId() %></td> --%>
+<td><%= sb.getYear() %></td>
+<td><%= sb.getSemester() %></td>
+<td><%= sb.getExamType() %></td>
+<td><%= sb.getTotalMark() %></td>
+<td>
+<button data-subject-id="<%=subject.getCode()%>" data-year="<%=e.getYear()%>" data-semester="<%=e.getSemester()%>" data-exam-type="<%=e.getExamType()%>" data-student-number="<%=sb.getStudentNumber()%>" class="view-scriptbook">View</button>
+</td>
+
+</tr>
+
+  
     
  
 <%
@@ -96,15 +146,16 @@ for (Exam exam : es.getExams(request.getParameter("subjectCode"))) {
 
 
 
+
 </body>
 <script>
 function load(){
 	
-	var attemptButtons = document.querySelectorAll(".attempt-exam");
-	console.log(attemptButtons);
-	for (var i=0; i<attemptButtons.length; i++){
-		attemptButtons[i].addEventListener("click", function(e){
-			var link = `${document.location.origin}/Onlineexam/StudentExamScriptBook.jsp?`
+	var viewButtons = document.querySelectorAll(".view-scriptbook");
+	console.log(viewButtons);
+	for (var i=0; i<viewButtons.length; i++){
+		viewButtons[i].addEventListener("click", function(e){
+			var link = `${document.location.origin}/Onlineexam/StudentScriptbookView.jsp?`
 			var params = "subjectCode=" + e.target.getAttribute("data-subject-id") + 
 			"&year=" + e.target.getAttribute("data-year") + 
 			"&semester=" + e.target.getAttribute("data-semester") + 

@@ -30,6 +30,16 @@ public class MultipleAttempt extends Attempt {
 		// TODO Auto-generated constructor stub
 		this.mark = mark;
 	}
+	
+	public MultipleAttempt(String questionId, String subjectId, String year, String semester, String examType,
+			String studentNumber, String attemptedAns, String correctAns, Integer totalMarks, String questionText, int mark) {
+		super(questionId, subjectId, year, semester, examType, studentNumber, attemptedAns);
+		// TODO Auto-generated constructor stub
+		this.questionText = questionText;
+		this.totalMarks = totalMarks;
+		this.correctAns = correctAns;
+		this.mark = mark;
+	}
 
 	private choice chosenAnswer;
 	

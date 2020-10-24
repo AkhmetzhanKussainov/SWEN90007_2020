@@ -37,6 +37,15 @@ public class ShortAttempt extends Attempt {
 		// TODO Auto-generated constructor stub
 		this.mark = mark;
 	}
+	
+	public ShortAttempt(String questionId, String subjectId, String year, String semester, String examType,
+			String studentNumber, String attemptedAns,Integer totalMarks, String questionText, int mark) {
+		super(questionId, subjectId, year, semester, examType, studentNumber, attemptedAns);
+		// TODO Auto-generated constructor stub
+		this.mark = mark;
+		this.questionText = questionText;
+		this.totalMarks = totalMarks;
+	}
 
 	private String shortAnswer;
 	

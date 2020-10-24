@@ -113,6 +113,32 @@ public class ScriptbookService {
 	}
 	
 	
+	// Simulating fetching marked attempts, no need to create another service method for this getAllShortAttempts will work for both Student and Teacher ideally
+	
+	public List<MultipleAttempt> getAllMultipleAttemptsDemo(String subjectCode, String semester, String year, String examType, String studentNumber) {
+	    
+		List<MultipleAttempt> multipleAttempts = new ArrayList<>();
+		
+		//public MultipleAttempt(String questionId, String subjectId, String year, String semester, String examType,
+		//String studentNumber, String attemptedAns, String correctAns, Integer totalMarks, String questionText, int mark) {
+		
+		MultipleAttempt multia1 = new MultipleAttempt("1", "DEF101", "2020", "2", "M", "S12", "A", "A", 5, "What is life?", 5);
+		MultipleAttempt multia2 = new MultipleAttempt("2", "DEF101", "2020", "2", "M", "S12", "B", "C", 5, "Why?", 0);
+		MultipleAttempt multia3 = new MultipleAttempt("3", "DEF101", "2020", "2", "M", "S12", "C", "C", 5, "What?", 5);
+		MultipleAttempt multia4 = new MultipleAttempt("4", "DEF101", "2020", "2", "M", "S12", "D", "D", 5, "How", 5);
+//		MultipleQuestion(String id, String subjectCode, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC, String ansD, choice correctAnswer, int possibleMark, int answerNumber
+		
+		
+		multipleAttempts.add(multia1);
+		multipleAttempts.add(multia2);
+		multipleAttempts.add(multia3);
+		multipleAttempts.add(multia4);
+		
+	    return multipleAttempts;
+	    
+	}
+	
+	
 public List<ShortAttempt> getAllShortAttempts(String subjectCode, String semester, String year, String examType, String studentNumber) {
 	    
 		List<ShortAttempt> shortAttempts = new ArrayList<>();
@@ -135,6 +161,58 @@ public List<ShortAttempt> getAllShortAttempts(String subjectCode, String semeste
 	    return shortAttempts;
 	    
 	}
+
+// Simulating fetching marked attempts, no need to create another service method for this getAllShortAttempts will work for both Student and Teacher ideally
+
+public List<ShortAttempt> getAllShortAttemptsDemo(String subjectCode, String semester, String year, String examType, String studentNumber) {
+    
+	List<ShortAttempt> shortAttempts = new ArrayList<>();
+	
+	//public ShortAttempt(String questionId, String subjectId, String year, String semester, String examType,
+	//String studentNumber, String attemptedAns,Integer totalMarks, String questionText, int mark) {
+	
+	ShortAttempt shorta1 = new ShortAttempt("1", "DEF101", "2020", "2", "M", "S12", "something", 5, "What is life?", 4);
+	ShortAttempt shorta2 = new ShortAttempt("2", "DEF101", "2020", "2", "M", "S12", "something asa", 5, "What", 3);
+	ShortAttempt shorta3 = new ShortAttempt("3", "DEF101", "2020", "2", "M", "S12", "something asdsad", 5, "Why", 3);
+	ShortAttempt shorta4 = new ShortAttempt("4", "DEF101", "2020", "2", "M", "S12", "something asdasdad", 5, "Done", 4);
+//	MultipleQuestion(String id, String subjectCode, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC, String ansD, choice correctAnswer, int possibleMark, int answerNumber
+	
+	
+	shortAttempts.add(shorta1);
+	shortAttempts.add(shorta2);
+	shortAttempts.add(shorta3);
+	shortAttempts.add(shorta4);
+	
+    return shortAttempts;
+    
+}
+
+public List<Scriptbook> getMarkedExamScriptbooksByStudent(String subjectCode, String year, String semester, String examType, String studentNumber) {
+	
+	List<Scriptbook> scriptbooks = new ArrayList<>();
+	
+	try {
+		
+		//Scriptbook(String subjectId, String year, String semester, String examType, String studentId, int scriptMark, boolean marked)
+
+		Scriptbook sb2 = new Scriptbook("DEF101", "2020", "2", "F", "S12", 80, true, true);
+		Scriptbook sb3 = new Scriptbook("DEF101", "2020", "2", "F", "S12", 80, true, true);
+		Scriptbook sb4 = new Scriptbook("DEF101", "2020", "2", "F", "S12", 80, true, true);
+		
+		scriptbooks.add(sb2);
+		scriptbooks.add(sb3);
+		scriptbooks.add(sb4);
+	
+			
+} catch (Exception e) {
+	System.out.println(e);
+
+}
+
+
+return scriptbooks;
+	
+}
 	
 
 }
