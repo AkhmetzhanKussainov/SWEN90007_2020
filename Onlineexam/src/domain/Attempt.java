@@ -24,8 +24,6 @@ public class Attempt {
 		this.attemptAns = attemptedAns;
 	}
 	
-
-	
 	public void setQuestionId(String questionId) {
 		
 		this.questionId = questionId;

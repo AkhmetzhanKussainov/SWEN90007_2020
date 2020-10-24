@@ -39,6 +39,21 @@ public class Scriptbook {
 				
 	}
 	
+	public Scriptbook(String subjectId, String year, String semester, String examType, String studentId, int scriptMark, boolean marked, boolean submitted) {
+		
+		this.setSubjectId(subjectId);
+		this.setYear(year);
+		this.setSemester(semester);
+		this.setExamType(examType);
+		this.studentNumber = studentId;
+		this.marked = marked;
+		this.totalMark = scriptMark;
+		this.submitted = submitted;
+		
+		attemptList = new ArrayList<>();
+				
+	}
+	
 	public void setTotalMark(int mark) {
 		
 		totalMark = mark;
