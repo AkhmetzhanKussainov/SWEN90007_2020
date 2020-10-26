@@ -42,9 +42,7 @@ public class SubjectDataMapper {
 	private static final String findExambySubject = 
 			"SELECT * FROM exams "
 			+ "JOIN subjects ON exams.subjectId = subjects.subjectId "
-			+ "WHERE subjectId =";
-	
-	
+			+ "WHERE exams.subjectId = ?";
 	
 	private static final String createSubject = 
 			"INSERT INTO subjects (subjectId, subjectName) "
@@ -55,9 +53,7 @@ public class SubjectDataMapper {
 	
 	private static final String deleteSubject = 
 			"DELETE FROM subjects WHERE subjectId = ?";
-		
-	
-	
+			
 	private static final String insertStudentSubject = 
 			"INSERT INTO enrollments (year, semester, subjectId, studentNumber) "
 			+ "VALUES ('?', '?', '?', '?')";
@@ -181,7 +177,6 @@ public class SubjectDataMapper {
     
 
     public List<Student> loadStudentsBySubject(String subjectId){
-		//String findUserSpecified = findUser + userId;
 		
 				String findStudentFullSpecified = findStudentbySubject + subjectId; 
 				List<Student> student_subjectList  = new ArrayList<Student>();
@@ -290,12 +285,13 @@ public class SubjectDataMapper {
     
 	public List<Exam> loadAllExamBySubject(String subjectId) {
 		
-		String findteacherFullSpecified = findExambySubject + subjectId; 
 		List<Exam> examList  = new ArrayList<Exam>();
 		
 	    try {
 	    	
-	    	PreparedStatement stmt = DBConnection.prepare(findteacherFullSpecified);
+	    	PreparedStatement stmt = DBConnection.prepare(findExambySubject);
+	    	
+	    	stmt.setString(1,subjectId);
 	    	
 	    	ResultSet rs = stmt.executeQuery();
 	    	
@@ -317,9 +313,12 @@ public class SubjectDataMapper {
 
 				
 	    	}
-				return examList;
+	    	
+		return examList;
 					
 		} catch (SQLException e) {
+			
+			System.out.println(e);
 	
 		}		
 		

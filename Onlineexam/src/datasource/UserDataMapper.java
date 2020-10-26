@@ -34,6 +34,21 @@ public class UserDataMapper {
 	private static final String deleteStudent = 
 			"DELETE FROM students WHERE studentId = ?";
 
+	private static final String findStudentBySubject = 
+			
+			"SELECT * from students "
+			+ "JOIN enrollments ON enrollments.studentNumber = students.studentNumber "
+			+ "JOIN users ON users.userNumber = students.studentNumber "
+			+ "WHERE subjectId = ?";
+	
+	private static final String findTeacherBySubject = 
+			
+			"SELECT * from teachers "
+			+ "JOIN appointments ON appointments.teacherNumber = teachers.teacherNumber "
+			+ "JOIN users ON users.userNumber = teachers.teacherNumber "
+			+ "WHERE subjectId = ?";
+	
+	
 	
 	private static final String findSubjectByStudent = 
 			
@@ -206,6 +221,65 @@ public class UserDataMapper {
 		return null;
 	}
 	
+	//Load all of the information of student for just one subject
+	//returns an arrayList of students for printing
+		public List<Student> loadFullStudentBySubject(String subjectId) {
+			
+			ArrayList<Student> studentList = new ArrayList<>();
+			
+		    try {
+		    	
+		    	PreparedStatement stmt = DBConnection.prepare(findStudentBySubject);
+		    	
+		    	stmt.setString(1,subjectId);
+		    	
+		    	ResultSet rs = stmt.executeQuery();
+		    	
+		    	while(rs.next()) {
+		    		
+		    		/*for (int n = 1; n<10; n++) {
+		    			System.out.println(n);
+		    			System.out.println(rs.getString(n));
+		    		}*/
+		    		
+					String password = rs.getString(3);
+					String studentId = rs.getString(1);
+					String userId = rs.getString(5);
+					String userName = rs.getString(3);
+					houses house = convertHouse(rs.getString(2));
+					String firstName = rs.getString(3);
+					String lastName = rs.getString(4);
+				
+					Student student = new Student(userId, userName, password, studentId);
+					
+					//Set the new information
+					student.setFirstName(firstName);
+					student.setLastName(lastName);
+					student.setHouse(house);
+					student.setStudentId(studentId);
+					
+					//Update student in the Identity Map
+					//Get access to the singleton instance
+					IdentityMap<Student> identityMap = IdentityMap.getInstance(student);
+					
+					//Replace the student 
+					identityMap.put(userId, student);
+	
+					
+					studentList.add(student);
+		    	}
+				
+		    	return studentList;
+						
+			} catch (SQLException e) {
+				System.out.println(e);
+			}		
+			
+		    return null;
+		    
+		}
+	
+	
 	//Load all of the information
 	public Student loadFullStudent(String userId) {
 		
@@ -255,6 +329,67 @@ public class UserDataMapper {
 	    return null;
 	    
 	}
+	
+
+	//Load all of the information of student for just one subject
+	//returns an arrayList of students for printing
+	public List<Teacher> loadFullTeacherBySubject(String subjectId) {
+	
+		ArrayList<Teacher> teacherList = new ArrayList<>();
+		
+	    try {
+	    	
+	    	PreparedStatement stmt = DBConnection.prepare(findTeacherBySubject);
+	    	
+	    	stmt.setString(1,subjectId);
+	    	
+	    	ResultSet rs = stmt.executeQuery();
+	    	while(rs.next()) {
+				
+	    		/*for (int n = 1; n<20; n++) {
+    			System.out.println(n);
+    			System.out.println(rs.getString(n));
+    			}*/
+	    		
+	    		String userId = rs.getString(10);
+				String userName = rs.getString(12);
+				String password = rs.getString(13);
+				String teacherId = rs.getString(15);
+				houses house = convertHouse(rs.getString(2));
+				String firstName = rs.getString(3);
+				String lastName = rs.getString(4);
+				String title = rs.getString(5);
+			
+				Teacher teacher = new Teacher(userId, userName, password, teacherId);
+				
+				//Set the new information
+				teacher.setFirstName(firstName);
+				teacher.setLastName(lastName);
+				teacher.setHouse(house);
+				teacher.setTitle(title);
+				
+				//Update teacher in the Identity Map
+				//Get access to the singleton instance
+				IdentityMap<Teacher> identityMap = IdentityMap.getInstance(teacher);
+				
+				//Replace the student 
+				identityMap.put(userId, teacher);
+				
+				teacherList.add(teacher);
+	    	}
+				
+	    	return teacherList;
+					
+		} catch (SQLException e) {
+			System.out.println(e);
+		}		
+		
+	    return null;
+	    
+	}
+	
+	
+	
 	
 	public Teacher loadFullTeacher(String userId) {
 		

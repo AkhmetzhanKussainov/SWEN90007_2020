@@ -31,7 +31,7 @@ tr:nth-child(odd) {
 
 <h1 align="center">Administration Information</h1>
 
-<h4>Hi ${username}, Logging in was successful.</h4> 
+<h4>Hi ${username}, logging in was successful.</h4> 
 
 <h3 align="center">Student info:</h3>
 
@@ -40,7 +40,7 @@ tr:nth-child(odd) {
 <table>
   <tr>
     <th>User Name</th>
-    <th>Password</th>
+    
     <th>StudentId</th>
     <th>First Name</th>
     <th>Last Name</th>
@@ -58,7 +58,7 @@ UserDataMapper um = new UserDataMapper();
        		  
   <tr>
     <td><%= student.getUserName() %></td>
-    <td><%= student.getPassword() %></td>
+    
     <td><%= student.getStudentId() %></td>
     <td><%= student.getFirstName() %></td>
     <td><%= student.getLastName() %></td>
@@ -82,7 +82,7 @@ UserDataMapper um = new UserDataMapper();
 <table>
   <tr>
     <th>User Name</th>
-    <th>Password</th>
+    
     <th>TeacherId</th>
     <th>First Name</th>
     <th>Last Name</th>
@@ -101,7 +101,7 @@ UserDataMapper um = new UserDataMapper();
        		  
   <tr>
     <td><%= teacher.getUserName() %></td>
-    <td><%= teacher.getPassword() %></td>
+    
     <td><%= teacher.getTeacherId() %></td>
         <td><%= teacher.getFirstName() %></td>
     <td><%= teacher.getLastName() %></td>
@@ -135,6 +135,7 @@ UserDataMapper um = new UserDataMapper();
   <tr>
     <th style="width:300px">Subject ID</th>
     <th>Subject Name</th>
+    <th></th>
 
   </tr>
 <%
@@ -153,6 +154,7 @@ SubjectDataMapper sm = new SubjectDataMapper();
   <tr>
     <td><%= subject.getCode() %></td>
     <td><%= subject.getName() %></td>
+    <td><button data-value="<%= subject.getCode() %>" class="subject-link">View</button></td>
   </tr>
   
        		 
@@ -175,4 +177,18 @@ SubjectDataMapper sm = new SubjectDataMapper();
 
 
 </body>
+<script>
+function load(){
+	var examLinks = document.querySelectorAll(".subject-link");
+	for (var i=0; i<examLinks.length; i++){
+		examLinks[i].addEventListener("click", function(e){
+			var link = `${document.location.origin}/Onlineexam/AdminSubject.jsp?subjectCode=` +  e.target.getAttribute("data-value")
+			window.location = link
+		})
+	}	
+}
+
+window.onload = load
+
+</script>
 </html>

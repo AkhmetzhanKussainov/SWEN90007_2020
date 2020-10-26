@@ -21,9 +21,9 @@ public class ExamService {
 	
 	public ExamService()
 	{
+		
 		 ExamDataMapper examDataMapper=new ExamDataMapper();
-		 
-		 
+		 	 
 	}
 	
 	public List<Exam> getExams(String subjectCode) {
