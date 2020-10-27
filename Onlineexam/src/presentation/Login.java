@@ -72,18 +72,18 @@ public class Login extends HttpServlet {
 			}
 		}
 		
-		for (Admin admin : um.getAllAdmins()) {
-			if (admin.getUserName().equals(username)) {
-				if (admin.getPassword().equals(password)) {
-					HttpSession session = request.getSession();
-					session.setAttribute("username", username);
-					session.setAttribute("usertype", "A");
-					session.setAttribute("userid", admin.getUserId());
-					response.sendRedirect("TeacherSubjectDisplay.jsp");
-					return;
-				}
-			}
-		}
+//		for (Admin admin : um.getAllAdmins()) {
+//			if (admin.getUserName().equals(username)) {
+//				if (admin.getPassword().equals(password)) {
+//					HttpSession session = request.getSession();
+//					session.setAttribute("username", username);
+//					session.setAttribute("usertype", "A");
+//					session.setAttribute("userid", admin.getUserId());
+//					response.sendRedirect("TeacherSubjectDisplay.jsp");
+//					return;
+//				}
+//			}
+//		}
 		
 		response.sendRedirect("Login.jsp");
 		

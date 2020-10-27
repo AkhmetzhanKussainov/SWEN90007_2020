@@ -35,6 +35,7 @@ public class DeleteShortQuestion extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		QuestionService qs = new QuestionService();
 		String questionId = request.getParameter("question-id");
 		String subjectCode = request.getParameter("subjectCode");
 		String year = request.getParameter("year");
@@ -42,15 +43,13 @@ public class DeleteShortQuestion extends HttpServlet {
 		String examType = request.getParameter("examType");
 		String baseURL = request.getParameter("url");
 		
-		QuestionService qs = new QuestionService();
-		Exam exam = new Exam(subjectCode,year,semester,examType);
-		qs.deleteShortQuestion(exam, questionId);
-		
 		//MultipleQuestion(String id, String subjectCode, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC, String ansD, choice correctAnswer, int possibleMark, int answerNumber)
 		
 		System.out.println("--");
 		System.out.println("delete " + questionId);
 		System.out.println("--");
+		Exam exam = new Exam(subjectCode,year,semester,examType);
+		Boolean realStatus = qs.deleteShortQuestion(exam, questionId);
 		
 		String status = "Success";
 		

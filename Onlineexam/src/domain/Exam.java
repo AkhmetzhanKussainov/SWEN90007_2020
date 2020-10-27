@@ -186,7 +186,10 @@ public class Exam {
 	}
 	
 	
-	
+	public void addScriptbookToExam(Scriptbook scriptbook)
+	{
+		this.scriptbookList.add(scriptbook);
+	}
 	
 	public void addScriptbook(Scriptbook scriptbook) {
 		
@@ -398,7 +401,7 @@ public class Exam {
 	public void createNewExam()
 	{
 		ExamDataMapper dm = new ExamDataMapper();
-		dm.publishExam(this);
+		dm.addExam(this);
 	}
 	
 	public Boolean checkSubmissionTimeValid()

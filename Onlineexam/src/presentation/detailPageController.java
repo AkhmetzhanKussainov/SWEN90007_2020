@@ -51,13 +51,11 @@ public class detailPageController extends HttpServlet {
 				if(qtype.equals("multi")) {
 					String id = request.getParameter("id");
 					int mark = Integer.parseInt(request.getParameter("mark"));
-					//public MultipleQuestion(String id, String subjectId, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC,String ansD, String correctAnswer,int possibleMark, int answerNumber){
 					MultipleQuestion mq = new MultipleQuestion(id, null, null, null, null, null, null, null,null,null,null, mark, 0);
 					uowService.updateUow(mq);
 				} else if(qtype.equals("short")) {
 					String id = request.getParameter("id");
 					int mark = Integer.parseInt(request.getParameter("mark"));
-				    //public ShortQuestion(String id, String subjectId, String year, String semester, String examType, String questionText, int possibleMark)
 					ShortQuestion sq = new ShortQuestion(id, null, null,null,null,null, mark);
 					uowService.updateUow(sq);
 				} else if(qtype.equals("commit")) {

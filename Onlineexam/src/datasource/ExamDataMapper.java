@@ -38,13 +38,13 @@ public class ExamDataMapper {
 			"SELECT * from shortQuestion";
     		
     private static final String findAllMultipleByExamStatement =
-    "select * from multiplequestion where subjectId=?,year=?,semester=?,examType=?";
+    "select * from multiplequestion where subjectId=? AND year=? and semester = ? and examType = ?";
     
     private static final String findAllShortByExamStatement =
-    	    "select * from shortquestion where subjectId=?,year=?,semester=?,examType=?";
+    	    "select * from shortquestion where subjectId=? AND year=? and semester = ? and examType = ?";
     
     private static final String findAllScriptbooksByExamStatement =
-    	    "select * from scriptbooks where subjectId=?,year=?,semester=?,examType=?";
+    	    "select * from scriptbooks where subjectId=? AND year=? and semester = ? and examType = ?";
     		
     private static final String changeShortMark =
 			"UPDATE shortAttempt SET marks = ? where subjectId=? AND year=? and semester = ? and examType = ? and questionId=? and studentNumber = ? ";
@@ -90,12 +90,12 @@ public class ExamDataMapper {
     	    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
     
     private static final String findScriptBookByExamStudent =
-    		"SELECT * from scripbooks where subjectId=?,year=?,semester=?,examType=?, studentNumber=?";
+    		"SELECT * from scripbooks where subjectId=? AND year=? and semester = ? and examType = ? AND studentNumber=?";
     
     private static final String getAttemptsShort =
-    		"SELECT * from shortAttempt where subjectId=?,year=?,semester=?,examType=?, studentNumber=?";
+    		"SELECT * from shortAttempt where subjectId=? AND year=? and semester = ? and examType = ? AND studentNumber=?";
     private static final String getAttemptsMultiple =
-    		"SELECT * from multipleAttempt where subjectId=?,year=?,semester=?,examType=?, studentNumber=?";
+    		"SELECT * from multipleAttempt where subjectId=? AND year=? and semester = ? and examType = ? AND studentNumber=?";
     
     private static final String submittedScriptbook =
     		"UPDATE scriptbooks SET submitted = TRUE where subjectId=? AND year=? and semester = ? and examType = ? and studentNumber=?";
@@ -107,7 +107,15 @@ public class ExamDataMapper {
     		"INSERT into multipleAttempt (questionId, subjectId, year, semester, examType, studentNumber, attemptAns, mark, marked)"
     		+ "VALUES(?,?,?,?,?,?,?,?,?)";
     
+    private static final String findMultipleQuestion = 
+    		"select * from multiplequestion where questionId = ? and subjectId=? AND year=? and semester = ? and examType = ?";
+    
+    private static final String findShortQuestion=
+    	    "select * from shortquestion where questionId = ? and subjectId=? AND year=? and semester = ? and examType = ?";
+    
     private static final String findExam = "SELECT * from exams where subjectId=? and year=? and semester =? and examType=?";
+    
+   // private static final String updateMultipleStatement = "UPDATE multiplequestion SET where questionId = ? and subjectId=? AND year=? and semester = ? and examType = ?";
     
     
     private choice toChoice(String correctAnswer) {
@@ -159,9 +167,9 @@ public class ExamDataMapper {
 		try {
 			PreparedStatement statement = DBConnection.prepare(findAllMultipleByExamStatement);
 			statement.setString(1, subjectId);
-			statement.setNString(2, year);
-			statement.setNString(3, semester);
-			statement.setNString(4, examtype);		
+			statement.setString(2, year);
+			statement.setString(3, semester);
+			statement.setString(4, examtype);		
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next())
@@ -169,19 +177,60 @@ public class ExamDataMapper {
 				String questionId = rs.getString(1);
 				String subjectIdIn = rs.getString(2);
 				String yearIn = rs.getString(3);
-				String semesterIn = rs.getNString(4);
-				String examTypeIn = rs.getNString(5);
-				String questionText = rs.getNString(6);
-				String ansA = rs.getNString(7);
-				String ansB = rs.getNString(8);
-				String ansC = rs.getNString(9);
-				String ansD = rs.getNString(10);
-				String correct = rs.getNString(11);
+				String semesterIn = rs.getString(4);
+				String examTypeIn = rs.getString(5);
+				String questionText = rs.getString(6);
+				String ansA = rs.getString(7);
+				String ansB = rs.getString(8);
+				String ansC = rs.getString(9);
+				String ansD = rs.getString(10);
+				String correct = rs.getString(11);
 				int possibleMarks = rs.getInt(12);
 				int answerNumber = rs.getInt(13);
 				//public MultipleQuestion(String id, String subjectId, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC,String ansD, String correctAnswer,int possibleMark, int answerNumber){
 				MultipleQuestion temp = new MultipleQuestion(questionId, subjectIdIn,yearIn, semesterIn,examTypeIn,questionText, ansA,ansB,ansC,ansD,correct, possibleMarks,answerNumber);
 				sa.add(temp);
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return sa;
+    	
+    }
+    
+    public MultipleQuestion loadMultipleQuestion(String questionId, String subjectId, String examtype, String year, String semester) {
+    	
+    	MultipleQuestion sa = null;
+		try {
+			PreparedStatement statement = DBConnection.prepare(findMultipleQuestion);
+			statement.setString(1, questionId);
+			statement.setString(2, subjectId);
+			statement.setString(3, year);
+			statement.setString(4, semester);
+			statement.setString(5, examtype);		
+			ResultSet rs = statement.executeQuery();
+			
+			while(rs.next())
+			{
+				String questionIdIn = rs.getString(1);
+				String subjectIdIn = rs.getString(2);
+				String yearIn = rs.getString(3);
+				String semesterIn = rs.getString(4);
+				String examTypeIn = rs.getString(5);
+				String questionText = rs.getString(6);
+				String ansA = rs.getString(7);
+				String ansB = rs.getString(8);
+				String ansC = rs.getString(9);
+				String ansD = rs.getString(10);
+				String correct = rs.getString(11);
+				int possibleMarks = rs.getInt(12);
+				int answerNumber = rs.getInt(13);
+				//public MultipleQuestion(String id, String subjectId, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC,String ansD, String correctAnswer,int possibleMark, int answerNumber){
+				sa = new MultipleQuestion(questionIdIn, subjectIdIn,yearIn, semesterIn,examTypeIn,questionText, ansA,ansB,ansC,ansD,correct, possibleMarks,answerNumber);
+				//sa.add(temp);
 			}
 			
 			
@@ -207,19 +256,19 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 		try {
 			PreparedStatement statement = DBConnection.prepare(findAllShortByExamStatement);
 			statement.setString(1, subjectId);
-			statement.setNString(2, year);
-			statement.setNString(3, semester);
-			statement.setNString(4, examtype);		
+			statement.setString(2, year);
+			statement.setString(3, semester);
+			statement.setString(4, examtype);		
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next())
 			{
-				String questionId = rs.getNString(1);
+				String questionId = rs.getString(1);
 				String subjectIdIn = rs.getString(2);
 				String yearIn = rs.getString(3);
-				String semesterIn = rs.getNString(4);
-				String examTypeIn = rs.getNString(5);
-				String questionText = rs.getNString(6);
+				String semesterIn = rs.getString(4);
+				String examTypeIn = rs.getString(5);
+				String questionText = rs.getString(6);
 				int possibleMarks = rs.getInt(7);
 				ShortQuestion temp = new ShortQuestion(questionId, subjectIdIn,yearIn, semesterIn,examTypeIn,questionText, possibleMarks);
 				sa.add(temp);
@@ -232,6 +281,42 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
     	
     	return sa;
     }
+
+public ShortQuestion loadShortQuestion(String questionId, String subjectId, String examtype, String year, String semester) {
+	
+	ShortQuestion sa = null;
+	try {
+		PreparedStatement statement = DBConnection.prepare(findShortQuestion);
+		statement.setString(1, questionId);
+		statement.setString(2, subjectId);
+		statement.setString(3, year);
+		statement.setString(4, semester);
+		statement.setString(5, examtype);		
+		ResultSet rs = statement.executeQuery();
+		
+		while(rs.next())
+		{
+			String questionIdIn = rs.getString(1);
+			String subjectIdIn = rs.getString(2);
+			String yearIn = rs.getString(3);
+			String semesterIn = rs.getString(4);
+			String examTypeIn = rs.getString(5);
+			String questionText = rs.getString(6);
+			int possibleMarks = rs.getInt(7);
+			//public MultipleQuestion(String id, String subjectId, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC,String ansD, String correctAnswer,int possibleMark, int answerNumber){
+			sa = new ShortQuestion(questionId, subjectIdIn,yearIn, semesterIn,examTypeIn,questionText, possibleMarks);
+			//sa.add(temp);
+		}
+		
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	
+	return sa;
+	
+}
+
     
     
     public List<Scriptbook> loadScriptbooksForExam(String subjectId, String examType,String year, String semester)
@@ -240,19 +325,19 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 		try {
 			PreparedStatement statement = DBConnection.prepare(findAllScriptbooksByExamStatement);
 			statement.setString(1, subjectId);
-			statement.setNString(2, year);
-			statement.setNString(3, semester);
-			statement.setNString(4, examType);		
+			statement.setString(2, year);
+			statement.setString(3, semester);
+			statement.setString(4, examType);		
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next())
 			{
 				String subjectIdIn = rs.getString(1);
 				String yearIn = rs.getString(2);
-				String semesterIn = rs.getNString(3);
-				String examTypeIn = rs.getNString(4);
+				String semesterIn = rs.getString(3);
+				String examTypeIn = rs.getString(4);
 				boolean submitted = rs.getBoolean(5);
-				String studentNumber = rs.getNString(6);
+				String studentNumber = rs.getString(6);
 				int scriptTotalMarks = rs.getInt(7);
 				boolean marked = rs.getBoolean(8);
 				Scriptbook temp = new Scriptbook(subjectId,year, semester,examType,studentNumber,scriptTotalMarks, marked);
@@ -297,15 +382,18 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 				String examType = rs.getString(4);
 				String examName = rs.getString(5);
 				String examCreator = rs.getString(6);
-				String published = rs.getNString(7);
-				String closed = rs.getNString(8);
+				String published = rs.getString(7);
+				String closed = rs.getString(8);
 				
 				int totalMarks =  Integer.parseInt(rs.getString(9));
 				
-				String startTime = rs.getNString(10);
-				String endTime = rs.getNString(11);
+				String startTime = rs.getString(10);
+				String endTime = rs.getString(11);
 				
 				Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks);
+				
+				exam.setPublished(published);
+				exam.setClosed(closed);
 				
 				
 				for (MultipleQuestion multipleQuestion : loadMultipleQuestionsForExam(subjectId, examType, year, semester)) {
@@ -322,9 +410,10 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 				
 				for (Scriptbook scriptbook : loadScriptbooksForExam(subjectId, examType, year, semester)) {
 				
-					exam.addScriptbook(scriptbook);
+					exam.addScriptbookToExam(scriptbook);
 					
 				}	
+				System.out.println(exam.getSubjectId());
 				
 				exams.add(exam);
 			
@@ -334,7 +423,7 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 					
 					
 		} catch (SQLException e) {
-	
+			e.printStackTrace();
 		}
     	
     	
@@ -349,10 +438,10 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 	    	
 	    	PreparedStatement statement = DBConnection.prepare(findExam);
 	   
-			statement.setNString(1, subjectId);
-			statement.setNString(2, year);
+			statement.setString(1, subjectId);
+			statement.setString(2, year);
 			statement.setString(3,semester);
-			statement.setNString(4,examType);
+			statement.setString(4,examType);
 	    	
 	    	ResultSet rs = statement.executeQuery();
 
@@ -365,13 +454,13 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 				String examTypeIn = rs.getString(4);
 				String examName = rs.getString(5);
 				String examCreator = rs.getString(6);
-				String published = rs.getNString(7);
-				String closed = rs.getNString(8);
+				String published = rs.getString(7);
+				String closed = rs.getString(8);
 				
 				int totalMarks =  Integer.parseInt(rs.getString(9));
 				
-				String startTime = rs.getNString(10);
-				String endTime = rs.getNString(11);
+				String startTime = rs.getString(10);
+				String endTime = rs.getString(11);
 				
 				exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks,published,closed);
 				
@@ -603,7 +692,7 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 			statement.setString(8, q.getAnsB());
 			statement.setString(9, q.getAnsC());
 			statement.setString(10, q.getAnsD());
-			statement.setNString(11, q.getCorrectAnswer());
+			statement.setString(11, q.getCorrectAnswer());
 			statement.setInt(12, q.getPossibleMark());
 			statement.setInt(13, q.getAnswerNumber());
 			
@@ -647,11 +736,11 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 			try {
 				PreparedStatement statement = DBConnection.prepare(changeShortMark);
 				statement.setInt(1, sa.getMark());
-				statement.setNString(2, scriptbook.getSubjectId());
-				statement.setNString(3, scriptbook.getYear());
+				statement.setString(2, scriptbook.getSubjectId());
+				statement.setString(3, scriptbook.getYear());
 				statement.setString(4,scriptbook.getSemester());
-				statement.setNString(5, scriptbook.getExamType());
-				statement.setNString(6, sa.getQuestionId());
+				statement.setString(5, scriptbook.getExamType());
+				statement.setString(6, sa.getQuestionId());
 				statement.setString(7,scriptbook.getStudentNumber());
 				statement.execute();
 			} catch (SQLException e) {
@@ -665,11 +754,11 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 			{
 				PreparedStatement statement = DBConnection.prepare(changeMultiMark);
 				statement.setInt(1, ma.getMark());
-				statement.setNString(2, scriptbook.getSubjectId());
-				statement.setNString(3, scriptbook.getYear());
+				statement.setString(2, scriptbook.getSubjectId());
+				statement.setString(3, scriptbook.getYear());
 				statement.setString(4,scriptbook.getSemester());
-				statement.setNString(5, scriptbook.getExamType());
-				statement.setNString(6, ma.getQuestionId());
+				statement.setString(5, scriptbook.getExamType());
+				statement.setString(6, ma.getQuestionId());
 				statement.setString(7,scriptbook.getStudentNumber());
 				statement.execute();
 			}catch(SQLException e)
@@ -718,7 +807,7 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 				statement.setString(2, examCreator);
 				statement.setInt(3, totalMarks);
 				statement.setString(4,startTimeString);
-				statement.setNString(5, endTimeString);
+				statement.setString(5, endTimeString);
 				statement.setString(6, subjectID);
 				statement.setString(7, year);
 				statement.setString(8, semester);
@@ -741,7 +830,7 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 		}
 	}
 	
-	public String publishExam(Exam newExam)
+	public String addExam(Exam newExam)
 	{
 		try
 		{
@@ -772,7 +861,7 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 			statement.setString(3, semester);
 			statement.setString(4, examType);
 			statement.setString(5, examName);
-			statement.setNString(6, examCreator);
+			statement.setString(6, examCreator);
 			statement.setInt(7, totalMarks);
 			statement.setString(8,startTimeString);
 			statement.setString(9,endTimeString);
@@ -834,7 +923,7 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 			PreparedStatement statement = DBConnection.prepare(addScriptbook);
 			
 			statement.setString(1, scriptbook.getSubjectId());
-			statement.setNString(2, scriptbook.getYear());
+			statement.setString(2, scriptbook.getYear());
 			statement.setString(3, scriptbook.getSemester());
 			statement.setString(4, scriptbook.getExamType());
 			statement.setString(5, scriptbook.getStudentNumber());
@@ -875,10 +964,10 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 		try {
 			PreparedStatement statement = DBConnection.prepare(findScriptBookByExamStudent);
 			statement.setString(1, exam.getSubjectID());
-			statement.setNString(2, exam.getYear());
-			statement.setNString(3, exam.getSemester());
-			statement.setNString(4, exam.getExamType());
-			statement.setNString(5, studentID);
+			statement.setString(2, exam.getYear());
+			statement.setString(3, exam.getSemester());
+			statement.setString(4, exam.getExamType());
+			statement.setString(5, studentID);
 			
 			ResultSet rs = statement.executeQuery();
 			
@@ -886,10 +975,10 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 			{
 				String subjectId = rs.getString(1);
 				String year = rs.getString(2);
-				String semester = rs.getNString(3);
-				String examType = rs.getNString(4);
+				String semester = rs.getString(3);
+				String examType = rs.getString(4);
 				boolean submitted = rs.getBoolean(5);
-				String studentNumber = rs.getNString(6);
+				String studentNumber = rs.getString(6);
 				int scriptTotalMarks = rs.getInt(7);
 				boolean marked = rs.getBoolean(8);
 				Scriptbook temp = new Scriptbook(subjectId,year, semester,examType,studentNumber,scriptTotalMarks, marked);
@@ -914,22 +1003,22 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 		{
 			PreparedStatement statement = DBConnection.prepare(getAttemptsShort);
 			statement.setString(1, exam.getSubjectID());
-			statement.setNString(2, exam.getYear());
-			statement.setNString(3, exam.getSemester());
-			statement.setNString(4, exam.getExamType());
-			statement.setNString(5, studentID);
+			statement.setString(2, exam.getYear());
+			statement.setString(3, exam.getSemester());
+			statement.setString(4, exam.getExamType());
+			statement.setString(5, studentID);
 			
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next())
 			{
 				int questionId = rs.getInt(1);
-				String subjectId = rs.getNString(2);
-				String year =rs.getNString(3);
-				String semester = rs.getNString(4);
-				String examType = rs.getNString(5);
-				String studentNumber = rs.getNString(6);
-				String attemptAns = rs.getNString(7);
+				String subjectId = rs.getString(2);
+				String year =rs.getString(3);
+				String semester = rs.getString(4);
+				String examType = rs.getString(5);
+				String studentNumber = rs.getString(6);
+				String attemptAns = rs.getString(7);
 				int mark = rs.getInt(8);
 				boolean marked = rs.getBoolean(9);
 				ShortAttempt temp = new ShortAttempt(Integer.toString(questionId),subjectId,year,semester,examType,studentNumber,attemptAns);
@@ -951,22 +1040,22 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 		{
 			PreparedStatement statement = DBConnection.prepare(getAttemptsMultiple);
 			statement.setString(1, exam.getSubjectID());
-			statement.setNString(2, exam.getYear());
-			statement.setNString(3, exam.getSemester());
-			statement.setNString(4, exam.getExamType());
-			statement.setNString(5, studentID);
+			statement.setString(2, exam.getYear());
+			statement.setString(3, exam.getSemester());
+			statement.setString(4, exam.getExamType());
+			statement.setString(5, studentID);
 			
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next())
 			{
 				int questionId = rs.getInt(1);
-				String subjectId = rs.getNString(2);
-				String year =rs.getNString(3);
-				String semester = rs.getNString(4);
-				String examType = rs.getNString(5);
-				String studentNumber = rs.getNString(6);
-				String attemptAns = rs.getNString(7);
+				String subjectId = rs.getString(2);
+				String year =rs.getString(3);
+				String semester = rs.getString(4);
+				String examType = rs.getString(5);
+				String studentNumber = rs.getString(6);
+				String attemptAns = rs.getString(7);
 				int mark = rs.getInt(8);
 				boolean marked = rs.getBoolean(9);
 				MultipleAttempt temp = new MultipleAttempt(Integer.toString(questionId),subjectId,year,semester,examType,studentNumber,attemptAns);
@@ -988,7 +1077,7 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 		try {
 			PreparedStatement statementUpdateScriptbook = DBConnection.prepare(submittedScriptbook);
 			statementUpdateScriptbook.setString(1, scriptbook.getSubjectId());
-			statementUpdateScriptbook.setNString(2, scriptbook.getYear());
+			statementUpdateScriptbook.setString(2, scriptbook.getYear());
 			statementUpdateScriptbook.setString(3, scriptbook.getSemester());
 			statementUpdateScriptbook.setString(4,	scriptbook.getExamType());
 			statementUpdateScriptbook.setString(5, scriptbook.getStudentNumber());
@@ -1002,11 +1091,11 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 				PreparedStatement statementSubmitShort = DBConnection.prepare(submitShortAttempt);
 				statementSubmitShort.setInt(1, Integer.parseInt(a.getQuestionId()));
 				statementSubmitShort.setString(2, scriptbook.getSubjectId());
-				statementSubmitShort.setNString(3, scriptbook.getYear());
+				statementSubmitShort.setString(3, scriptbook.getYear());
 				statementSubmitShort.setString(4, scriptbook.getSemester());
 				statementSubmitShort.setString(5,	scriptbook.getExamType());
 				statementSubmitShort.setString(6, scriptbook.getStudentNumber());
-				statementSubmitShort.setNString(7, a.getShortAnswer());
+				statementSubmitShort.setString(7, a.getShortAnswer());
 				statementSubmitShort.setInt(8, a.getMark());
 				statementSubmitShort.setBoolean(9, false);
 				statementSubmitShort.execute();
@@ -1016,11 +1105,11 @@ public List<ShortQuestion> loadShortQuestionsForExam(String subjectId, String ex
 			{
 				PreparedStatement statementSubmitMultiple = DBConnection.prepare(submitMultipleAttempt);
 				statementSubmitMultiple.setInt(1, Integer.parseInt(a.getQuestionId()));
-				statementSubmitMultiple.setNString(2, scriptbook.getYear());
+				statementSubmitMultiple.setString(2, scriptbook.getYear());
 				statementSubmitMultiple.setString(3, scriptbook.getSemester());
 				statementSubmitMultiple.setString(4,	scriptbook.getExamType());
 				statementSubmitMultiple.setString(5, scriptbook.getStudentNumber());
-				statementSubmitMultiple.setNString(6, a.getChoice().toString());
+				statementSubmitMultiple.setString(6, a.getChoice().toString());
 				statementSubmitMultiple.setInt(7, a.getMark());
 				statementSubmitMultiple.setBoolean(8, false);
 				statementSubmitMultiple.execute();

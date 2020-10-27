@@ -71,13 +71,13 @@ Subject subject = sm.loadSubject(request.getParameter("subjectCode"));
 <br/>
 <br/>
 <label>Start Time</label>
-<input type="datetime-local" name="start-time"/>
+<!--  <input type="datetime-local" name="start-time"/>
 <br/>
 <br/>
 <label>End Time</label>
 <input type="datetime-local" name="end-time"/>
 <br/>
-<br/>
+<br/>-->
 <input type="hidden" name="subject-id" value="<%= subject.getCode()%>"/>
 <input type="submit" value="Add Exam"/>
 

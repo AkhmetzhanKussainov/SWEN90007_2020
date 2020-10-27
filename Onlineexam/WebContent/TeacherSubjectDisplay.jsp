@@ -56,7 +56,7 @@ System.out.println(um.loadFullTeacher(teacher_id));
 <%
 System.out.println(teacher_obj.getTeacherId());
 for (Subject subject : um.loadSubjectByTeacher(teacher_obj)) {
-	/* System.out.println(subject.getName()); */
+	 //System.out.println(subject.getName()); 
 		 %>
 		 
 		
@@ -92,7 +92,7 @@ function load(){
 	var examLinks = document.querySelectorAll(".exam-link");
 	for (var i=0; i<examLinks.length; i++){
 		examLinks[i].addEventListener("click", function(e){
-			var link = `${document.location.origin}/Onlineexam/TeacherExam.jsp?subjectCode=` +  e.target.getAttribute("data-value")
+			var link = `${document.location.origin}/OnlineExam/TeacherExam.jsp?subjectCode=` +  e.target.getAttribute("data-value")
 			window.location = link
 		})
 	}	

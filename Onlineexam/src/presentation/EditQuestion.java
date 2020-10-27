@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import domain.MultipleQuestion;
 import domain.Question.choice;
+import service.QuestionService;
 
 /**
  * Servlet implementation class EditQuestion
@@ -35,6 +36,7 @@ public class EditQuestion extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		QuestionService qs = new QuestionService();
 		String questionId = request.getParameter("question-id");
 		String subjectCode = request.getParameter("subjectCode");
 		String year = request.getParameter("year");
@@ -48,7 +50,6 @@ public class EditQuestion extends HttpServlet {
 		String baseURL = request.getParameter("url");
 		int marks = Integer.parseInt(request.getParameter("possible-mark"));
 		String answer = request.getParameter("answer");
-		//choice answer = choice.valueOf(request.getParameter("answer"));
 		
 		//MultipleQuestion(String id, String subjectCode, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC, String ansD, choice correctAnswer, int possibleMark, int answerNumber)
 		
@@ -61,6 +62,8 @@ public class EditQuestion extends HttpServlet {
 		System.out.println(ms.getPossibleMark());
 		System.out.println(ms.getCorrectAnswer());
 		System.out.println("--");
+		
+		Boolean realStatus = qs.updateMultipleQuestion(ms);
 		
 		String status = "Success";
 		

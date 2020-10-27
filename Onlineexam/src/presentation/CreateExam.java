@@ -44,12 +44,12 @@ public class CreateExam extends HttpServlet {
 		try {
 		
 		ExamService es = new ExamService();
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm"); 
+		/*SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm"); 
 		Date startDateRaw = format.parse(request.getParameter("start-time"));  
 		Timestamp startTimestamp = new java.sql.Timestamp(startDateRaw.getTime());
 		
 		Date endDateRaw = format.parse(request.getParameter("start-time"));  
-		Timestamp endTimestamp = new java.sql.Timestamp(endDateRaw.getTime());
+		Timestamp endTimestamp = new java.sql.Timestamp(endDateRaw.getTime());*/
 		
 		String year = request.getParameter("year");
 		String semester = request.getParameter("semester");
@@ -59,8 +59,9 @@ public class CreateExam extends HttpServlet {
 		String subjectId = request.getParameter("subject-id");
 		String published = "N";
 		String closed = "N";
-		Timestamp startDate = startTimestamp;
-		Timestamp endDate = endTimestamp;
+		//Timestamp startDate = startTimestamp;
+		//Timestamp endDate = endTimestamp;
+		
 		HttpSession session = request.getSession();
 		
 		String user_id = (String)session.getAttribute("userid");
@@ -79,22 +80,28 @@ public class CreateExam extends HttpServlet {
 		
 		System.out.println(examCreator);
 		
-		//ExamDataMapper em = new ExamDataMapper();
+//		ExamDataMapper em = new ExamDataMapper();
 		
 		Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed,null,null);
-		es.addExam(exam);
-		
+		//es.createExam(exam);
 		System.out.println("---");
 		System.out.println(exam);
 		System.out.println(exam.getExamName());
 		System.out.println("---");
+		
+		
+		Boolean realStatus = es.createExam(exam);
 		
 		String status = "Success";
 			
 //		String status = em.publishExam(exam);
 //		String status = "Failure";
 //		System.out.println(status);
+		
+		
+		
 		if (status.equals("Success")){
+			
 			response.sendRedirect("TeacherExam.jsp" + "?subjectCode=" + subjectId);
 			return;
 		}

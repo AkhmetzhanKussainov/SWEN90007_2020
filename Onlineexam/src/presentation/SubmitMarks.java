@@ -11,23 +11,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import domain.MultipleAttempt;
-import domain.ShortAttempt;
 import domain.Scriptbook;
-import domain.Question.choice;
-
+import domain.ShortAttempt;
 import service.ScriptbookService;
 
 /**
- * Servlet implementation class SubmitScriptbook
+ * Servlet implementation class SubmitMarks
  */
-@WebServlet("/SubmitScriptbook")
-public class SubmitScriptbook extends HttpServlet {
+@WebServlet("/SubmitMarks")
+public class SubmitMarks extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SubmitScriptbook() {
+    public SubmitMarks() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -40,7 +38,7 @@ public class SubmitScriptbook extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+	
 		ScriptbookService sbs = new ScriptbookService();
 		System.out.println(request.getParameter("multipleQuestionCount"));
 		Integer multipleQuestionCount =  Integer.parseInt(request.getParameter("multipleQuestionCount"));
@@ -50,48 +48,56 @@ public class SubmitScriptbook extends HttpServlet {
 		String semester = request.getParameter("semester");
 		String examType = request.getParameter("examType");
 		String studentId = request.getParameter("studentId");
+		int totalMarks = 0;
 		
 		// public MultipleAttempt(String questionId, String subjectId, String year, String semester, String examType,
 		// String studentNumber, String attemptedAns)
 		List<MultipleAttempt> multipleAttempts = new ArrayList<>();
 		List<ShortAttempt> shortAttempts = new ArrayList<>();
-		Scriptbook sb = new Scriptbook(subjectCode, year, semester, examType, studentId, 0, false);
 		
 		
-		
-		System.out.println("submit scriptbook");
 		for (int i=0; i< multipleQuestionCount; i++) {
-			String multipleQuestionId = request.getParameter("multiple-question-id-" + i);
-			String multipleQuestionAnswer = request.getParameter("multiple-answer-" + i);
+			String multipleQuestionId = request.getParameter("multiple-attempt-qid-" + i);
+			int multipleMark =  Integer.parseInt(request.getParameter("multiple-attempt-mark-" + i));
+			String multipleAttemptAns = request.getParameter("multiple-attempt-ans-" + i);
 			
-			MultipleAttempt multiple = new MultipleAttempt(multipleQuestionId, subjectCode, year, semester, examType, studentId, multipleQuestionAnswer);
-			
+			/*public MultipleAttempt(String questionId, String subjectId, String year, String semester, String examType,
+					String studentNumber, String attemptedAns)*/
+			MultipleAttempt multiple = new MultipleAttempt(multipleQuestionId, subjectCode, year, semester, examType, studentId, multipleAttemptAns);
+			multiple.setMark(multipleMark);
 			multipleAttempts.add(multiple);
+			totalMarks += multipleMark;
 			
 		}
 		
 		for (int j=0; j< shortQuestionCount; j++) {
-			String shortQuestionId = request.getParameter("short-question-id-" + j);
-			String shortQuestionAnswer = request.getParameter("short-answer-" + j);
+			String shortQuestionId = request.getParameter("short-attempt-qid-" + j);
+			int shortMark = Integer.parseInt(request.getParameter("short-attempt-mark-" + j));
+			String shortAttemptAns = request.getParameter("short-attempt-ans-" + j);
 			
-			ShortAttempt shrt = new ShortAttempt(shortQuestionId, subjectCode, year, semester, examType, studentId, shortQuestionAnswer);
+			ShortAttempt shrt = new ShortAttempt(shortQuestionId, subjectCode, year, semester, examType, studentId, shortAttemptAns);
+			shrt.setMark(shortMark);
 			
 			shortAttempts.add(shrt);
 			
+			totalMarks += shortMark;
+			
 		}
 		
-		//sbs.initiateScriptbook(sb);
-		sbs.submitScriptbook(sb);
+		Scriptbook sb = new Scriptbook(subjectCode, year, semester, examType, studentId, totalMarks, true);
+		sb.setMultipleAttemptList(multipleAttempts);
+		sb.setShortAttemptList(shortAttempts);
+		
+		sbs.markScriptbook(sb);
+		//sbs.submitScriptbookMarks(multipleAttempts, shortAttempts);
 		
 		
 		String status = "Success";
 		
 		if (status.equals("Success")){
-			response.sendRedirect("Login.jsp");
+			response.sendRedirect("TeacherExamScriptbooks.jsp?" + "subjectCode=" + subjectCode + "&year=" + year + "&semester=" + semester + "&examType=" + examType);
 			return;
 		}
-		
-		
 	}
 
 }

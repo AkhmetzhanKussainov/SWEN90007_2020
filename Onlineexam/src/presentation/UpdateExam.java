@@ -15,6 +15,7 @@ import datasource.ExamDataMapper;
 import datasource.UserDataMapper;
 import domain.Exam;
 import domain.Teacher;
+import service.ExamService;
 
 /**
  * Servlet implementation class CreateExam
@@ -40,13 +41,14 @@ public class UpdateExam extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		try {
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm"); 
+			ExamService es = new ExamService();
+			/*SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm"); 
 			Date startDateRaw = format.parse(request.getParameter("start-time"));  
 			Timestamp startTimestamp = new java.sql.Timestamp(startDateRaw.getTime());
 			
 			Date endDateRaw = format.parse(request.getParameter("start-time"));  
 			Timestamp endTimestamp = new java.sql.Timestamp(endDateRaw.getTime());
-		
+		*/
 			
 			String year = request.getParameter("year");
 			String semester = request.getParameter("semester");
@@ -54,31 +56,40 @@ public class UpdateExam extends HttpServlet {
 			String examType = request.getParameter("exam-type");
 			Integer totalMarks = Integer.parseInt(request.getParameter("total-marks"));
 			String subjectId = request.getParameter("subject-id");
-			Timestamp startDate = startTimestamp;
-			Timestamp endDate = endTimestamp;
+			//Timestamp startDate = startTimestamp;
+			//Timestamp endDate = endTimestamp;
 			String examCreator = request.getParameter("exam-creator");
 			String published = request.getParameter("published");
 			String closed = request.getParameter("closed");
 			
-			System.out.println(startDate);
-			System.out.println(endDate);
+			System.out.println(subjectId);
+			System.out.println(year);
+			System.out.println(semester);
+			System.out.println(examName);
+			System.out.println(examType);
+			System.out.println(totalMarks);
+			
+			//System.out.println(startDate);
+			//System.out.println(endDate);
 			
 			ExamDataMapper em = new ExamDataMapper();
 			
-			Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed, null, null);
-			
-			em.changeExam(exam);
+			Exam exam = new Exam(subjectId, year, semester, examType, examName, examCreator, totalMarks, published, closed,null,null);
 			
 			System.out.println(exam);
 			System.out.println(exam.getExamName());
+			System.out.println(exam.getYear());
+			System.out.println(exam.getExamType());
+			System.out.println(exam.getSemester());
+			System.out.println(exam.getSubjectId());
 			System.out.println(exam.getTotalMarks());
 			System.out.println(exam.getPublished());
 			System.out.println(exam.getClosed());
-			/*System.out.println(exam.getStartDateString());
-			System.out.println(exam.getEndDateString());*/
+			//System.out.println(exam.getStartDateString());
+			//System.out.println(exam.getEndDateString());
 			
 			
-				
+			Boolean realStatus = es.updateExam(exam);
 	//		String status = em.changeExam(exam);
 			String status = "Success";
 			System.out.println(status);

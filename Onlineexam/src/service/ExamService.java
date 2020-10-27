@@ -12,7 +12,6 @@ import java.util.List;
 
 import datasource.DBConnection;
 import datasource.ExamDataMapper;
-import datasource.SubjectDataMapper;
 import domain.Exam;
 import domain.MultipleQuestion;
 import domain.Scriptbook;
@@ -24,35 +23,13 @@ public class ExamService {
 	
 	public ExamService()
 	{
-		 examDataMapper=new ExamDataMapper();
+		examDataMapper=new ExamDataMapper();
 		 
 		 
-	}
-	
-	public Exam addExam(Exam exam)
-	{
-		examDataMapper.publishExam(exam);
-		
-		return exam;
-	}
-	
-	public Exam changeExam(Exam exam)
-	{
-		examDataMapper.changeExam(exam);
-		return exam;
-	}
-	
-	//TODO add multiple question and short question with change of structure
-	public MultipleQuestion addMultipleQuestion(MultipleQuestion mq)
-	{
-		
-		//Exam exam = new Exam();
-		//examDataMapper.addMultipleQuestions(exam, mq);
-		
-		return mq;
 	}
 	
 	public List<Exam> getExams(String subjectCode) {
+    	
 		
     	
     	List<Exam> exams = new ArrayList<>();
@@ -75,6 +52,10 @@ public class ExamService {
     			Timestamp date = new Timestamp(cal.getTime().getTime());
     			
     			List<Exam> temp = examDataMapper.loadExams();
+    			for(int i=0;i<temp.size();i++)
+    			{
+    				System.out.println(temp.get(i).getExamName());
+    			}
     			//exams = examDataMapper.load
     			for(int i=0;i<temp.size();i++)
     			{
@@ -92,7 +73,7 @@ public class ExamService {
 				exams.add(exam1);
 				exams.add(exam2);
 				exams.add(exam3);*/
-				
+				System.out.println(exams.size());
 				System.out.println(date.toString());
 			
 					
@@ -127,6 +108,32 @@ public class ExamService {
     	
     	return exam;
     }
+	
+	public Boolean createExam(Exam exam) {
+		try {
+			examDataMapper.addExam(exam);
+			// try creating exam from data mappper
+			return true;
+		} catch (Exception e) {
+			//
+			System.out.println(e);
+			return false;
+	
+		}
+	}
+	
+	public Boolean updateExam(Exam exam) {
+		try {
+			examDataMapper.changeExam(exam);
+			// try update exam from data mappper
+			return true;
+		} catch (Exception e) {
+			//
+			System.out.println(e);
+			return false;
+	
+		}
+	}
 	
 	
 	

@@ -56,11 +56,11 @@ Exam e = es.getExam(subjectId, year, semester, examType);
 <form action="UpdateExam" method="post">
 
 <label>Year</label>
-<input disabled required type="text" name="year" value="<%= year %>"/>
+<input readonly required type="text" name="year" value="<%= year %>"/>
 <br/>
 <br/>
 <label>Semester</label>
-<input disabled required type="text" name="semester" value="<%= semester %>"/>
+<input readonly required type="text" name="semester" value="<%= semester %>"/>
 <br/>
 <br/>
 <label>Exam Name</label>
@@ -68,7 +68,7 @@ Exam e = es.getExam(subjectId, year, semester, examType);
 <br/>
 <br/>
 <label>Exam Type</label>
-<select disabled name="exam-type" value="<%= e.getExamType() %>">
+<select readonly name="exam-type" value="<%= e.getExamType() %>">
 <option
 <% if (e.getExamType().equals("F")){
 				%>
@@ -104,13 +104,13 @@ Exam e = es.getExam(subjectId, year, semester, examType);
 <br/>
 <br/>
 <label>Start Time</label>
-<input type="datetime-local" name="start-time" value="<%= e.getStartDateString() %>" />
+<!--<input type="datetime-local" name="start-time" value="<!%= e.getStartDateString() %>" />
 <br/>
 <br/>
 <label>End Time</label>
-<input type="datetime-local" name="end-time" value="<%= e.getEndDateString() %>"/>
-<br/>
-<br/>
+<input type="datetime-local" name="end-time" value="<!%= e.getEndDateString() %>"/>
+<br/> -->
+<br/> 
 <input type="hidden" name="subject-id" value="<%= subject.getCode()%>"/>
 <input type="hidden" name="exam-creator" value="<%= e.getExamCreator()%>"/>
 <input type="submit" value="Add Exam"/>
