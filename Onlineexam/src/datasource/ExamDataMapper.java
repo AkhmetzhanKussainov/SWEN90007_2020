@@ -169,7 +169,8 @@ public class ExamDataMapper {
 			statement.setString(1, subjectId);
 			statement.setString(2, year);
 			statement.setString(3, semester);
-			statement.setString(4, examtype);		
+			statement.setString(4, examtype);	
+			System.out.println(statement);
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next())

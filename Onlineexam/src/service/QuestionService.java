@@ -33,11 +33,19 @@ public class QuestionService {
 	
 	private List<ShortQuestion> shortQuestions;
 	
-	public List<MultipleQuestion> getAllMultipleQuestions(String subjectCode, String semester, String year, String examType) {
+	public List<MultipleQuestion> getAllMultipleQuestions(String subjectCode, String year, String semester, String examType) {
 		   
 			List<MultipleQuestion> multipleQuestions = new ArrayList<>();
 			
 			multipleQuestions = edm.loadMultipleQuestionsForExam(subjectCode, examType, year, semester);
+			System.out.println(subjectCode+" "+examType+" "+year+" "+semester);
+			
+			System.out.println("got to getAllMultipleQuestions");
+			
+			for(int i=0;i<multipleQuestions.size();i++)
+			{
+				System.out.println(multipleQuestions.get(i).getAnsA());
+			}
 			
 		//	MultipleQuestion multiq1 = new MultipleQuestion("1", "DEF101", "2020", "2", "M", "What is life?", "None", "Null", "None", "All the above", choice.D, 5, 4);
 		///	MultipleQuestion multiq2 = new MultipleQuestion("2", "DEF101", "2020", "2", "M", "Why?", "None", "Null", "None", "All the above", choice.D, 5, 4);
@@ -57,7 +65,7 @@ public class QuestionService {
 	}
 	
 	
-	public MultipleQuestion getMultipleQuestion(String Id,String subjectCode, String semester, String year, String examType) {
+	public MultipleQuestion getMultipleQuestion(String Id,String subjectCode, String year, String semester, String examType) {
 	    
 		return edm.loadMultipleQuestion(Id, subjectCode, examType, year, semester);
 		//MultipleQuestion multiq1 = new MultipleQuestion(Id, subjectCode, year, semester, examType, "What is life?", "None", "Null", "None", "All the above", choice.D, 5, 4);
@@ -66,7 +74,7 @@ public class QuestionService {
 	    
 	}
 	
-	public List<ShortQuestion> getAllShortQuestions(String subjectCode, String semester, String year, String examType) {
+	public List<ShortQuestion> getAllShortQuestions(String subjectCode, String year, String semester, String examType) {
 	    
 		List<ShortQuestion> shortQuestions = new ArrayList<>();
 		shortQuestions = edm.loadShortQuestionsForExam(subjectCode, examType, year, semester);
