@@ -53,6 +53,9 @@ public class Login extends HttpServlet {
 			
 			String userType = (String) session.getAttribute("usertype");
 			
+			//Set the login to correct
+			request.setAttribute("correctLogin", true);
+			
 			switch (userType) {
 				case "S":
 					response.sendRedirect("StudentSubjectDisplay.jsp");
@@ -69,6 +72,7 @@ public class Login extends HttpServlet {
 				default:
 					//Hasn't found a valid user type
 					System.out.println("This usertype not implemented by system");
+					request.setAttribute("correctLogin", false);
 					response.sendRedirect("Login.jsp");
 			}
 		}
@@ -78,8 +82,9 @@ public class Login extends HttpServlet {
 			
 			System.out.println("Incorrect username or password");
 			
-			response.sendRedirect("LoginError.jsp");
-			
+			//response.sendRedirect("LoginError.jsp");
+			request.setAttribute("correctLogin", false);
+			request.getRequestDispatcher("Login.jsp").forward(request, response);
 			
 		}
 		

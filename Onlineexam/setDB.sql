@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS shortAttempt cascade;
 DROP TABLE IF EXISTS teacher_subject cascade;
 DROP TABLE IF EXISTS student_subject cascade;
 DROP TABLE IF EXISTS administrators cascade;
+DROP TABLE IF EXISTS headmasters cascade;
 
 CREATE TABLE users(
    userId  SERIAL PRIMARY KEY,

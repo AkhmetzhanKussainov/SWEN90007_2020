@@ -28,6 +28,16 @@ tr:nth-child(odd) {
 
 </head>
 <body>
+
+<%-- Handle incorrect login details --%> 
+<input id="correctLogin" type="hidden" value="${correctLogin}"/>
+<script type="text/javascript">
+    var correct = document.getElementById('correctLogin').value;
+    if ((correct)==='false') {
+    	alert('The username or password is incorrect');
+    }
+</script>
+
 <%
 
 response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");

@@ -35,17 +35,16 @@ public class CreateSubject extends HttpServlet {
 		//Check if authorised
 		if (AuthorizationEnforcer.checkAuthorization(request)) {
 		
-			SubjectDataMapper datamapper = new SubjectDataMapper();
-			datamapper.createSubject("ELF101", "A guide to socks of the World");
-			System.out.println("Subject created");
-			response.sendRedirect("Admin.jsp");
+			response.sendRedirect("AdminSubjectDetail.jsp");
 			
 		}
 		
 		else {
 			
+			request.setAttribute("correctPermission", false);
+			request.setAttribute("alertPermission", "You lack authorisation to create a new subject");
 			System.out.println("You lack appropriate authorisation");
-			response.sendRedirect("Admin.jsp");
+			request.getRequestDispatcher("Permissions.jsp").forward(request, response);
 			
 		}
 		

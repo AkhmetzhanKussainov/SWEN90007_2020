@@ -20,7 +20,9 @@ import domain.User.houses;
 
 public class SubjectDataMapper {
 	
-	
+	private static final String insertSubject = 
+			"INSERT INTO subjects "
+			+ "VALUES (?, ?);";
 	
 	private static final String findAllSubjects = 
 			
@@ -56,11 +58,11 @@ public class SubjectDataMapper {
 			
 	private static final String insertStudentSubject = 
 			"INSERT INTO enrollments (year, semester, subjectId, studentNumber) "
-			+ "VALUES ('?', '?', '?', '?')";
+			+ "VALUES (?, ?, ?, ?);";
 	
 	private static final String insertTeacherSubject = 
 			"INSERT INTO appointments (year, semester, subjectId, teacherNumber) "
-			+ "VALUES ('?', '?', '?', '?')";
+			+ "VALUES (?, ?, ?, ?);";
 	
 	private static final String deleteStudentSubject = 
 			"DELETE FROM enrollments WHERE studentNumber = ? AND subjectId = ? ";
@@ -297,17 +299,17 @@ public class SubjectDataMapper {
 	    	
 	    	while(rs.next()) {
 	    		
-	    		String subjectID = rs.getNString(1);
-				String year = rs.getNString(2);
-				String semester = rs.getNString(3);
-				String examType = rs.getNString(4);
-				String examName = rs.getNString(5);
-				String examCreatetor = rs.getNString(6);
+	    		String subjectID = rs.getString(1);
+				String year = rs.getString(2);
+				String semester = rs.getString(3);
+				String examType = rs.getString(4);
+				String examName = rs.getString(5);
+				String examCreator = rs.getString(6);
 				int totalMarks = rs.getInt(9); 
 				String published = rs.getString(7);
 				String closed = rs.getString(8);
 				
-				Exam exam = new Exam(subjectID, year, semester, examType, examName, examCreatetor, totalMarks, published, closed);
+				Exam exam = new Exam(subjectID, year, semester, examType, examName, examCreator, totalMarks, published, closed);
 					
 				examList.add(exam);
 
@@ -325,6 +327,87 @@ public class SubjectDataMapper {
 	    return null;
 	}
     
+	
+	
+	
+	public void writeEnrollment(String studentNumber, String subjectId, String year, String semester) {
+    	
+	    System.out.println("Preparing to write an enrollment to database");	
+	    	
+		try {
+			    	
+			    	PreparedStatement stmt = DBConnection.prepare(insertStudentSubject);
+			    	
+			    	stmt.setString(1, year);
+			    	stmt.setString(2, semester);
+			    	stmt.setString(3, subjectId);
+			    	stmt.setString(4, studentNumber);
+
+			    	System.out.println(stmt);
+			
+			    	stmt.executeUpdate();
+									
+				} catch (SQLException e) {
+					
+					System.out.println("Error writing enrollment");		
+					System.out.println(e);
+			
+			}
+	    }
+	
+	public void writeAppointment(String teacherNumber, String subjectId, String year, String semester) {
+    	
+	    System.out.println("Preparing to write an appointment to database");	
+	    	
+		try {
+			    	
+			    	PreparedStatement stmt = DBConnection.prepare(insertTeacherSubject);
+			    	
+			    	stmt.setString(1, year);
+			    	stmt.setString(2, semester);
+			    	stmt.setString(3, subjectId);
+			    	stmt.setString(4, teacherNumber);
+
+			    	System.out.println(stmt);
+			
+			    	stmt.executeUpdate();
+									
+				} catch (SQLException e) {
+					
+					System.out.println("Error writing appointment");		
+					System.out.println(e);
+			
+			}
+	    }
+	
+	//Write subject
+	public boolean writeSubject(String subjectId, String subjectName) throws SQLException {
+    	
+	    System.out.println("Preparing to write a subject to database");	
+	    	
+		//try {
+			    	
+			    	PreparedStatement stmt = DBConnection.prepare(insertSubject);
+			    	
+			    	stmt.setString(1, subjectId);
+			    	stmt.setString(2, subjectName);
+
+			    	System.out.println(stmt);
+			
+			    	stmt.executeUpdate();
+			    	
+			    	return true;
+									
+				/*} catch (SQLException e) {
+					
+					System.out.println("Error writing subject");		
+					System.out.println(e);
+			
+					return false;
+			}*/
+	    }
+	
+	
 	
     public void createSubject(String id, String name) {
     	

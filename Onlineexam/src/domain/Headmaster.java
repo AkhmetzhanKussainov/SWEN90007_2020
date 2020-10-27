@@ -3,7 +3,7 @@ package domain;
 import java.util.List;
 
 import datasource.SubjectDataMapper;
-public class Admin {
+public class Headmaster {
 	
 	
 	private String adminId;
@@ -11,14 +11,15 @@ public class Admin {
 	private String username;
 	private String password;
 	
-	public Admin(String userId, String username, String password, String adminId) {
-			
+	public Headmaster(String userId, String username, String password, String adminId) {
+		
 		this.password = password;
 		this.userId = userId;
 		this.username = username;
 		this.adminId = adminId;
 		
 	}
+	
 		
 	public String getAdminId() {
 		return adminId;
@@ -58,14 +59,5 @@ public class Admin {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-
-	public List<Subject> getAllSubject(){
-		
-		SubjectDataMapper datamapper = new SubjectDataMapper();
-		return datamapper.loadAllSubject();
-		
-	}
-	
 	
 }
