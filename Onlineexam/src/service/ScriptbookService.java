@@ -263,7 +263,7 @@ public class ScriptbookService {
 		List<Scriptbook> scriptbooks = new ArrayList<>();
 
 		try {
-			
+			System.out.println("loaded scriptbooks");
 			scriptbooks = edm.loadScriptbooksForExam(subjectCode, examType, year, semester);
 			for(int i=0;i<scriptbooks.size();i++)
 			{
