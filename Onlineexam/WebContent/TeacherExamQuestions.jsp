@@ -92,14 +92,17 @@ if (request.getParameter("addMultipleMode") != null){
 }
 
 if (request.getParameter("editMultipleMode") != null){
+	mq = qs.getMultipleQuestion(questionId, subjectId, semester, year, examType);
 	editMultipleMode = request.getParameter("editMultipleMode");
 }
 
 if (request.getParameter("deleteMultipleMode") != null){
+	mq = qs.getMultipleQuestion(questionId, subjectId, semester, year, examType);
 	deleteMultipleMode = request.getParameter("deleteMultipleMode");
 }
 
 if (request.getParameter("deleteShortMode") != null){
+	sq = qs.getShortQestion(shortQuestionId, subjectId, semester, year, examType);
 	deleteShortMode = request.getParameter("deleteShortMode");
 }
 
@@ -108,6 +111,7 @@ if (request.getParameter("addShortMode") != null){
 }
 
 if (request.getParameter("editShortMode") != null){
+	sq = qs.getShortQestion(shortQuestionId, subjectId, semester, year, examType);
 	editShortMode = request.getParameter("editShortMode");
 }
 

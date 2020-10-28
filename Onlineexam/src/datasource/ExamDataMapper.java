@@ -288,7 +288,7 @@ public ShortQuestion loadShortQuestion(String questionId, String subjectId, Stri
 	ShortQuestion sa = null;
 	try {
 		PreparedStatement statement = DBConnection.prepare(findShortQuestion);
-		statement.setString(1, questionId);
+		statement.setInt(1, Integer.parseInt(questionId));
 		statement.setString(2, subjectId);
 		statement.setString(3, year);
 		statement.setString(4, semester);
@@ -328,7 +328,8 @@ public ShortQuestion loadShortQuestion(String questionId, String subjectId, Stri
 			statement.setString(1, subjectId);
 			statement.setString(2, year);
 			statement.setString(3, semester);
-			statement.setString(4, examType);		
+			statement.setString(4, examType);
+			System.out.println(statement);
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next())
@@ -480,7 +481,7 @@ public ShortQuestion loadShortQuestion(String questionId, String subjectId, Stri
 				
 				for (Scriptbook scriptbook : loadScriptbooksForExam(subjectId, examType, year, semester)) {
 				
-					exam.addScriptbook(scriptbook);
+					exam.addScriptbookToExam(scriptbook);
 					
 				}	
 							
@@ -645,7 +646,7 @@ public ShortQuestion loadShortQuestion(String questionId, String subjectId, Stri
 		PreparedStatement statement;
 		try {
 			statement = DBConnection.prepare(deleteShortStatementQuestionId);
-			statement.setString(1, questionId);
+			statement.setInt(1, Integer.parseInt(questionId));
 			statement.setString(2, exam.getSubjectID());
 			statement.setString(3, exam.getYear());
 			statement.setString(4, exam.getSemester());
@@ -664,7 +665,7 @@ public ShortQuestion loadShortQuestion(String questionId, String subjectId, Stri
 		PreparedStatement statement;
 		try {
 			statement = DBConnection.prepare(deleteMultipleStatementQuestionId);
-			statement.setString(1, questionId);
+			statement.setInt(1, Integer.parseInt(questionId));
 			statement.setString(2, exam.getSubjectID());
 			statement.setString(3, exam.getYear());
 			statement.setString(4, exam.getSemester());

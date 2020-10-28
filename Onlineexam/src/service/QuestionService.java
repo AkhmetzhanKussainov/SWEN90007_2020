@@ -96,8 +96,11 @@ public class QuestionService {
 	}
 	
 	public ShortQuestion getShortQestion(String Id,String subjectCode, String semester, String year, String examType) {
-	
-		return edm.loadShortQuestion(Id, subjectCode, examType, year, semester);
+		
+		System.out.println("reached get short questions");
+		ShortQuestion output = edm.loadShortQuestion(Id, subjectCode, examType, year, semester);
+		System.out.println(output.getId());
+		return output;
 	//	ShortQuestion shortq = new ShortQuestion(Id, subjectCode, year, semester, examType, "What is this?", 10);
 		
 	////    return shortq;
@@ -165,6 +168,7 @@ public class QuestionService {
 						maxId = Integer.parseInt(questions.get(i).getId());
 					}
 				}
+				maxId++;
 				sq.setId(Integer.toString(maxId));
 			}
 			
