@@ -12,28 +12,33 @@ public class MultipleQuestion extends Question {
     private String ansB;
     private String ansC;
     private String ansD;
-    private choice correctAnswer;
+    private String correctAnswer;
     private String examId;
     private int answerNumber;
     
-    public MultipleQuestion(String id, String examId, String questionText, String ansA, String ansB, String ansC, String ansD, choice correctAnswer, int possibleMark, int answerNumber){
+    public MultipleQuestion(String id, String subjectId, String year, String semester, String examType, String questionText, String ansA, String ansB, String ansC,String ansD, String correctAnswer,int possibleMark, int answerNumber){
     	
     	this.id = id;
+    	this.subjectId = subjectId;
+    	this.year = year;
+    	this.semester = semester;
+    	this.examType = examType;
     	this.questionText = questionText;
     	this.ansA = ansA;
     	this.ansB = ansB;
     	this.ansC = ansC;
     	this.ansD = ansD;
     	
+    	this.possibleMark= possibleMark;
+    	this.answerNumber = answerNumber;
     	this.correctAnswer = correctAnswer;
     	
-    	this.possibleMark = possibleMark;
-    	
-    	this.examId = examId;
-    	
-    	this.answerNumber = answerNumber;
-    	
     } 
+    
+    public int getPossibleMarks() {
+    	
+    	return possibleMark;
+    }
     
     public List<String> getAllAnswer() {
     	
@@ -75,8 +80,63 @@ public class MultipleQuestion extends Question {
 		
 	}
 	
-	public choice getCorrectAnswer() {
-		return correctAnswer;
+	public String getCorrectAnswer() {
+		return this.correctAnswer;
 	}
+
+	public String getAnsA() {
+		return ansA;
+	}
+
+	public void setAnsA(String ansA) {
+		this.ansA = ansA;
+	}
+
+	public String getAnsB() {
+		return ansB;
+	}
+
+	public void setAnsB(String ansB) {
+		this.ansB = ansB;
+	}
+
+	public String getAnsC() {
+		return ansC;
+	}
+
+	public void setAnsC(String ansC) {
+		this.ansC = ansC;
+	}
+
+	public String getAnsD() {
+		return ansD;
+	}
+
+	public void setAnsD(String ansD) {
+		this.ansD = ansD;
+	}
+
+	public String getExamId() {
+		return examId;
+	}
+
+	public void setExamId(String examId) {
+		this.examId = examId;
+	}
+
+	public int getAnswerNumber() {
+		return answerNumber;
+	}
+
+	public void setAnswerNumber(int answerNumber) {
+		this.answerNumber = answerNumber;
+	}
+
+	public void setCorrectAnswer(choice correctAnswer) {
+		this.correctAnswer = correctAnswer.toString();
+	}
+	
+	
+	
 	
 }

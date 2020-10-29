@@ -1,4 +1,4 @@
-	package presentation;
+package presentation;
 
 import java.io.IOException;
 
@@ -12,14 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import domain.MultipleQuestion;
 import domain.ShortQuestion;
+import service.QuestionService;
 
 /**
  * Servlet implementation class detailPageController
  */
-@WebServlet("/questions/")
+@WebServlet("/questions")
 public class detailPageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    private static QuestionService uowService = new QuestionService();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -44,20 +45,22 @@ public class detailPageController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// get data according to name tag in submitted form.
-		String qtype = request.getParameter("qtype");
-		String id = request.getParameter("id");
-		String mark = request.getParameter("mark");
-
-		// check the form type
-		/*if(qtype.equals("multi")) {
-			
-			MultipleQuestion.changeMark(id, mark);
-			
-			
-		} else if(qtype.equals("short")) {
-			ShortQuestion.changeMark(id, mark);
-		}*/
-		
+				String qtype = request.getParameter("qtype");
+				
+				// check the form type
+				if(qtype.equals("multi")) {
+					String id = request.getParameter("id");
+					int mark = Integer.parseInt(request.getParameter("mark"));
+					MultipleQuestion mq = new MultipleQuestion(id, null, null, null, null, null, null, null,null,null,null, mark, 0);
+					uowService.updateUow(mq);
+				} else if(qtype.equals("short")) {
+					String id = request.getParameter("id");
+					int mark = Integer.parseInt(request.getParameter("mark"));
+					ShortQuestion sq = new ShortQuestion(id, null, null,null,null,null, mark);
+					uowService.updateUow(sq);
+				} else if(qtype.equals("commit")) {
+					uowService.commitUow();
+				}
 		doGet(request,response);
 		
 		

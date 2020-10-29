@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.List;
+
 import datasource.UserDataMapper;
 
 import domain.User.houses;
@@ -120,6 +122,13 @@ public class Student extends User {
 		
 		return houseAsString;
 		
+	}
+	
+	public List<Subject> getAllSubjects(){
+		
+		UserDataMapper datamapper = new UserDataMapper();
+		
+		return datamapper.loadSubjectByStudent(this);
 	}
 	
 	/*
