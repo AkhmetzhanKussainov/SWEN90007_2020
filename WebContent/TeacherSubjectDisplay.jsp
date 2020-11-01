@@ -121,7 +121,7 @@ function load(){
 	var examLinks = document.querySelectorAll(".exam-link");
 	for (var i=0; i<examLinks.length; i++){
 		examLinks[i].addEventListener("click", function(e){
-			var link = `${document.location.origin}/OWLs/TeacherExam.jsp?subjectCode=` +  e.target.getAttribute("data-value")
+			var link = `${document.location.origin}/TeacherExam.jsp?subjectCode=` +  e.target.getAttribute("data-value")
 			window.location = link
 		})
 	}	
